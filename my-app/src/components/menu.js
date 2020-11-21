@@ -1,22 +1,23 @@
-import React from 'react'
-import logo from '../images/logos/logo_mid_white.png';
+import React, {Component} from 'react'
+import logo from '../images/logos/logo_big.png';
 
-function menu(props){
-    // If props.active == to what? the what displays the arrow
-    return  (
-    <div className="menu-container">
-        <img src={logo} className="App-logo" alt="logo" />
 
-        <div className= 'menu-tab'> Browse profiles
-        </div>
-        <div className= 'menu-tab'>My profile
-        </div>
-        <div className= 'menu-tab'> Chats
-        </div>
-        <div className= 'menu-tab'> Settings
-        </div>
-    </div>
+class Menu extends Component {
+    render(){
+     // If props.active == to what? the what displays the arrow
+        return  (
+        <div className="menu-container">
+            <img src={logo} className="App-logo" alt="logo" />
 
-    );
+            <div className= 'menu-tabs'>
+                <button className= 'menu-tab' >Browse profiles</button>
+                <button className= 'menu-tab'>My profile</button>
+                <button className= 'menu-tab'>Chats</button>
+                <button className= 'menu-tab'>Settings</button>
+            </div>      
+        </div>
+
+        );
+    }
 }
-export default menu ;
+export default Menu ;

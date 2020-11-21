@@ -9,8 +9,8 @@
   --atention-color: #C40EC5;
   --background-color: #252435;
   --background-light-color: #33324A;
-  --background-dark-color: #252435;
-  --background-separators: #545362;
+  --background-dark-color: #1E1D2B;
+  --background-separators: #51505D;
   --tag-color: #3A3854;
   --title-text-color: #FFFFFF;
   --subtitle-text-color: #CBCBCB;
@@ -18,19 +18,109 @@
   --text-dark-color: #94949D;
 }
 
+
+/* @font-face {
+  font-family: myFirstFont;
+  src: url(sansation_light.woff);
+} */
+
+a{
+  color: var(--link-color)
+}
+
+body {
+  background-color: var(--background-color);
+  font-family: 'Proxima Nova', 'Curier new';
+}
+
+button {
+  font-size: 18px;
+  letter-spacing: 0.05em;
+  font-family: 'Courier New', Courier, monospace;
+  color: white;
+  font-weight: bold;
+  background-color: var(--main-color);
+  /* height: 3em; */
+  border-radius: 30px;
+  border-style: unset;
+  padding: 0.6em 2em;
+  margin: 0.2em;
+  min-width: 200px;
+}
+
+button:hover {
+  background-color: var(--main-light-color) 
+}
+
+button:focus { 
+  outline: none; 
+}
+
+.content-container{
+  align-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+h1{
+  font-size: 40px;
+  font-family: 'Courier New', Courier, monospace;
+  color: var(--main-color)
+}
+h4{
+  font-size: 24px;
+  margin: 0.7em 0em;
+}
+
+p{
+  font-size: 18px;
+}
+
+.arrowButton{
+  background-color: transparent;
+  padding: 0.6em 1em;
+  min-width: auto;
+  opacity: 80%;
+}
+
+.arrowButton:hover{
+  background-color: transparent;
+  opacity: 100%;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
 .App-container {
   min-height: 100vh;
-  /* display: flex;
+  display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; */
+  justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
 }
 
+.general-container{
+  height: 100vh;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 300px auto;
+  align-items: stretch;
+}
+
+
+/* Landing: Register or login */
+
 .App-logo {
   /* height: 4vmin; */
   pointer-events: none;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 60px;
 }
 .App-header {
   min-height: 100vh;
@@ -42,44 +132,9 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
 .arrow-list > li {
-  list-style-image: url(icons/arrow_white_big.png); 
+  list-style-image: url(images/icons/arrow_white_big.png); 
   /* TODO: adds space between the marker and the text*/
-}
-
-
-/* @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-} */
-body {
-  background-color: var(--background-color);
-  
-}
-.content-container{
-  align-content: center;
-}
-.general-container{
-  /*
-     grid-template-columns:repeat(4, 1fr);
-     grid-template-rows: 50px 50px;
- */
-  display: grid;
-  grid-template-columns: 300px auto;
-  align-items: stretch;
-}
-
-.menu-container{
-  height: 100%;
-  background-color: var(--main-color);
-  max-width: 300px;
-  padding: 40px;
-
 }
 
 .landing-container{
@@ -87,12 +142,11 @@ body {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  width: 50%;
-
+  column-gap: 2em;
 }
 
-.login{
-  width: 40%;
+.access-card{
+  /* width: 100%; TODO: fix size*/
   border-radius: 15px;
   border-color: var(--main-light-color);
   border-width: 3px;
@@ -101,16 +155,160 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
   padding: 50px;
 }
 
-.profile-nav{
-  position:fixed;
-	width:500px;
-	height:60px;
-  bottom:40px;
-  left: 50%;
+
+/* MENU STYLES */
+
+.menu-container{
+  font-family: 'Proxima Nova';
+  height: 100%;
+  background-color: var(--main-color);
 }
+
+.menu-tabs{
+  margin-top: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.menu-tab{
+  border-radius: 1px;
+  margin: 0.3em 0px;
+  text-align: left;
+  padding-left: 3em;
+  font-family: 'Proxima Nova';
+  text-transform: uppercase;
+}
+
+.menu-tab:hover{
+  background-color: var(--main-dark-color); 
+  /* TODO: show the arrow https://www.w3schools.com/css/tryit.asp?filename=trycss_buttons_animate1*/
+}
+
+
+/* Profile browser */
+
+.profile-container{
+  text-align: center;
+  margin: 20px;
+}
+.profile-nav{
+  align-self: center;
+  margin-bottom: 1em;
+}
+
+.register-container{
+    display: grid;
+    width: 100%;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 1fr 6fr 1fr;
+    grid-template-areas: 
+      "header header"
+      "form interest"
+      "action action";
+    align-items: center;
+}
+
+/* Register: From and interest synch */
+.register-logo{
+  grid-area: header;
+  justify-self: center;
+}
+
+.register-button{
+  grid-area: action;
+  justify-self: center;
+  align-self: center;
+}
+
+.register-info{
+  grid-area: form;
+  justify-self: center;
+  max-width: 500px;
+}
+
+.register-interest{
+  grid-area: interest;
+  justify-self: center;
+}
+
+.synchronize-interests{
+  border-style: solid;
+  border-color: var(--background-separators);
+  border-radius: 6px;
+  border-width: 3px;
+  min-height: 500px;
+  padding: 1em;
+}
+
+.dropping-area{
+ background-color: var(--background-dark-color);
+ border-radius: 10px;
+ height: 1.3em;
+ display: flex;
+ align-items: center;
+}
+.dropping-area span{
+  font-size: 20px;
+  margin: 0.4em auto;
+  opacity: 60%;
+}
+
+.tag{
+  display: inline-flex;;
+  background-color:var(--tag-color);
+  border-radius: 18px;
+  padding: .3em .2em .3em 0.8em;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: 0.2em 0.2em;
+
+}
+.tag p{
+  margin:0px;
+}
+.tag img{
+  width: 0.4em;
+  height: 0.4em;
+  margin: 0px 0.3em;
+  opacity: 40%;
+}
+.tag img:hover{
+  opacity: 100%;
+}
+
+.row{
+  display: inline-flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.item{
+  width: 100%;
+  padding: 0px 1em;
+}
+
+.item textarea{
+  width: 100%;
+  height: 3em;
+  padding: 0.5em;
+}
+.item input{
+  width: 100%;
+}
+
+
+
+
+
+/* @media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+} 
 
 
 @keyframes App-logo-spin {
@@ -120,4 +318,4 @@ body {
   to {
     transform: rotate(360deg);
   }
-}
+}*/
