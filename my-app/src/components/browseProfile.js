@@ -22,13 +22,14 @@ class BrowseProfiles extends Component {
     }
     
     render(){
+        console.log(this.props)
         const users = Users.map(user => <PCard key={user.username} username={user.username} info={user.info} />)
         return  (
             <div className= 'content-container'>
                 {users}
                 <div className= 'profile-nav'>
                     < ArrowButton direction = 'Back'/>
-                    <button onClick={()=>{this.props.showPopup(true,{})}}>Break the Ice!</button>
+                    <button onClick={()=>{this.props.updatePopup(true,{})}}>Break the Ice!</button>
                     < ArrowButton direction = 'Next'/>
                 </div>
             </div>

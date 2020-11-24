@@ -14,21 +14,15 @@ class GrokApp extends Component {
         popup:{active:false, details:{}}
     }
     this.changeSection = this.changeSection.bind(this)
+    this.updatePopup = this.updatePopup(this)
   }
 
   changeSection(section) {
     console.log(this.state)
-    this.setState(state => {
-        let newState = {
-          section: section, 
-          popup: {active:state.popup.active, details:{}}
-        }
-        return newState
-    });
+    this.setState({section});
   }
   // TODO: anable popup
-  popup(active, details) { 
-    console.log(this)
+  updatePopup(active, details) { 
     this.setState(state => {
         let newState = {
           section: state.section, 
@@ -49,9 +43,10 @@ class GrokApp extends Component {
     /** This methods defines what to show in the component */
   render(){
     var displayedSection
+    console.log(this.updatePopup)
     switch(this.state.section){
       case "Browse": 
-          displayedSection = <Browser showPopup ={this.popup}/>
+          displayedSection = <Browser updatePopup ={this.updatePopup}/>
           break;
         case "Profile": 
         console.log("Profile")

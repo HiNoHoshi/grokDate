@@ -7,15 +7,13 @@ class FirebaseManager{
 
     // Check if the user exist, and returns its information if there is any
     referenceUser(uid){
-        console.log("referencing user")
-        console.log(uid)
+        // console.log("referencing user")
         let user = this.usersRef.doc(uid).get()
         .then((docContent)=>{
             let result 
             // If the user exist
             if(docContent.data()){
                 let data = docContent.data();
-                console.log(data)
                 if(data.username){
                     // If there is data about this user, resturn it
                     result = data;
@@ -26,7 +24,7 @@ class FirebaseManager{
             }else{
                 // if the user does not exist, return false 
                 result =  false
-                console.log("user doesn't exist")
+                // console.log("user doesn't exist")
             }
             return result
         })
