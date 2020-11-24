@@ -4,21 +4,35 @@ class ProfileCard extends Component {
     render(){
         return  (
             <div className="profile-container">
-                <div className= 'user-info'>
-                    <h1>{this.props.username}</h1>
-                    <p>{this.props.info.gender}</p>
-                    <p>{this.props.info.interest}</p>
-                    <p>{this.props.info.age}</p>
-                    <p>{this.props.info.location}</p>
-                    <p>{this.props.info.description}</p>
+                <div className= 'profile-info light-border'>
+                    <h2><a href='#'>{this.props.info.username}</a></h2>
+                    <div className='info'>
+                        <div className= 'info-column'>
+                            <div className='info-item'>
+                                <label>Gender:</label>
+                                <p>{this.props.info.gender}</p>
+                            </div>
+                            <div className='info-item'>
+                                <label>Looking for:</label>
+                                <p>{this.props.info.interest}</p>
+                            </div>
+                            <div className='info-item'>
+                                <label>Age:</label>
+                                <p>{this.props.info.age}</p>
+                            </div>
+                            <div className='info-item'>
+                                <label>Location:</label>
+                                <p>{this.props.info.location}</p>
+                            </div>
+                        </div>
+                        <div className= 'info-column'>
+                            <label>Description:</label>
+                            <p>{this.props.info.description}</p>
+                        </div>
+                    </div>
                 </div>
-        
-                {/* <div className= 'communities'>
-                    <div className= 'community' style = {{display: !props.communities.reddit && "none"}}> Reddit</div>
-                    <div className= 'community' style = {{display: !props.communities.youtube && "none"}}> Youtube</div>
-                    <div className= 'community' style = {{display: props.communities.steam ? "block": "none"}}> Steam</div>  
-                </div> */}
             </div>
+
             );
     }
 }

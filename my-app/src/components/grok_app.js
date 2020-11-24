@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import Browser from './browseProfile'
 import Menu from './menu'
-// import PopUp from './popup'
+import PopUp from './popup'
 
 
 class GrokApp extends Component {
@@ -14,15 +14,15 @@ class GrokApp extends Component {
         popup:{active:false, details:{}}
     }
     this.changeSection = this.changeSection.bind(this)
-    this.updatePopup = this.updatePopup(this)
+    this.showPopup = this.showPopup.bind(this)
+    this.closePopup = this.closePopup.bind(this)
   }
 
   changeSection(section) {
-    console.log(this.state)
     this.setState({section});
   }
-  // TODO: anable popup
-  updatePopup(active, details) { 
+
+  showPopup(active, details) { 
     this.setState(state => {
         let newState = {
           section: state.section, 
@@ -31,7 +31,9 @@ class GrokApp extends Component {
         return newState
     });
   }
-
+  closePopup(){
+    this.setState({popup: {active: false, details: {}}})
+  }
   /** Life cycle method that happens only the first time the component is called
    * Is useful to put API's calls
    */
@@ -43,10 +45,9 @@ class GrokApp extends Component {
     /** This methods defines what to show in the component */
   render(){
     var displayedSection
-    console.log(this.updatePopup)
     switch(this.state.section){
       case "Browse": 
-          displayedSection = <Browser updatePopup ={this.updatePopup}/>
+          displayedSection = <Browser updatePopup ={this.showPopup}/>
           break;
         case "Profile": 
         console.log("Profile")
@@ -65,7 +66,7 @@ class GrokApp extends Component {
 
     return  (
         <div className="general-container">
-            {/* {this.popup.active && <PopUp details={this.popup.details} />} */}
+            {this.state.popup.active && <PopUp details={this.state.popup.details} close={this.closePopup} />}
             < Menu changeSection = {this.changeSection} SignOut= {this.props.SignOut}/>
             {displayedSection}               
         </div>
