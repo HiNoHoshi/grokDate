@@ -30,17 +30,23 @@ class App extends Component {
   
   // To keep the ser looged in
   componentDidMount() {
-    this.signOut()
-    console.log('app stated')
-    // firebase.auth()
-    auth.onAuthStateChanged((user) => {
-      if (user && !this.state.user) {
-        console.log(this.estate)
-        this.setState({user})
+    // this.signOut()
+    console.log(firebase.auth().currentUser)
+    if(firebase.auth().currentUser){
+      this.setState({user: firebase.auth().currentUser})
       }
-    });
-
+    
+    
+    // auth.onAuthStateChanged((u) => {
+    //   if (u && !this.state.user) {
+    //     console.log(this.estate)
+    //     // this.setState({user})
+    //     user = u;
+    //   }
+    // });
+    // this.setState({user})
   }
+
 
   // When the state is updated
   componentDidUpdate(prevProps, prevState) {
@@ -66,12 +72,13 @@ class App extends Component {
 
   render() {
     var screen
+
     if (!this.state.user){
       screen = <Landing SignIn = {this.signIn}/>
     }else{
       console.log(this.state)  
       if(this.state.userInfo.username){
-        screen = <GrokApp SignOut = {this.signOut}/>
+        screen = <GrokApp SignOut = {this.signOut} dbManager = {fbManager}/>
       }else{
         screen = <Register user = {this.state.user} dbManager = {fbManager} setUserInfo = {this.setUserInfo} />
       }
@@ -85,20 +92,22 @@ class App extends Component {
   }
   signIn() {
     auth.signInWithPopup(provider)
-    // .then((result) => {
-    //   // firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
-    //   const user = result.user;
-    //   console.log("Login with:");
-    //   console.log(user.email);
-    //   fbManager.referenceUser(user.uid)
-    //   .then((result) =>{
-    //     if (!result){
-    //       console.log('creating new user')
-    //       fbManager.addUser(user)
-    //     }
-    //     console.log("End login")
-    //   })
-    // });
+    .then((result) => {
+      const user = result.user;
+      this.setState({user})
+      console.log("Login with:");
+      console.log(user.email);
+      fbManager.referenceUser(user.uid, this)
+      .then((ref) =>{
+        console.log(ref)
+        if (!ref){
+          console.log('creating new user')
+          fbManager.addUser(user)
+        }
+        console.log("End login")
+      })
+
+    });
   }
   
   signOut() {
