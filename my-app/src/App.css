@@ -299,6 +299,16 @@ p{
 .item input{
   width: 100%;
 }
+.form-error{
+  font-size: small;
+  color: #C40EC5;
+  margin-top: 4px;
+}
+
+.popup-container{
+  position: absolute;
+  display:flex;
+}
 
 
 

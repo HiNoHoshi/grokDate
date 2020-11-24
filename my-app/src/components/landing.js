@@ -13,20 +13,24 @@ class Landing extends Component {
     }
     
     changeCard() {
-        console.log(this.state)
         this.setState(state => {
             let newState = {login: !state.login}
             return newState
         })
     }
+
+    login(isRegistered){
+        
+    }
+
     render(){
         var card
         var cardOptionText 
         if (this.state.login){
-            card = < SignIn changeSection = {this.props.changeSection}/>
+            card = < SignIn login = {this.props.SignIn}/>
             cardOptionText = <p>You don't have an account yet? <a href = '#' onClick= {this.changeCard} >Sign up</a></p>
         }else{
-            card = < SignUp changeSection = {this.props.changeSection} />
+            card = < SignUp login = {this.props.SignIn} />
             cardOptionText = <p>Already have an account? <a href = '#' onClick= {this.changeCard}>Sign in</a></p>
 
         }
