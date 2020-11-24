@@ -22,7 +22,7 @@ from datetime import datetime
 
 def print_field(dictionary, key):
     if key in dictionary and dictionary[key] is not None and dictionary[key] != "":
-        print(f"{key.upper():24}:{dictionary[key]}")
+        print(f"{key.upper():24}{dictionary[key]}")
         return True
     return False
         
@@ -39,42 +39,42 @@ def print_subreddit_infos(subreddits):
         # SUMMARY
         print("="*100)
         print(f"LINK:\thttp://www.reddit.com/{data['display_name_prefixed']}")
-        print_field(data, "display_name_with_prefix")
+        print_field(data, "display_name_prefixed")
         print_field(data, "title")
         print_field(data, "public_description")
         print_field(data, "subscribers")
         # # User info
-        # print_field(data, "user_has_favorited")
-        # print_field(data, "user_is_subscriber")
-        # print_field(data, "user_is_moderator")
-        # print_field(data, "user_is_contributor")
-        # print_field(data, "user_is_banned")
-        # print_field(data, "user_is_muted")
+        print_field(data, "user_has_favorited")
+        print_field(data, "user_is_subscriber")
+        print_field(data, "user_is_moderator")
+        print_field(data, "user_is_contributor")
+        print_field(data, "user_is_banned")
+        print_field(data, "user_is_muted")
         # Images
-        # print_url(data, "community_icon")           # community icon (1)
-        # print_url(data, "icon_img")                 # community icon (2)
-        # print_url(data, "header_img")               # community icon (3) old reddit, low res, maybe unused
-        # print_url(data, "banner_background_image")  # banner image (1)
-        # # Colors
-        # print_field(data, "banner_background_color")    # color of banner       #33a8ff default
-        # print_field(data, "primary_color")              # color of widgets      #0079D3 default
-        # print_field(data, "key_color")                  # old theme color       #24a0ed default?
-        # # Useful
-        # print_field(data, "subreddit_type")
-        # print_field(data, "id")
-        # print_field(data, "name")
+        print_url(data, "community_icon")           # community icon (1)
+        print_url(data, "icon_img")                 # community icon (2)
+        print_url(data, "header_img")               # community icon (3) old reddit, low res, maybe unused
+        print_url(data, "banner_background_image")  # banner image (1)
+        # Colors
+        print_field(data, "banner_background_color")    # color of banner       #33a8ff default
+        print_field(data, "primary_color")              # color of widgets      #0079D3 default
+        print_field(data, "key_color")                  # old theme color       #24a0ed default?
+        # Useful
+        print_field(data, "subreddit_type")
+        print_field(data, "id")
+        print_field(data, "name")
 
 APP_ID = 'q5rIR3lqrwMirg'
 APP_SECRET = 'r3ClSlbfmhiI2hYF05GAAqN8CU0jsg'
 APP_NAME = 'grok.date'
 APP_DEV = 'darcipeeps'
-APP_REDIRECT = 'http://localhost:8080'
+APP_REDIRECT = 'http://localhost:3000'
 
 GET_NEW_TOKEN = False
 
 if GET_NEW_TOKEN:
     # Open browser to get uesr permission
-    webbrowser.open(f'https://www.reddit.com/api/v1/authorize?client_id={APP_ID}&response_type=code&state=RANDOM_STRING&redirect_uri={APP_REDIRECT}&duration=temporary&scope=mysubreddits')
+    webbrowser.open(f'https://www.reddit.com/api/v1/authorize?client_id={APP_ID}&response_type=code&state=RANDOM_STRING&redirect_uri={APP_REDIRECT}&duration=temporary&scope=mysubreddits read')
     # e.g. 'GET /?state=RANDOM_STRING&code=3EHPUdjREkgq74_1AQZNbqR16v6yPA HTTP/1.1' 200 -
 
     # The code returned to our local server
@@ -100,7 +100,7 @@ if GET_NEW_TOKEN:
     TOKEN = 'bearer ' + d['access_token']
     exit(1)
 else:
-    access_token = "7730963168-_gvarSoyYllvfNn4fkLuQYihqTtPLg"
+    access_token = "7730963168-z8c__x_mSN8tAEAQsiWGdL1HTu0lzA"
     TOKEN = 'bearer ' + access_token
 
 base_url = 'https://oauth.reddit.com'
@@ -109,26 +109,15 @@ headers = {'Authorization': TOKEN, 'User-Agent': f'{APP_NAME} by {APP_DEV}'}
 resp = requests.get(base_url + '/subreddits/mine/subscriber', headers=headers)
 
 if resp.status_code == 200:
-    with open("response.json", "w+") as f:
+    with open("_temp_response.json", "w+") as f:
         f.write(json.dumps(resp.json()))
         subreddits = resp.json()["data"]["children"]
         print_subreddit_infos(subreddits)
 
-
-# fetch("https://swapi.co/api/people/1")
-#     .then(response => response.json())
-#     .then(data => {
-#         this.setState({
-#             character: data
-#         })
-#     })
-
-# componentDidMount() {
-#     fetch("https://api.imgflip.com/get_memes")
-#         .then(response => response.json())
-#         .then(response => {
-#             const {memes} = response.data
-#             console.log(memes[0])
-#             this.setState({ allMemeImgs: memes })
-#         })
-# }
+# Get info about just one subreddit
+# base_url = 'https://oauth.reddit.com'
+# headers = {'Authorization': TOKEN, 'User-Agent': f'{APP_NAME} by {APP_DEV}'}
+# resp = requests.get(base_url + '/r/UIUC/about', headers=headers)
+# if resp.status_code == 200:
+#     with open("_temp_response_UIUC.json", "w+") as f:
+#         f.write(json.dumps(resp.json()))
