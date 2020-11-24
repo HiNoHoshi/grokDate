@@ -7,7 +7,7 @@ class SignIn extends Component {
             <div className='access-card'>
                 <h1>Sign in</h1>
                 {/* <input type="email"></input> */}
-                <button onClick= {(event) => this.props.changeSection('browsing')}>Sign in</button>
+                <button onClick= {(event) => this.props.login()}>Sign in</button>
             </div>
         );
     }

@@ -10,14 +10,16 @@ class Menu extends Component {
             <img src={logo} className="App-logo" alt="logo" />
 
             <div className= 'menu-tabs'>
-                <button className= 'menu-tab' >Browse profiles</button>
-                <button className= 'menu-tab'>My profile</button>
-                <button className= 'menu-tab'>Chats</button>
-                <button className= 'menu-tab'>Settings</button>
-            </div>      
+                <button className= 'menu-tab' onClick= {() => this.props.changeSection("Browse")}>Browse profiles</button>
+                <button className= 'menu-tab' onClick= {() => this.props.changeSection("Profile")}>My profile</button>
+                <button className= 'menu-tab' onClick= {() => this.props.changeSection("Chats")}>Chats</button>
+                <button className= 'menu-tab' onClick= {() => this.props.changeSection("Settings")}>Settings</button>
+                <button className= 'menu-tab logout' onClick= {() => this.props.SignOut()}>LogOut</button>
+            </div>
+
         </div>
 
         );
     }
 }
-export default Menu ;
+export default Menu;

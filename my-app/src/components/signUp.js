@@ -5,7 +5,7 @@ class SignUp extends Component {
         return  (
             <div className='access-card'>
                 <h1>Sign up</h1>
-                <button onClick= {(event) => this.props.changeSection('register')}>Sign up</button>
+                <button onClick= {(event) => this.props.login()}>Sign up</button>
             </div>
         );
     }
