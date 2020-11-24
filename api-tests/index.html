@@ -17,20 +17,6 @@
 
     handleRedirectURI();
 
-    // Check if Reddit redirected user back to us
-    function handleRedirectURI() {
-      const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.get('state') == REDDIT_STATE) {
-        if (code = urlParams.get('code')) {
-          console.log(code)
-          requestAccessToken(code)
-        } else if (error = urlParams.get('error')) {
-          console.log("Error: " + error)
-          window.location.href = REDDIT_TERMINAL_URI
-        }
-      }
-    }
-
     // Send user to authorization URL to get (mysubreddits) permission
     function tryUserAuth() {
       var auth_url = new URL('https://www.reddit.com/api/v1/authorize');
@@ -46,6 +32,20 @@
 
       // Once user accepts/declines, handleRedirectURI() is called
       window.location.href = auth_url
+    }
+
+    // Check if Reddit redirected user back to us
+    function handleRedirectURI() {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('state') == REDDIT_STATE) {
+        if (code = urlParams.get('code')) {
+          console.log(code)
+          requestAccessToken(code)
+        } else if (error = urlParams.get('error')) {
+          console.log("Error: " + error)
+          window.location.href = REDDIT_TERMINAL_URI
+        }
+      }
     }
 
     function requestAccessToken(code) {
