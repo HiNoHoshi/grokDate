@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import logo from '../images/logos/logo_mid.png';
 import Form from './form'
+import InterestsContainer from './interestsContainer'
 import RegisterInterests from './registerInterests'
 
 class Register extends Component {

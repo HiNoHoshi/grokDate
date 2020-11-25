@@ -11,7 +11,7 @@ class Popup extends Component {
         return  (
         <div className="popup-container">
             <div className="popup light-border" >
-                <button className='close-button' onClick={this.props.close}></button>
+                <button className='secondary-button close-button' onClick={this.props.close}></button>
                 <Icebreaker username= "Hoshi"/>   
             </div>
         </div>

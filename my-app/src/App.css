@@ -60,20 +60,6 @@ button:focus {
 button:disabled{
   opacity: 20%;
 }
-.content-container{
-  align-content: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.light-border{
- border-radius: 6px;
- border-width: 2px;
- border-color: var(--background-separators);
- border-style: solid;
-
-}
 
 h1{
   font-size: 40px;
@@ -90,27 +76,44 @@ h4{
 }
 
 p{
+  font-family: 'Proxima Nova';
   font-size: 18px;
 }
-
-.arrowButton{
+span{
+  font-size: small;
+  color: var(--background-separators);
+}
+input, select, textarea{
+  outline: 0;
+  border-style: solid;
+  border-width: 0 0 3px;
+  border-color: var(--background-separators);
+  background-color: transparent;
+  font-size: 16px;
+  padding-bottom: 1em;
+  color: var(--text-color);
+  font-family: 'Proxima Nova';
+}
+textarea{
+  border-width: 3px;
+}
+.secondary-button{
   background-color: transparent;
   padding: 0.6em 1em;
   min-width: auto;
   opacity: 80%;
+  border-radius: 0px;
 }
 
-.arrowButton:hover{
+.secondary-button:hover{
   background-color: transparent;
   opacity: 100%;
 }
-.arrowButton:hover:disabled{
+.secondary-button:hover:disabled{
   opacity: 20%;
 }
 
 .close-button{
-  min-width: auto;
-  opacity: 80%;
   width: 60px;
   height: 60px;
 
@@ -120,10 +123,34 @@ p{
   background-image: url("./images/icons/close_icon@2x.png");
   align-self: flex-end;
 }
+.interests-nav{
+  display: inline-flex;
+  width: 100%;
+  margin-top: 1em;
+  justify-content: center;
+}
+.tab-button{
+  font-family: 'Proxima Nova';
+  margin: 0em 1em;
+}
+.tab-button:active{
+  outline: 0;
+  border-style: solid;
+  border-width: 0 0 3px;
+  border-color: var(--main-color);
+}
+.content-container{padding: 1em;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 
-.close-button:hover{
-  background-color: transparent;
-  opacity: 100%;
+.light-border{
+ border-radius: 6px;
+ border-width: 2px;
+ border-color: var(--background-separators);
+ border-style: solid;
 }
 
 .App-link {
@@ -220,13 +247,17 @@ p{
 .register-container{
   display: grid;
   width: 100%;
-  grid-template-columns: 50% 50%;
-  grid-template-rows: 1fr 6fr 1fr;
+  /* grid-template-columns: 40% 60%; */
+  /* grid-template-rows: 1fr 6fr 1fr; */
   grid-template-areas: 
     "header header"
     "form interest"
     "action action";
   align-items: center;
+}
+
+.register-container h2{
+  font-size: 28px;
 }
 
 /* Register: From and interest synch */
@@ -252,6 +283,7 @@ grid-area: interest;
 justify-self: center;
 }
 
+
 .synchronize-interests{
 border-style: solid;
 border-color: var(--background-separators);
@@ -267,6 +299,8 @@ border-radius: 10px;
 height: 1.3em;
 display: flex;
 align-items: center;
+border: dashed;
+border-color: var(--background-separators);
 }
 .dropping-area span{
 font-size: 20px;
@@ -278,23 +312,14 @@ opacity: 60%;
 display: inline-flex;;
 background-color:var(--tag-color);
 border-radius: 18px;
-padding: .3em .2em .3em 0.8em;
+padding: .3em .8em .3em 0.8em;
 justify-content: space-evenly;
 align-items: center;
 margin: 0.2em 0.2em;
-
+max-height: 0.75em;
 }
 .tag p{
 margin:0px;
-}
-.tag img{
-width: 0.4em;
-height: 0.4em;
-margin: 0px 0.3em;
-opacity: 40%;
-}
-.tag img:hover{
-opacity: 100%;
 }
 
 .row{
@@ -356,7 +381,11 @@ margin-top: 4px;
 
 .profile-container{
   text-align: center;
+  width: 80%;
   margin: 20px;
+  flex-grow: 1;
+  display: grid;
+  grid-template-rows: 45% 55%;
 }
 .profile-nav{
   align-self: center;
@@ -380,12 +409,14 @@ margin-top: 4px;
   font-size: 18px;
   color: var(--text-color);
   display: inline;
+  line-height:1.5em;
 }
 .info{
   text-align: left;
   padding: 1em;
   display: flex;
   flex-direction: row;
+  justify-content: space-around;
   align-items: self-start;
 }
 .info-column{
@@ -395,8 +426,16 @@ margin-top: 4px;
 }
 .info-item{
   display: inline;
-  margin-bottom: 0.5em;
+  margin-bottom: 0.25em;
 }
+.interests-container{
+  margin: 0em 2em;
+  min-height: 7em;
+  border-radius: 10px;
+  padding: 0.5em;
+  background-color: var(--background-dark-color);
+}
+
 /* Icebreaker styles */
 .icebreaker{
   display: flex;
