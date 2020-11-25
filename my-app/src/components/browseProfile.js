@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import PCard from './profileCard'
-import Users from '../usersDB'
+import profiles from '../usersDB'
 import ArrowButton from "./arrow_button"
 
 
@@ -8,29 +8,44 @@ import ArrowButton from "./arrow_button"
 class BrowseProfiles extends Component {
     constructor(){
         super();
-        this.state = {popup: false}
-        this.currentUser = Users[0].username
-        this.showIB = this.showIB.bind(this);
+        this.state = {
+            activePID: 0,
+            profiles:[],
+            activeProfile: null,
+        }
+        this.prevProfile = this.prevProfile.bind(this)
+        this.nextProfile = this.nextProfile.bind(this)
     }
-    showIB(){
-        this.setState(state => {
-            let newState = {popup: !this.state.popup}
-            return newState
-        });
-        console.log(this.state)
 
+    componentDidMount() {
+        // charge the user profiles from the database
+        this.setState({profiles, activeProfile: profiles[0]})
     }
-    
+
+    prevProfile(){
+        this.setState(state => {
+            return {activePID: state.activePID-1}
+        });
+    }
+    nextProfile(){
+        this.setState(state => {
+            return {activePID: state.activePID+1}
+        });
+    }
+    componentDidUpdate(prevProps, prevState) {
+        if(prevState.activePID  !== this.state.activePID){
+            const activeProfile = this.state.profiles[this.state.activePID]
+            this.setState({activeProfile})
+        }
+      }
     render(){
-        console.log(this.props)
-        const users = Users.map(user => <PCard key={user.username} username={user.username} info={user.info} />)
         return  (
             <div className= 'content-container'>
-                {users}
+                {this.state.activeProfile &&  <PCard key={this.state.activeProfile.uid} info={this.state.activeProfile.info} />}
                 <div className= 'profile-nav'>
-                    < ArrowButton direction = 'Back'/>
+                    < ArrowButton active= {this.state.activePID> 0} direction = 'Back' change = {this.prevProfile}/>
                     <button onClick={()=>{this.props.updatePopup(true,{})}}>Break the Ice!</button>
-                    < ArrowButton direction = 'Next'/>
+                    < ArrowButton active= {this.state.activePID<this.state.profiles.length-1} direction = 'Next'change = {this.nextProfile}/>
                 </div>
             </div>
         );

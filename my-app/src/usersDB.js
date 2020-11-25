@@ -1,7 +1,8 @@
 const users= [
         {
-            username: "HiNoHoshi",
+            uid:  "00002",
             info: {
+                username: "HiNoHoshi",
                 gender: "female",
                 interest: "Male",
                 age: "26",
@@ -13,9 +14,23 @@ const users= [
                 youtube: ["Extra Credits", "Brandom Rohrer"],
                 steam: ["Minecraft", "Dota"]
             }, 
-            Matches: {
-
-            }
+            Matches: { }
+        },{
+            uid: "00001",
+            info: {
+                username: "Tsuki",
+                gender: "female",
+                interest: "Male",
+                age: "22",
+                location: "Cali, Colombia",
+                description: "I'm so kawai"
+            },
+            communities: {
+                reddit: ["r/UIUC", "r/aww", "r/dataisbeautiful"],
+                youtube: ["Extra Credits", "Brandom Rohrer"],
+                steam: ["Minecraft", "Dota"]
+            }, 
+            Matches: { }
         }
     ]
 

@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import Icebreaker from '../icebreaker'
+import Icebreaker from './icebreaker'
 
 class Popup extends Component {
     constructor(){
@@ -8,10 +8,12 @@ class Popup extends Component {
     }
 
     render(){
-        console.log(this.props)
         return  (
         <div className="popup-container">
-            <Icebreaker username= {this.props.username}/>   
+            <div className="popup light-border" >
+                <button className='close-button' onClick={this.props.close}></button>
+                <Icebreaker username= "Hoshi"/>   
+            </div>
         </div>
         );
     }

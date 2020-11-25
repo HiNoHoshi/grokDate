@@ -6,7 +6,6 @@ import GrokApp from './components/grok_app'
 
 import firebase, { auth, provider } from './comm/firebaseCredentials.js';
 import FirebaseManager from './comm/firebaseManager'
-// import { useAuthState } from 'react-firebase-hooks/auth';
 
 const firestore = firebase.firestore();
 const fbManager = new FirebaseManager(firestore)
@@ -27,7 +26,8 @@ class App extends Component {
   }
   
 
-  // To keep the ser looged in
+  // Check the authentication state at the beggining 
+  // To keep the user looged in
   componentDidMount = () => {
     var unsubscribe = auth.onAuthStateChanged(userAuth => {
       this.setState({ user: userAuth});
@@ -36,14 +36,11 @@ class App extends Component {
     
 };
 
-  // When the state is updated
+  // When the state is updated, it brings the information about the user
+  // from the database
   componentDidUpdate(prevProps, prevState) {
-    console.log("State updated")
-    console.log(this.state)
-
     if(!prevState.user  && this.state.user){
       let user = this.state.user
-      console.log("just identified an user")
       fbManager.referenceUser(user.uid).then((result) =>{
         if (result){
           if(result.username){
@@ -51,7 +48,6 @@ class App extends Component {
           }
         }
       })
-      console.log("End referencing user")
     }
   }
 
@@ -76,24 +72,20 @@ class App extends Component {
       </div>
     );
   }
+
+  // Sign in if the user exist, sign up otherwise
   signIn() {
     auth.signInWithPopup(provider)
     .then((result) => {
-      auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
-      // auth.setPersistence(auth.Auth.Persistence.SESSION)
       const user = result.user;
       this.setState({user})
-      console.log("Login with:");
-      console.log(user.email);
       fbManager.referenceUser(user.uid, this)
       .then((ref) =>{
         if (!ref){
-          console.log('creating new user')
+          // creates a new user if the user is not found
           fbManager.addUser(user)
         }
-        console.log("End login")
       })
-
     });
   }
   

@@ -8,7 +8,7 @@ class Icebreaker extends Component {
     constructor(){
         super();
         this.state = {
-            loading: true,
+            loading: false,
             icebreakers: [
                 {
                     id:'',
@@ -21,8 +21,6 @@ class Icebreaker extends Component {
     
     //  Example to call Reddit API right after the icebreaker appears
     componentDidMount() {
-        this.setState({loading: true})
-        console.log("Hello")
         fetch('https://www.reddit.com/r/UIUC.json')
             .then(response => response.json())
             .then(data => console.log(data))
@@ -32,25 +30,23 @@ class Icebreaker extends Component {
     }
 
     render(){
-        console.log(this.props)
         const posts = Posts.map(post => <Post key={post.id} subreddit={post.subreddit} postText={post.postText} />)
         return  (
-        <div className="popup-container">
-            <div className= 'popup'>
+            <div className= 'icebreaker'>
                 <h2>Chose an Icebreaker for <a href='#'>{this.props.username}</a></h2>
                 <select>
                     <option value="Did you see this?">Did you see this?</option>
                     <option value="What do you think about this?">What do you think about this?</option>
                 </select>
-                {this.state.loading ? <div>loading</div>:posts}
+                {this.state.loading ? <div className="post-container">loading</div>:posts}
 
                 <div className= 'profile-nav'>
-                    < ArrowButton direction = 'Back'/>
+                    {/* TODO: set up the arrows to navigate in the posts */}
+                    {/* < ArrowButton direction = 'Back'/> */}
                     <button>Send message</button>
-                    < ArrowButton direction = 'Next'/>
+                    {/* < ArrowButton direction = 'Next'/> */}
                 </div>
             </div>     
-        </div>
         );
     }
 }

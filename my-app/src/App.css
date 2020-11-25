@@ -16,6 +16,7 @@
   --subtitle-text-color: #CBCBCB;
   --text-color: #BFBFC4;
   --text-dark-color: #94949D;
+  --dark-overlay: rgba(0,0,0,0.5)
 }
 
 
@@ -56,6 +57,9 @@ button:focus {
   outline: none; 
 }
 
+button:disabled{
+  opacity: 20%;
+}
 .content-container{
   align-content: center;
   display: flex;
@@ -63,10 +67,22 @@ button:focus {
   justify-content: space-between;
 }
 
+.light-border{
+ border-radius: 6px;
+ border-width: 2px;
+ border-color: var(--background-separators);
+ border-style: solid;
+
+}
+
 h1{
   font-size: 40px;
   font-family: 'Courier New', Courier, monospace;
   color: var(--main-color)
+}
+h2{
+  font-size: 32px;
+  font-family: 'Courier New', Courier, monospace;
 }
 h4{
   font-size: 24px;
@@ -85,6 +101,27 @@ p{
 }
 
 .arrowButton:hover{
+  background-color: transparent;
+  opacity: 100%;
+}
+.arrowButton:hover:disabled{
+  opacity: 20%;
+}
+
+.close-button{
+  min-width: auto;
+  opacity: 80%;
+  width: 60px;
+  height: 60px;
+
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url("./images/icons/close_icon@2x.png");
+  align-self: flex-end;
+}
+
+.close-button:hover{
   background-color: transparent;
   opacity: 100%;
 }
@@ -109,6 +146,24 @@ p{
   display: grid;
   grid-template-columns: 300px auto;
   align-items: stretch;
+}
+
+.popup-container{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display:flex;
+  z-index: 1;
+  background-color: var(--dark-overlay);
+  justify-content: center;
+  align-items: center;
+}
+
+.popup{
+  background-color: var(--background-color);
+  display: flex;
+  flex-direction: column;
+  max-width: 60%;
 }
 
 
@@ -160,6 +215,114 @@ p{
 }
 
 
+
+/* Register */
+.register-container{
+  display: grid;
+  width: 100%;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 1fr 6fr 1fr;
+  grid-template-areas: 
+    "header header"
+    "form interest"
+    "action action";
+  align-items: center;
+}
+
+/* Register: From and interest synch */
+.register-logo{
+grid-area: header;
+justify-self: center;
+}
+
+.register-button{
+grid-area: action;
+justify-self: center;
+align-self: center;
+}
+
+.register-info{
+grid-area: form;
+justify-self: center;
+max-width: 500px;
+}
+
+.register-interest{
+grid-area: interest;
+justify-self: center;
+}
+
+.synchronize-interests{
+border-style: solid;
+border-color: var(--background-separators);
+border-radius: 6px;
+border-width: 3px;
+min-height: 500px;
+padding: 1em;
+}
+
+.dropping-area{
+background-color: var(--background-dark-color);
+border-radius: 10px;
+height: 1.3em;
+display: flex;
+align-items: center;
+}
+.dropping-area span{
+font-size: 20px;
+margin: 0.4em auto;
+opacity: 60%;
+}
+
+.tag{
+display: inline-flex;;
+background-color:var(--tag-color);
+border-radius: 18px;
+padding: .3em .2em .3em 0.8em;
+justify-content: space-evenly;
+align-items: center;
+margin: 0.2em 0.2em;
+
+}
+.tag p{
+margin:0px;
+}
+.tag img{
+width: 0.4em;
+height: 0.4em;
+margin: 0px 0.3em;
+opacity: 40%;
+}
+.tag img:hover{
+opacity: 100%;
+}
+
+.row{
+display: inline-flex;
+justify-content: space-between;
+width: 100%;
+}
+.item{
+width: 100%;
+padding: 0px 1em;
+}
+
+.item textarea{
+width: 100%;
+height: 3em;
+padding: 0.5em;
+}
+.item input{
+width: 100%;
+}
+.form-error{
+font-size: small;
+color: #C40EC5;
+margin-top: 4px;
+}
+
+
+
 /* MENU STYLES */
 
 .menu-container{
@@ -189,7 +352,6 @@ p{
   /* TODO: show the arrow https://www.w3schools.com/css/tryit.asp?filename=trycss_buttons_animate1*/
 }
 
-
 /* Profile browser */
 
 .profile-container{
@@ -200,114 +362,59 @@ p{
   align-self: center;
   margin-bottom: 1em;
 }
-
-.register-container{
-    display: grid;
-    width: 100%;
-    grid-template-columns: 50% 50%;
-    grid-template-rows: 1fr 6fr 1fr;
-    grid-template-areas: 
-      "header header"
-      "form interest"
-      "action action";
-    align-items: center;
+.profile-info h2{
+  background-color: var(--background-dark-color);
+  align-self: start;
+  margin: 0px;
+  padding: 0.5em 0;
 }
 
-/* Register: From and interest synch */
-.register-logo{
-  grid-area: header;
-  justify-self: center;
+.profile-info label{
+  margin-right: 1em;
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--subtitle-text-color);
 }
 
-.register-button{
-  grid-area: action;
-  justify-self: center;
+.profile-info p{
+  font-size: 18px;
+  color: var(--text-color);
+  display: inline;
+}
+.info{
+  text-align: left;
+  padding: 1em;
+  display: flex;
+  flex-direction: row;
+  align-items: self-start;
+}
+.info-column{
+  display: inline-grid;
+  margin: 0.5em 1.5em;
+  max-width: 50%;
+}
+.info-item{
+  display: inline;
+  margin-bottom: 0.5em;
+}
+/* Icebreaker styles */
+.icebreaker{
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  padding: 1em;
+  text-align: center;
+
+}
+.icebreaker select{
+  width: fit-content;
   align-self: center;
 }
-
-.register-info{
-  grid-area: form;
-  justify-self: center;
-  max-width: 500px;
-}
-
-.register-interest{
-  grid-area: interest;
-  justify-self: center;
-}
-
-.synchronize-interests{
-  border-style: solid;
-  border-color: var(--background-separators);
-  border-radius: 6px;
-  border-width: 3px;
-  min-height: 500px;
-  padding: 1em;
-}
-
-.dropping-area{
- background-color: var(--background-dark-color);
- border-radius: 10px;
- height: 1.3em;
- display: flex;
- align-items: center;
-}
-.dropping-area span{
-  font-size: 20px;
-  margin: 0.4em auto;
-  opacity: 60%;
-}
-
-.tag{
-  display: inline-flex;;
-  background-color:var(--tag-color);
-  border-radius: 18px;
-  padding: .3em .2em .3em 0.8em;
-  justify-content: space-evenly;
-  align-items: center;
-  margin: 0.2em 0.2em;
-
-}
-.tag p{
-  margin:0px;
-}
-.tag img{
-  width: 0.4em;
-  height: 0.4em;
-  margin: 0px 0.3em;
-  opacity: 40%;
-}
-.tag img:hover{
-  opacity: 100%;
-}
-
-.row{
-  display: inline-flex;
-  justify-content: space-between;
-  width: 100%;
-}
-.item{
-  width: 100%;
-  padding: 0px 1em;
-}
-
-.item textarea{
-  width: 100%;
-  height: 3em;
-  padding: 0.5em;
-}
-.item input{
-  width: 100%;
-}
-.form-error{
-  font-size: small;
-  color: #C40EC5;
-  margin-top: 4px;
-}
-
-.popup-container{
-  position: absolute;
-  display:flex;
+.post-container{
+ padding: 1em;
+ margin: 1em;
+ align-content: center;
+ text-align: left;
 }
 
 .platform-icon {
