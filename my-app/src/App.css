@@ -97,6 +97,10 @@ input, select, textarea{
 textarea{
   border-width: 3px;
 }
+
+[draggable=true] {
+  cursor: move;
+}
 .secondary-button{
   background-color: transparent;
   padding: 0.6em 1em;
@@ -289,8 +293,9 @@ border-style: solid;
 border-color: var(--background-separators);
 border-radius: 6px;
 border-width: 3px;
-min-height: 500px;
+min-height: 400px;
 padding: 1em;
+padding-top: 0px;
 }
 
 .dropping-area{
@@ -320,6 +325,7 @@ max-height: 0.75em;
 }
 .tag p{
 margin:0px;
+pointer-events: painted;
 }
 
 .row{
