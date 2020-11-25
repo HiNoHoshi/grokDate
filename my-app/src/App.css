@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap');
+
 :root {
 
   /* Colors: */
@@ -31,7 +33,7 @@ a{
 
 body {
   background-color: var(--background-color);
-  font-family: 'Proxima Nova', 'Curier new';
+  font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
 }
 
 button {
@@ -76,7 +78,7 @@ h4{
 }
 
 p{
-  font-family: 'Proxima Nova';
+  font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
   font-size: 18px;
 }
 span{
@@ -92,7 +94,7 @@ input, select, textarea{
   font-size: 16px;
   padding-bottom: 1em;
   color: var(--text-color);
-  font-family: 'Proxima Nova';
+  font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
 }
 textarea{
   border-width: 3px;
@@ -134,7 +136,7 @@ textarea{
   justify-content: center;
 }
 .tab-button{
-  font-family: 'Proxima Nova';
+  font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
   margin: 0em 1em;
 }
 .tab-button:active{
@@ -357,7 +359,7 @@ margin-top: 4px;
 /* MENU STYLES */
 
 .menu-container{
-  font-family: 'Proxima Nova';
+  font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
   height: 100%;
   background-color: var(--main-color);
 }
@@ -374,7 +376,7 @@ margin-top: 4px;
   margin: 0.3em 0px;
   text-align: left;
   padding-left: 3em;
-  font-family: 'Proxima Nova';
+  font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
   text-transform: uppercase;
 }
 

@@ -11,24 +11,24 @@ class RegisterInterests extends Component {
         this.state = {
             reddit: [
                 {
-                    name:'r/PS4',
-                    favorite: true,
-                    visible: true
+                    name:'r/PS5',
+                    is_favorite: true,
+                    is_visible: true
                 },
                 {
                     name:'r/UIUC',
-                    favorite: false,
-                    visible: true
+                    is_favorite: false,
+                    is_visible: true
                 },
                 {
                     name:'r/oddlysatisfying',
-                    favorite: false,
-                    visible: false
+                    is_favorite: false,
+                    is_visible: false
                 },
                 {
                     name:'r/trashpandas',
-                    favorite: false,
-                    visible: true
+                    is_favorite: false,
+                    is_visible: true
                 }
         ],
             youtube: [],
@@ -37,7 +37,7 @@ class RegisterInterests extends Component {
     }
 
     render(){
-            // const allTags = this.state.reddit.map(sub =><TagItem name = {sub.name} editable= {true}/>)
+        const allTags = this.state.reddit.map(sub =><TagItem key= {sub.name} name = {sub.name} editable= {true} is-visible = {sub.is_visible}/>)
 
         return  (
             <div className= 'register-interest'>
@@ -51,10 +51,10 @@ class RegisterInterests extends Component {
                         </div>
                         
                         <DragAndDrop />
-
-                        < TagItem name = "r/UIUC" editable = {true}/>
+                        {allTags}
+                        {/* < TagItem name = "r/UIUC" editable = {true}/>
                         < TagItem name = "r/aww"/>
-                        < TagItem name = "r/dataisbeautiful"/>
+                        < TagItem name = "r/dataisbeautiful"/> */}
                         
                         <LinkReddit
                             key={'reddit'} 

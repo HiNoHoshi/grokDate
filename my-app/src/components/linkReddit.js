@@ -98,8 +98,7 @@ class LinkReddit extends Component {
           }).then(this.status).then(this.json)
           .then((respJSON) => {
             var subreddits = respJSON["data"]["children"]
-            this.parseSubreddits(subreddits);
-            // window.location.href = REDDIT.TERMINAL_URI
+            this.parseSubreddits(subreddits)
           }).catch(function (err) {
             console.log('Error: Failed to get subreddits:', err)
           });
@@ -119,6 +118,7 @@ class LinkReddit extends Component {
       }
 
       parseSubreddits(subreddit_list) {
+        var promises = [];
         subreddit_list.forEach((item, index) => {
             var data = item.data
             var subreddit_info = {
@@ -134,14 +134,22 @@ class LinkReddit extends Component {
                 'title': data.title,
                 'type': data.subreddit_type,
             };
-            this.props.dbManager.registerSubredditInfo(data.display_name, subreddit_info)
-            var user_subreddit = {
-              'is_favorite': false,
-              'is_reddit_favorite': data.user_has_favorited,
-              'subreddit_ref': this.props.dbManager.subredditRef.doc(data.display_name),
-              'is_visible': true,
-            }
-            this.props.dbManager.registerUserSubreddit(data.display_name, user_subreddit, this.props.user)
+            var promise = this.props.dbManager.registerSubredditInfo(data.display_name, subreddit_info).then(() => {
+              var user_subreddit = {
+                'is_favorite': false,
+                'is_reddit_favorite': data.user_has_favorited,
+                'subreddit_ref': this.props.dbManager.subredditRef.doc(data.display_name),
+                'is_visible': true,
+              }
+              return this.props.dbManager.registerUserSubreddit(data.display_name, user_subreddit, this.props.user).then(() => {
+                // console.log("DONE with one", (new Date()).getTime());
+              })
+            })
+            promises.push(promise)
+        });
+        Promise.all(promises).then(() => {
+          // console.log("DONE with all", (new Date()).getTime());
+          window.location.href = REDDIT.TERMINAL_URI;
         });
       }
 }
