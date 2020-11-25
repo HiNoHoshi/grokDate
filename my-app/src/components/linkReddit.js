@@ -99,7 +99,7 @@ class LinkReddit extends Component {
           .then((respJSON) => {
             var subreddits = respJSON["data"]["children"]
             this.parseSubreddits(subreddits);
-            // window.location.href = REDDIT.TERMINAL_URI
+            window.location.href = REDDIT.TERMINAL_URI
           }).catch(function (err) {
             console.log('Error: Failed to get subreddits:', err)
           });
