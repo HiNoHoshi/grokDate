@@ -50,7 +50,6 @@ class RegisterInterests extends Component {
                             dbManager={this.props.dbManager}
                             user={this.props.user}
                         />
-                        <br></br>
                         <div className = "dropping-area">
                             <span>Drag your favorite here</span>
                         </div>
