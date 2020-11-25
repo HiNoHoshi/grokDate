@@ -1,13 +1,9 @@
 import React, {Component} from 'react'
-import {REDDIT} from '../common.js'
-import FirebaseManager from '../common/firebaseManager.js';
+import {REDDIT} from '../comm/common.js'
 
-class LinkPlatform extends Component {
+class LinkReddit extends Component {
     constructor(){
         super();
-        this.state = {popup: false}
-        this.currentUser = "darcipeeps"
-        // this.showIB = this.showIB.bind(this);
         this.tryUserAuth = this.tryUserAuth.bind(this);
         this.handleRedirectURI = this.handleRedirectURI.bind(this);
         this.requestAccessToken = this.requestAccessToken.bind(this);
@@ -22,10 +18,16 @@ class LinkPlatform extends Component {
     }
     
     render() {
-        console.log(this.props)
         return  (
             <div className= 'content-container'>
-                <button onClick={this.tryUserAuth}><img alt={this.props.name + " logo"} className="platform-icon" src={this.props.img}></img>  Link to {this.props.name}</button>
+                <button onClick={this.tryUserAuth}>
+                  <img 
+                    alt={this.props.name + " logo"} 
+                    className="platform-icon" 
+                    src={this.props.img}
+                  >
+                  </img>  Link to {this.props.name}
+                </button>
             </div>
         );
     }
@@ -54,7 +56,6 @@ class LinkPlatform extends Component {
             var code = urlParams.get('code')
             var error = urlParams.get('error')
             if (code) {
-                console.log(code)
                 this.requestAccessToken(code)
             } else if (error) {
                 console.log("Error: " + error)
@@ -80,7 +81,6 @@ class LinkPlatform extends Component {
           }).then(this.status).then(this.json)
           .then((responseJSON) => {
             var token = responseJSON.access_token
-            console.log("token: " + token)
             this.tryGetCommunityInfo(token);
           }).catch(function (err) {
             console.log('Error: ' + err);
@@ -90,7 +90,6 @@ class LinkPlatform extends Component {
       // Get the user's community info
       tryGetCommunityInfo(token) {
         if (token) {
-          console.log(token)
           fetch('https://oauth.reddit.com/subreddits/mine/subscriber', {
             method: 'GET',
             headers: {
@@ -99,9 +98,8 @@ class LinkPlatform extends Component {
           }).then(this.status).then(this.json)
           .then((respJSON) => {
             var subreddits = respJSON["data"]["children"]
-            console.log(subreddits);
             this.parseSubreddits(subreddits);
-            window.location.href = REDDIT.TERMINAL_URI
+            // window.location.href = REDDIT.TERMINAL_URI
           }).catch(function (err) {
             console.log('Error: Failed to get subreddits:', err)
           });
@@ -120,8 +118,7 @@ class LinkPlatform extends Component {
         }
       }
 
-      parseSubreddits(subreddit_list) { 
-        var subreddit_map = []
+      parseSubreddits(subreddit_list) {
         subreddit_list.forEach((item, index) => {
             var data = item.data
             var subreddit_info = {
@@ -130,7 +127,7 @@ class LinkPlatform extends Component {
                 'description': data.public_description,
                 'display_name': data.display_name,
                 'display_name_prefixed': data.display_name_prefixed,
-                'icon': (data.communityIcon || data.icon_img || '../img/subreddit_default_icon.png').split('?')[0],
+                'icon': (data.communityIcon || data.icon_img || '../images/external/subreddit_default_icon.png').split('?')[0],
                 'link': 'http://www.reddit.com' + data.url,
                 'primary_color': data.primary_color || data.key_color || '#0079d3',
                 'subscribers': data.subscribers,
@@ -138,9 +135,14 @@ class LinkPlatform extends Component {
                 'type': data.subreddit_type,
             };
             this.props.dbManager.registerSubredditInfo(data.display_name, subreddit_info)
+            var user_subreddit = {
+              'is_favorite': false,
+              'is_reddit_favorite': data.user_has_favorited,
+              'subreddit_ref': this.props.dbManager.subredditRef.doc(data.display_name),
+              'is_visible': true,
+            }
+            this.props.dbManager.registerUserSubreddit(data.display_name, user_subreddit, this.props.user)
         });
-        console.log(subreddit_map)
-        return true
       }
 }
-export default LinkPlatform;
+export default LinkReddit;

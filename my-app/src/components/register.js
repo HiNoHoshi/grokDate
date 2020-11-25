@@ -53,7 +53,7 @@ class Register extends Component {
                 <h2>Profile Information.</h2>
                 <Form data={this.state} handleChange={this.handleChange}/>
             </div>
-            <RegisterInterests />
+            <RegisterInterests dbManager={this.props.dbManager} user={this.props.user} />
             <button className= 'register-button' onClick={this.handleSubmit}>Create Account</button>
         </div>
         );

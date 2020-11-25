@@ -310,7 +310,11 @@ p{
   display:flex;
 }
 
-
+.platform-icon {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+}
 
 
 
