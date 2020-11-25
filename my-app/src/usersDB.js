@@ -23,7 +23,7 @@ const users= [
                 interest: "Male",
                 age: "22",
                 location: "Cali, Colombia",
-                description: "I'm so kawai"
+                description: "Lorem ipsum dolor sit amet, consetetur sadipscing elitr! Sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam."
             },
             communities: {
                 reddit: ["r/UIUC", "r/aww", "r/dataisbeautiful"],

@@ -1,28 +1,41 @@
 import React, {Component} from 'react'
 import TagItem from './tagItem'
-import ArrowButton from "./arrow_button"
 
 class RegisterInterests extends Component {
     constructor(){
+        
         super();
         this.state = {
-            username: "",
-            info: {
-                gender: "",
-                interest: "",
-                age: "",
-                location: "",
-                description: ""
-            },
-            communities: {
-                reddit: [],
-                youtube: [],
-                steam: []
-            }
+            reddit: [
+                {
+                    name:'r/PS4',
+                    favorite: true,
+                    visible: true
+                },
+                {
+                    name:'r/UIUC',
+                    favorite: false,
+                    visible: true
+                },
+                {
+                    name:'r/oddlysatisfying',
+                    favorite: false,
+                    visible: false
+                },
+                {
+                    name:'r/trashpandas',
+                    favorite: false,
+                    visible: true
+                }
+        ],
+            youtube: [],
+            steam: []
         }
-        // this.changeCard = this.changeCard.bind(this)
     }
+
     render(){
+            const allTags = this.state.reddit.map(sub =><TagItem name = {sub.name} editable= {true}/>)
+
         return  (
             <div className= 'register-interest'>
                 <h2>Your Intrests.</h2>
@@ -37,9 +50,6 @@ class RegisterInterests extends Component {
                         < TagItem name = "r/dataisbeautiful"/>
                     </div>
                 </div>
-                < ArrowButton direction = 'Back'/>
-                < ArrowButton direction = 'Next'/>
-                
              </div>
         );
     }

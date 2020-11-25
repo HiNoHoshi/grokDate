@@ -1,35 +1,20 @@
 import React, {Component} from 'react'
+import ProfileInfo from './profileInfo'
+import InterestsContainer from './interestsContainer'
 
 class ProfileCard extends Component {
     render(){
         return  (
-            <div className="profile-container">
-                <div className= 'profile-info light-border'>
-                    <h2><a href='#'>{this.props.info.username}</a></h2>
-                    <div className='info'>
-                        <div className= 'info-column'>
-                            <div className='info-item'>
-                                <label>Gender:</label>
-                                <p>{this.props.info.gender}</p>
-                            </div>
-                            <div className='info-item'>
-                                <label>Looking for:</label>
-                                <p>{this.props.info.interest}</p>
-                            </div>
-                            <div className='info-item'>
-                                <label>Age:</label>
-                                <p>{this.props.info.age}</p>
-                            </div>
-                            <div className='info-item'>
-                                <label>Location:</label>
-                                <p>{this.props.info.location}</p>
-                            </div>
-                        </div>
-                        <div className= 'info-column'>
-                            <label>Description:</label>
-                            <p>{this.props.info.description}</p>
-                        </div>
+            <div className="profile-container light-border">
+                {<ProfileInfo info = {this.props.info}/>}
+                <div className= 'interests-info'>
+                    <div className= 'interests-nav'>
+                        <button className='secondary-button tab-button' disabled>Channels <span>0/0</span></button>
+                        <button className='secondary-button tab-button' active = "true">Communities <span>0/0</span></button>
+                        <button className='secondary-button tab-button' disabled>Games <span>0/0</span></button>
                     </div>
+                    <InterestsContainer favorite= {{name:"r/PS4", image:'https://b.thumbs.redditmedia.com/FAHhwPiuW5nv9wWm6baCsA5UrdP0-qFJiJOzniBigsc.png'}} list ={['r/PS4', 'r/todayilearned', 'r/aww', 'r/UIUC']}/>
+
                 </div>
             </div>
 
