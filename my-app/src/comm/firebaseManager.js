@@ -76,5 +76,30 @@ class FirebaseManager{
             });
         })
     }
+
+    getUserVisibleSubreddits(uid) {
+        this.usersRef.doc(uid).collection("subreddit").where("is_visible", "==", true).get().then((querySnap) => {
+            var promises = []
+            querySnap.forEach((userDoc) => {
+                var userData = userDoc.data()
+                var name = userDoc.id
+                var promise = this.subredditRef.doc(name).get().then((subDoc) => {
+                    var subData = subDoc.data()
+                    var info = {
+                        is_favorite: subData.is_favorite,
+                        is_reddit_favorite: subData.is_reddit_favorite,
+                        is_visible: subData.is_visible,
+                        subreddit: subData,
+                    }
+                    return {name: info}
+                })
+                promises.push(promise)
+            })
+            // When all the documents are done being stupid
+            Promise.all(promises).then((subreddits) => {
+                console.log(subreddits)
+            });
+        })
+    }
 }
 export default FirebaseManager;

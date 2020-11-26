@@ -47,7 +47,7 @@ class GrokApp extends Component {
     var displayedSection
     switch(this.state.section){
       case "Browse": 
-          displayedSection = <Browser updatePopup ={this.showPopup}/>
+          displayedSection = <Browser updatePopup ={this.showPopup} dbManager={this.props.dbManager} />
           break;
         case "Profile": 
         console.log("Profile")
