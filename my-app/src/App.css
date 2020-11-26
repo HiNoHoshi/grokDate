@@ -138,6 +138,7 @@ textarea{
 .tab-button{
   font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
   margin: 0em 1em;
+  min-width: 20%;
 }
 .tab-button:active{
   outline: 0;
@@ -253,8 +254,9 @@ textarea{
 .register-container{
   display: grid;
   width: 100%;
-  /* grid-template-columns: 40% 60%; */
-  /* grid-template-rows: 1fr 6fr 1fr; */
+  height: 100vh;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 15% 70% 15%;
   grid-template-areas: 
     "header header"
     "form interest"
@@ -281,12 +283,14 @@ align-self: center;
 .register-info{
 grid-area: form;
 justify-self: center;
-max-width: 500px;
+width: 80%;
 }
 
 .register-interest{
 grid-area: interest;
 justify-self: center;
+width: 80%;
+height: 80%;
 }
 
 
@@ -298,17 +302,21 @@ border-width: 3px;
 min-height: 400px;
 padding: 1em;
 padding-top: 0px;
+height: 80%;
 }
 
 .dropping-area{
 background-color: var(--background-dark-color);
 border-radius: 10px;
-height: 1.3em;
+height: 1.5em;
 display: flex;
 align-items: center;
+border-width: 1px;
 border: dashed;
 border-color: var(--background-separators);
+margin: 1em 0em;
 }
+
 .dropping-area span{
 font-size: 20px;
 margin: 0.4em auto;
@@ -345,7 +353,7 @@ width: 100%;
 height: 3em;
 padding: 0.5em;
 }
-.item input{
+.item input, .item section{
 width: 100%;
 }
 .form-error{

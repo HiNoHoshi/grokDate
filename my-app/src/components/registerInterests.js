@@ -9,6 +9,7 @@ class RegisterInterests extends Component {
         
         super();
         this.state = {
+            redditFav : '',
             reddit: [
                 {
                     name:'r/PS5',
@@ -34,10 +35,15 @@ class RegisterInterests extends Component {
             youtube: [],
             steam: []
         }
+        this.selectFavorite = this.selectFavorite.bind(this);
+    }
+
+    selectFavorite(fav){
+        this.setState({redditFav: fav})
     }
 
     render(){
-        const allTags = this.state.reddit.map(sub =><TagItem key= {sub.name} name = {sub.name} editable= {true} is-visible = {sub.is_visible}/>)
+        const allTags = this.state.reddit.map(sub =><TagItem key= {sub.name} name = {sub.name} editable= {true} is-visible = {sub.is_visible} selectAsFavorite = {this.selectFavorite}/>)
 
         return  (
             <div className= 'register-interest'>
@@ -50,7 +56,7 @@ class RegisterInterests extends Component {
                             <button className='secondary-button tab-button' disabled>Games </button>
                         </div>
                         
-                        <DragAndDrop />
+                        <DragAndDrop fav = {this.state.redditFav} />
                         {allTags}
                         {/* < TagItem name = "r/UIUC" editable = {true}/>
                         < TagItem name = "r/aww"/>
