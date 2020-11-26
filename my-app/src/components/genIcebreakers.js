@@ -106,8 +106,14 @@ class GenIcebreakers extends Component {
     var unionSubs, unionGrokFavs
 
     // TODO figure out the dumb promises
-    // mySubs = dbManager.getUserVisibleSubreddits(myUID)
-    // theirSubs = dbManager.getUserVisibleSubreddits(theirUID)
+    dbManager.getUserVisibleSubreddits(myUID).then((mine) => {
+      mySubs = mine
+      console.log(mySubs)
+    })
+    dbManager.getUserVisibleSubreddits(theirUID).then((theirs) => {
+      theirSubs = theirs
+      console.log(theirSubs)
+    })
 
     mySubs = {
       PS5: {
@@ -166,9 +172,9 @@ class GenIcebreakers extends Component {
     subOrdering.push(...this.addSubsWithReason(theirSubs,         "{sub} is subscribed to by them!"))
     subOrdering.push(...this.addSubsWithReason(mySubs,            "{sub} is subscribed to by you!"))
 
-    console.log("duplicates subOrdering", subOrdering)
+    // console.log("duplicates subOrdering", subOrdering)
     subOrdering = this.removeDuplicates(subOrdering)
-    console.log("subOrdering", subOrdering)
+    // console.log("subOrdering", subOrdering)
   }
 
   render() {

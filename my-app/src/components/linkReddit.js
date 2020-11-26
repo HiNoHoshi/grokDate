@@ -46,7 +46,7 @@ class LinkReddit extends Component {
     console.log(auth_url)
 
     // Once user accepts/declines, handleRedirectURI() is called
-    window.location.href = auth_url
+    window.open(auth_url)
   }
 
   // Check if Reddit redirected user back to us
@@ -149,7 +149,7 @@ class LinkReddit extends Component {
     });
     Promise.all(promises).then(() => {
       // console.log("DONE with all", (new Date()).getTime());
-      window.location.href = REDDIT.TERMINAL_URI;
+      window.close()
     });
   }
 }
