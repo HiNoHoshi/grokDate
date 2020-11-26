@@ -2,8 +2,8 @@ import React, {Component} from 'react'
 import {REDDIT} from '../comm/common.js'
 
 class LinkReddit extends Component {
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.tryGetUserAuthorization = this.tryGetUserAuthorization.bind(this);
     this.handleRedirectURI = this.handleRedirectURI.bind(this);
     this.getAccessToken = this.getAccessToken.bind(this);
