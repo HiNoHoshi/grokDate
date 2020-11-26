@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-// import {REDDIT} from '../comm/common.js'
+import {REDDIT} from '../comm/common.js'
 
 class GenIcebreakers extends Component {
   constructor(props) {
@@ -33,16 +33,15 @@ class GenIcebreakers extends Component {
   sortPopular(subs) {
     var sorted = []
     var subPopularity = [];
-    for (var name in subs) subPopularity.push([name, subs[name].subreddit.subscribers]);
+    for (let name in subs) subPopularity.push([name, subs[name].subreddit.subscribers]);
     subPopularity.sort((a, b) => {
         a = a[1];
         b = b[1];
         return a > b ? -1 : (a < b ? 1 : 0);
     });
 
-    for (var i = 0; i < subPopularity.length; i++) {
+    for (let i = 0; i < subPopularity.length; i++) {
         var name = subPopularity[i][0];
-        var popularity = subPopularity[i][1];
         sorted.push(name)
     }
     return sorted
@@ -64,11 +63,11 @@ class GenIcebreakers extends Component {
   filterUnion(subsA, subsB) {
     var union = {}
     for (let name in subsA) {
-      var info = subsA[name]
+      let info = subsA[name]
       union[name] = info
     }
     for (let name in subsB) {
-      var info = subsB[name]
+      let info = subsB[name]
       union[name] = info
     }
     return union
@@ -98,7 +97,7 @@ class GenIcebreakers extends Component {
   }
 
   // Removes duplicate subreddits from our list [[name, justification]...]
-  removeDuplicates(justified) {
+  removeDuplicates(justified, limit=-1) {
     var unique = []
     var seen = new Set()
     for (var i = 0; i < justified.length; i++) {
@@ -108,6 +107,9 @@ class GenIcebreakers extends Component {
         unique.push([name, reason])
         seen.add(name)
       }
+    }
+    if (limit >= 0) {
+      unique = unique.slice(0, limit)
     }
     return unique
   }
@@ -131,7 +133,7 @@ class GenIcebreakers extends Component {
     var mySubs, myGrokFavs
     var theirSubs, theirGrokFavs
     var intersectSubs, intersectGrokFavs
-    var unionSubs, unionGrokFavs
+    var unionSubs
 
     // Get the current user's subreddits
     dbManager.getUserVisibleSubreddits(myUID).then((mine) => {
@@ -147,7 +149,7 @@ class GenIcebreakers extends Component {
         intersectSubs = this.filterIntersect(mySubs, theirSubs)
         intersectGrokFavs = this.filterIntersect(myGrokFavs, theirGrokFavs)
         unionSubs = this.filterUnion(mySubs, theirSubs)
-        unionGrokFavs = this.filterUnion(myGrokFavs, theirGrokFavs)
+        // unionGrokFavs = this.filterUnion(myGrokFavs, theirGrokFavs)
 
         // List the subreddits in prioritized order, with justification
         var subOrdering = []
@@ -161,17 +163,107 @@ class GenIcebreakers extends Component {
         subOrdering.push(...this.addSubsWithReason(mySubs,            "{sub} is your most popular subreddit!", 1))
         subOrdering.push(...this.addUnionSubsWithReason(mySubs, theirSubs, unionSubs, "{sub} is subscribed to by {who}!"))
 
-        // Get list of just the unique subreddits (keeps decending order of relevance)
-        subOrdering = this.removeDuplicates(subOrdering)
-        console.log(subOrdering)
-        // TODO darci: store or use the prioritized subreddits :)
+        // Get list of just the unique subreddits (keeps decending order of relevance and their reason)
+        subOrdering = this.removeDuplicates(subOrdering, 50)
+        console.log("Ideal icebreaker subreddits", subOrdering)
+
+        // Get the top 5 posts from each subreddit (for example)
+        // TODO: move this to where icebreakers are browsed through?
+        subOrdering.forEach((item) => {
+          var name = item[0]
+          this.getAccessToken().then((token) => {
+            this.fetchTopPostsAtRank(name, 0, 5, token).then((topPosts) => {
+              console.log({[name]: topPosts})
+            })
+          })
+        })
       })
     })
   }
 
+  json(response) {
+    return response.json();
+  }
+
+  status(response) {
+    if (response.status >= 200 && response.status < 300) {
+      return Promise.resolve(response)
+    } else {
+      return Promise.reject(new Error(response.statusText))
+    }
+  }
+
+  getAccessToken() {
+    var data = (new URLSearchParams({
+      'grant_type': 'client_credentials',
+    })).toString();
+
+    return fetch('https://www.reddit.com/api/v1/access_token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': 'Basic ' + btoa(REDDIT.APP_ID + ":" + REDDIT.APP_SECRET),
+        'User-Agent': REDDIT.APP_NAME + ' by u/' + REDDIT.APP_DEV,
+      },
+      body: data,
+    }).then(this.status).then(this.json)
+    .then((responseJSON) => {
+      return responseJSON.access_token
+    }).catch(function (err) {
+      console.log('Error: ' + err);
+    });
+  }
+
+  fetchTopPostsAtRank(name, rank=0, limit=1, token) {
+    return fetch('https://oauth.reddit.com/r/' + name + '/hot?limit=' + limit + '&g=US&count=' + rank, {
+      method: 'GET',
+      headers: {
+        'Authorization': 'bearer ' + token,
+        'User-Agent': REDDIT.APP_NAME + ' by u/' + REDDIT.APP_DEV,
+      }
+    }).then(this.status).then(this.json)
+    .then((respJSON) => {
+      var posts = respJSON["data"]["children"]
+      return this.parsePosts(posts)
+    }).catch(function (err) {
+      console.log('Error: Failed to get posts:', err)
+    });
+  }
+
+  parsePosts(posts) {
+    var post_infos = {}
+    for (let post of posts) {
+      var data = post["data"]
+      var id = data.name
+      var info = {
+        author: data.author,
+        awards: data.total_awards_received,
+        comments: data.num_comments,
+        link: 'http://www.reddit.com' + data.permalink,
+        sticky: data.stickied,
+        subreddit: data.subreddit,
+        text: data.selftext.replace(/\s\s+/g, ' '),   // Remove extra whitespace
+        title: data.title.replace(/\s\s+/g, ' '),
+        upvotes: data.ups,
+        url: data.url.split('?')[0],
+      }
+      if (info.text !== '') {
+        info.type = 'text'
+      } else {
+        if ('.png' in info || '.jpg' in info || '.jpeg' in info || '.gif' in info) info.type = 'img'
+        else if (info.url !== info.link) info.type = 'url'
+        else info.type = 'idk'
+      }
+      if (!info.sticky) {
+        post_infos[id] = info
+      }
+    }
+    return post_infos
+  }
+
   render() {
     return (
-      <button onClick={this.genIcebreakers}>Generate Icebreakers</button>
+      <button onClick={this.genIcebreakers}>Test Icebreakers</button>
     )
   }
 }
