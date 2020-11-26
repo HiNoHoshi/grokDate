@@ -93,7 +93,6 @@ class FirebaseManager{
                         is_visible: userData.is_visible,
                         subreddit: subData,
                     }
-                    console.log(info)
                     return {[name]: info}
                 })
                 promises.push(promise)
