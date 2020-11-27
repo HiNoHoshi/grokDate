@@ -1,3 +1,7 @@
+import { useCollectionData } from 'react-firebase-hooks/firestore';
+import firebase from 'firebase/app';
+import {useState} from 'react';
+
 class FirebaseManager{
     
     constructor(firestore){
@@ -101,5 +105,25 @@ class FirebaseManager{
             });
         })
     }
+
+    getMessages(uid1, uid2){
+
+        // TODO add .where("accepted", "==", true)
+        var messagesRef = this.usersRef.doc(uid1).collection('messages').doc(uid2).collection('chat');
+
+        function GetMessages(){
+            const query = messagesRef.orderBy('createdAt');
+            const [messages] = useCollectionData(query, { idField: 'id' }); 
+            return messages;
+        }
+        var messages = GetMessages();
+
+        return [messagesRef, messages];
+    }
+
+    getTimestamp(){
+        return firebase.firestore.FieldValue.serverTimestamp();
+    }
+
 }
 export default FirebaseManager;
