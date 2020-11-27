@@ -124,11 +124,13 @@ def fetchUsersSubreddits(token):
     else:
         print("Error", resp.status_code, resp.text)
 
-def fetchSubredditTopPosts(subreddit, token, limit=1, count=0):
+def fetchSubredditTopPosts(subreddit, token=None, limit=1, count=0):
+    if (token is None):
+        token = getAPIToken()
     attempts = 0
     while (True):
         resp = requests.get(
-            'https://oauth.reddit.com/r/' + subreddit + '/hot?limit=' + limit + '&g=US&count=' + count, 
+            f'https://oauth.reddit.com/r/{subreddit}/hot?limit={limit}&g=US&count={count}', 
             headers = {
                 'Authorization': token, 
                 'User-Agent': f'{APP_NAME} by u/{APP_DEV}'
@@ -142,7 +144,7 @@ def fetchSubredditTopPosts(subreddit, token, limit=1, count=0):
             break
         else:
             time.sleep(3)
-            print(attempts + ') Failed to get top posts:', resp.status_code, resp.text)
+            print('#{attempts} Failed to get top posts:', resp.status_code, resp.text)
         attempts += 1
 
 def fetchSubredditInfo(subreddit, token):
@@ -165,7 +167,7 @@ def main():
     else:
         token = "7730963168-5xjxAFRvSqWbhBCYydDe8Dq7h2KzfQ"
 
-    fetchUsersSubreddits('UIUC', token)
+    fetchSubredditTopPosts('AskReddit', limit=5)
 
 if __name__ == '__main__':
     main()

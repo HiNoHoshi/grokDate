@@ -168,7 +168,7 @@ class GenIcebreakers extends Component {
         console.log("Ideal icebreaker subreddits", subOrdering)
 
         // Get the top 5 posts from each subreddit (for example)
-        // TODO: move this to where icebreakers are browsed through?
+        // TODO: move this to where icebreakers are browsed through?x
         subOrdering.forEach((item) => {
           var name = item[0]
           this.getAccessToken().then((token) => {
@@ -239,7 +239,7 @@ class GenIcebreakers extends Component {
         author: data.author,
         awards: data.total_awards_received,
         comments: data.num_comments,
-        link: 'http://www.reddit.com' + data.permalink,
+        link: 'https://www.reddit.com' + data.permalink,
         sticky: data.stickied,
         subreddit: data.subreddit,
         text: data.selftext.replace(/\s\s+/g, ' '),   // Remove extra whitespace
@@ -250,9 +250,14 @@ class GenIcebreakers extends Component {
       if (info.text !== '') {
         info.type = 'text'
       } else {
-        if ('.png' in info || '.jpg' in info || '.jpeg' in info || '.gif' in info) info.type = 'img'
-        else if (info.url !== info.link) info.type = 'url'
-        else info.type = 'idk'
+        let url = info.url
+        if (['.png', '.jpg', '.jpeg', '.gif', '.gifv'].some(v => url.endsWith(v))) info.type = 'img'
+        else if (info.url !== info.link) {
+          if (info.url.indexOf('/gallery/') !== -1) info.type = 'gallery'
+          else if (info.url.indexOf('v.redd.it') !== -1) info.type = 'video'
+          else info.type = 'url'
+        }
+        else info.type = 'blank'
       }
       if (!info.sticky) {
         post_infos[id] = info
