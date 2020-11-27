@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import PCard from './profileCard'
 import profiles from '../usersDB'
 import ArrowButton from "./arrow_button"
-import GenIcebreaker from "./genIcebreakers"
 
 
 class BrowseProfiles extends Component {
@@ -45,7 +44,6 @@ class BrowseProfiles extends Component {
                 <div className= 'profile-nav'>
                     < ArrowButton active= {this.state.activePID> 0} direction = 'Back' change = {this.prevProfile}/>
                     <button onClick={()=>{this.props.updatePopup(true,{})}}>Break the Ice!</button>
-                    <GenIcebreaker dbManager={this.props.dbManager} my_uid='oaHZIbeZcHXJAfBqEXHuglDi3Yo1' their_uid='NBWmUOSzU5WToFPNCB41DUwX2Hy2' />
                     < ArrowButton active= {this.state.activePID<this.state.profiles.length-1} direction = 'Next'change = {this.nextProfile}/>
                 </div>
             </div>

@@ -76,6 +76,7 @@ class LinkReddit extends Component {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Authorization': 'Basic ' + btoa(REDDIT.APP_ID + ":" + REDDIT.APP_SECRET),
+        'User-Agent': REDDIT.APP_NAME + ' by u/' + REDDIT.APP_DEV,
       },
       body: data,
     }).then(this.status).then(this.json)
@@ -90,10 +91,11 @@ class LinkReddit extends Component {
   // Get the user's community info
   getSubRedditInfo(token) {
     if (token) {
-      fetch('https://oauth.reddit.com/subreddits/mine/subscriber', {
+      fetch('https://oauth.reddit.com/subreddits/mine/subscriber?limit=100', {
         method: 'GET',
         headers: {
           'Authorization': 'bearer ' + token,
+          'User-Agent': REDDIT.APP_NAME + ' by u/' + REDDIT.APP_DEV,
         }
       }).then(this.status).then(this.json)
       .then((respJSON) => {
