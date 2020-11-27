@@ -308,7 +308,7 @@ height: 80%;
 .dropping-area{
 background-color: var(--background-dark-color);
 border-radius: 10px;
-height: 1.5em;
+height: 2em;
 display: flex;
 align-items: center;
 border-width: 1px;
@@ -324,18 +324,23 @@ opacity: 60%;
 }
 
 .tag{
-display: inline-flex;;
+display: inline-flex; 
+align-items: center;
 background-color:var(--tag-color);
 border-radius: 18px;
-padding: .3em .8em .3em 0.8em;
 justify-content: space-evenly;
-align-items: center;
 margin: 0.2em 0.2em;
-max-height: 0.75em;
+padding: .0em .8em;
 }
-.tag p{
-margin:0px;
+.tag a{
+  color: var(--title-text-color);
+  font-size: 20px;
+margin: .6em .0em;
+text-decoration: none;
 pointer-events: painted;
+}
+.tag a:hover{
+  text-decoration: underline;
 }
 
 .row{

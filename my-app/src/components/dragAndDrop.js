@@ -6,41 +6,55 @@ class DragAndDrop extends Component {
   constructor(){
     super();
     this.state = {
-        favorite: {},
+        favorite: null,
         tagState: null
     }
-    this.handleDrop = this.handleDrop.bind(this);
-    this.handleDragEnter = this.handleDragEnter.bind(this);
+    this.handleDragOver = this.handleDragOver.bind(this);
+    // this.handleDragEnter = this.handleDragEnter.bind(this);
+    this.handleDragLeave = this.handleDragLeave.bind(this);
   }
 
-  handleDrop = e => {
+  handleDragOver = e => {
     e.preventDefault();
     e.stopPropagation();
-    this.setState({tagState: "dropped"})
+    // console.log(e)
+    this.setState({tagState: "dropped", favorite: this.props.fav})
   };
   
-  handleDragEnter = e => {
-    // e.preventDefault();
-    // e.stopPropagation();
-    this.setState({tagState: "inside"})
-
+  handleDragLeave = e => {
+    e.preventDefault();
+    e.stopPropagation();
+    this.setState({tagState: null, favorite: null})
+    
   };
+
+  // handleDragEnter = e => {
+  //   e.preventDefault();
+  //   e.stopPropagation();
+  //   // console.log(e)
+  //   this.setState({tagState: "dropped", favorite: this.props.fav})
+  // };
 
 
   render(){
     let fav
-    if(this.props.fav){
-      fav = <TagItem name = {this.props.fav.name} editable= {this.props.fav.editable} is-visible = {this.props.fav.is_visible} selectAsFavorite = {this.props.fav.selectFavorite}/>
+    if(this.state.favorite){
+      fav = <TagItem name = {this.state.favorite} 
+                      editable= {false}
+                      is-visible = {true}
+                      // selectTag = {this.props.selectTag} 
+                      />
     }
 
     return (
-      <div className = "dropping-area" onDrop={e => this.handleDrop(e)}
-      // onDragOver={e => handleDragOver(e)}
-      onDragEnter={e => this.handleDragEnter(e)}
-      // onDragLeave={e => handleDragLeave(e)}
-    >
-      {!this.state.ragState ? <span> Drag your favorite here</span> : fav}
-      {/* <div className={'drag-drop-zone'} */}
+      <div className = "dropping-area" 
+      // onDrop={e => this.handleDrop(e)}
+      onDragOver={e => this.handleDragOver(e)}
+      // onDragEnter={e => this.handleDragEnter(e)}
+      onDragLeave={e => this.handleDragLeave(e)}>
+
+      {!this.state.favorite ? <span> Drag your favorite here</span> : <span style={{textAlign:'left'}}> Favorite:</span>}
+      {fav}
         
       </div>
     );

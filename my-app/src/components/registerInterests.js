@@ -9,7 +9,7 @@ class RegisterInterests extends Component {
         
         super();
         this.state = {
-            redditFav : '',
+            selectededTag : null,
             reddit: [
                 {
                     name:'r/PS5',
@@ -35,15 +35,39 @@ class RegisterInterests extends Component {
             youtube: [],
             steam: []
         }
-        this.selectFavorite = this.selectFavorite.bind(this);
+        this.selectTag = this.selectTag.bind(this);
     }
 
-    selectFavorite(fav){
-        this.setState({redditFav: fav})
+
+    // Check the authentication state at the beggining 
+    // To keep the user looged in
+    componentDidMount = () => {
+        var unsubscribe = this.props.dbManager.getUserVisibleSubreddits(this.props.user.uid).then(subs => {
+        this.setState({ subreddits: subs});
+        // unsubscribe();
+        console.log(this.state.subreddits[0].askReddit)
+        });
+        
+    };
+
+
+    // Method to select a specific tag
+    selectTag(tag){
+        this.setState({selectededTag: tag})
     }
+
+    setSubReddits(sublist){
+
+    }
+
 
     render(){
-        const allTags = this.state.reddit.map(sub =><TagItem key= {sub.name} name = {sub.name} editable= {true} is-visible = {sub.is_visible} selectAsFavorite = {this.selectFavorite}/>)
+        const allTags = this.state.reddit.map(sub =>
+            <TagItem key= {sub.name} 
+                    name = {sub.name} 
+                    editable= {true} 
+                    is-visible = {sub.is_visible} 
+                    selectTag = {this.selectTag}/>) 
 
         return  (
             <div className= 'register-interest'>
@@ -56,11 +80,11 @@ class RegisterInterests extends Component {
                             <button className='secondary-button tab-button' disabled>Games </button>
                         </div>
                         
-                        <DragAndDrop fav = {this.state.redditFav} />
+                        <DragAndDrop 
+                            fav = {this.state.selectededTag} 
+                            selectTag = {this.selectTag} />
+
                         {allTags}
-                        {/* < TagItem name = "r/UIUC" editable = {true}/>
-                        < TagItem name = "r/aww"/>
-                        < TagItem name = "r/dataisbeautiful"/> */}
                         
                         <LinkReddit
                             key={'reddit'} 
@@ -68,6 +92,7 @@ class RegisterInterests extends Component {
                             img={redditLogo}
                             dbManager={this.props.dbManager}
                             user={this.props.user}
+                            
                         />
                     </div>
                 </div>
