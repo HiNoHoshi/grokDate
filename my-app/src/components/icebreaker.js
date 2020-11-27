@@ -9,13 +9,15 @@ class Icebreaker extends Component {
         super();
         this.state = {
             loading: true,
-            subreddit_idx: 0,
-            post_idx: 0,
+            subreddit_idx: -1,
+            post_idx: -1,
             icebreakers: [], // E.g [['UIUC', 'r/UIUC is both of your favorites!', [posts...]]]
         }
         this._isMounted = false
         this.prevSubreddit = this.prevSubreddit.bind(this)
         this.nextSubreddit = this.nextSubreddit.bind(this)
+        this.prevPost = this.prevPost.bind(this)
+        this.nextPost = this.nextPost.bind(this)
     }
 
     //  Example to call Reddit API right after the icebreaker appears
@@ -27,26 +29,24 @@ class Icebreaker extends Component {
                 // Combine the stuff. E.g.
                 // subOrdering = [{'name': 'UIUC', 'reason': 'r/UIUC is your fav!'}, ]
                 // topPosts = {'UIUC': [{'author': 'neil', 'title': 'Welcome!', }], }
-                // ==> icebreakers = [{'subreddit': 'UIUC', 'reason': 'r/UIUC is your fav!', 'topPosts': [{'author': 'neil', 'title': 'Welcome!', },]}, ]
+                // ==> icebreakers = [{'name': 'UIUC', 'reason': 'r/UIUC is your fav!', 'topPosts': [{'author': 'neil', 'title': 'Welcome!', },]}, ]
                 var icebreakers = []
                 for (let subreddit of subOrdering) {
                     icebreakers.push(
                         {
                             name: subreddit.name,
                             reason: subreddit.reason,
-                            topPosts: topPosts[subreddit.name],
+                            posts: topPosts[subreddit.name],
                         }
                     )
                 }
-                console.log(subOrdering)
-                console.log(topPosts)
-                console.log(icebreakers)
 
                 if (this._isMounted) {
                     this.setState({
                         icebreakers: icebreakers, 
                         loading: false, 
-                        subreddit_idx: 0
+                        subreddit_idx: 0,
+                        post_idx: 0,
                     })
                 }
             })
@@ -73,27 +73,72 @@ class Icebreaker extends Component {
         });
     }
 
+    prevPost(){
+        this.setState(state => {
+            return {post_idx: state.post_idx - 1}
+        });
+    }
+
+    nextPost(){
+        this.setState(state => {
+            return {post_idx: state.post_idx + 1}
+        });
+    }
+
     render() {
-        const posts = Posts.map(post => <Post key={post.id} subreddit={post.subreddit} postText={post.postText}/>)
+        // const posts = Posts.map(post => <Post key={post.id} subreddit={post.subreddit} postText={post.postText}/>)
+        var {icebreakers, loading, subreddit_idx, post_idx} = this.state
+        var icebreaker
+        if (loading) {
+            icebreaker = (<div className="post-container">Loading icebreakers...</div>)
+        } else {
+            let post = <Post data={icebreakers[subreddit_idx].posts[post_idx]} />
+            let subreddit_name = icebreakers[subreddit_idx].name
+            let subreddit_reason = icebreakers[subreddit_idx].reason.replace('r/' + subreddit_name + ' is ', ' ').replace(' to it', '')
+            let prevSubredditActive = subreddit_idx > 0
+            let nextSubredditActive = subreddit_idx < icebreakers.length - 1
+            let prevPostActive = post_idx > 0
+            let nextPostActive = post_idx < icebreakers[subreddit_idx].posts.length - 1
+            icebreaker = (
+                <div>
+                    <h4>Choose a message</h4>
+                    <select>
+                        <option value="Did you see this?">Did you see this?</option>
+                        <option value="What do you think about this?">What do you think about this?</option>
+                    </select>
+                    <h4>Choose a subreddit</h4>
+                    <a className= 'subreddit-name' target="_blank" href = {'https://www.reddit.com/r/'+subreddit_name}>{'r/' + subreddit_name}</a>
+                    <p className='subreddit-reason'>{subreddit_reason}</p>
+                    <div className='profile-nav'>
+                        <ArrowButton 
+                            active={prevSubredditActive} 
+                            direction = 'Back' change = {this.prevSubreddit}
+                        />
+                        <ArrowButton 
+                            active={nextSubredditActive} 
+                            direction = 'Next'change = {this.nextSubreddit}
+                        />
+                    </div>
+                    <h4>Choose a post</h4>
+                    {post}
+                    <div className='profile-nav'>
+                        <ArrowButton 
+                            active={prevPostActive} 
+                            direction = 'Back' change = {this.prevPost}
+                        />
+                        <button>Send message</button>
+                        <ArrowButton 
+                            active={nextPostActive} 
+                            direction = 'Next'change = {this.nextPost}
+                        />
+                    </div>
+                </div>
+            )
+        }
         return (
             <div className='icebreaker'>
-                <h2>Choose an Icebreaker for <a href='/#'>{this.props.username}</a></h2>
-                <select>
-                    <option value="Did you see this?">Did you see this?</option>
-                    <option value="What do you think about this?">What do you think about this?</option>
-                </select>
-                {this.state.loading ? <div className="post-container">Loading posts...</div> : posts}
-                <div className='profile-nav'>
-                    <ArrowButton 
-                        active={this.state.subreddit_idx > 0} 
-                        direction = 'Back' change = {this.prevSubreddit}
-                    />
-                    <button>Send message</button>
-                    <ArrowButton 
-                        active={this.state.subreddit_idx < this.state.icebreakers.length - 1} 
-                        direction = 'Next'change = {this.nextSubreddit}
-                    />
-                </div>
+                <h2>Create an Icebreaker for <a href='/#'>{this.props.username}</a></h2>
+                {icebreaker}
             </div>
         );
     }
@@ -332,16 +377,11 @@ class Icebreaker extends Component {
                 link: 'https://www.reddit.com' + data.permalink,
                 sticky: data.stickied,
                 subreddit: data.subreddit,
-                text: data
-                    .selftext
-                    .replace(/\s\s+/g, ' '), // Remove extra whitespace
-                title: data
-                    .title
-                    .replace(/\s\s+/g, ' '),
+                text: data.selftext.replace(/\s\s+/g, ' '), // Remove extra whitespace
+                title: data.title.replace(/\s\s+/g, ' '),
+                type: null,
                 upvotes: data.ups,
-                url: data
-                    .url
-                    .split('?')[0]
+                url: data.url.split('?')[0]
             }
             if (info.text !== '') {
                 info.type = 'text'
@@ -350,18 +390,12 @@ class Icebreaker extends Component {
                 if (['.png', '.jpg', '.jpeg', '.gif', '.gifv'].some(v => url.endsWith(v))) 
                     info.type = 'img'
                 else if (info.url !== info.link) {
-                    if (info.url.indexOf('/gallery/') !== -1) 
-                        info.type = 'gallery'
-                    else if (info.url.indexOf('v.redd.it') !== -1) 
-                        info.type = 'video'
-                    else 
-                        info.type = 'url'
-                } else 
-                    info.type = 'blank'
+                    if (info.url.indexOf('/gallery/') !== -1) info.type = 'gallery'
+                    else if (info.url.indexOf('v.redd.it') !== -1) info.type = 'video'
+                    else info.type = 'url'
+                } else info.type = 'blank'
             }
-            if (!info.sticky) {
-                post_infos.push(info)
-            }
+            if (!info.sticky) post_infos.push(info)
         }
         return post_infos
     }
