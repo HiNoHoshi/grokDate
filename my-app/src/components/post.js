@@ -14,7 +14,7 @@ class Post extends Component {
         // let {author, awards, comments, id, link, sticky, subreddit, text, title, type, upvotes, url} = this.props.data
         let {link, subreddit, text, title, type, url} = this.props.data
 
-        let title_preview = <a className= 'post-title' href={link}>{this.getTextPreview(title, 40)}</a>
+        let title_preview = <a className= 'post-title' target="_blank" href={link}>{this.getTextPreview(title, 40)}</a>
 
         var content_preview = null
         // if (type === 'text') {
