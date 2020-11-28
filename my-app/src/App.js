@@ -60,7 +60,7 @@ class App extends Component {
       screen = <Landing SignIn = {this.signIn}/>
     }else{
       if(this.state.userInfo.username){
-        screen = <GrokApp SignOut = {this.signOut} dbManager = {fbManager}/>
+        screen = <GrokApp SignOut = {this.signOut} dbManager = {fbManager} user = {this.state.user} />
       }else{
         screen = <Register user = {this.state.user} dbManager = {fbManager} setUserInfo = {this.setUserInfo} />
       }

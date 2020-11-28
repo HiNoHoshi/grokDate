@@ -129,7 +129,7 @@ class LinkReddit extends Component {
         'description': data.public_description,
         'display_name': data.display_name,
         'display_name_prefixed': data.display_name_prefixed,
-        'icon': (data.communityIcon || data.icon_img || '../images/external/subreddit_default_icon.png').split('?')[0],
+        'icon': (data.communityIcon || data.icon_img || 'images/external/subreddit_default_icon.png').split('?')[0],
         'link': 'http://www.reddit.com' + data.url,
         'primary_color': data.primary_color || data.key_color || '#0079d3',
         'subscribers': data.subscribers,

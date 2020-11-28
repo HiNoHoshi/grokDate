@@ -9,6 +9,8 @@ class FirebaseManager{
         this.db = firestore
         this.usersRef = firestore.collection('users');
         this.subredditRef = firestore.collection('subreddit')
+
+        this.getAllOtherUsers = this.getAllOtherUsers.bind(this)
     }
 
     // Check if the user exist, and returns its information if there is any
@@ -174,7 +176,7 @@ class FirebaseManager{
 
     getMessagesBetween2Users(uid1, uid2){
 
-        if(!uid2 || uid2.length == 0){
+        if(!uid2 || uid2.length === 0){
             uid2 = "NaN";
         }
         var messagesRef = this.usersRef.doc(uid1).collection('messages').doc(uid2);
@@ -210,6 +212,54 @@ class FirebaseManager{
 
     getTimestamp(){
         return firebase.firestore.FieldValue.serverTimestamp();
+    }
+
+    getAllOtherUsers(my_uid) {
+        return this.usersRef.get().then((querySnap) => {
+            var promises = []
+            querySnap.forEach((userDoc) => {
+                var userData = userDoc.data()
+                var uid = userDoc.id
+                userData.uid = uid
+                let [year, month, day] = userData.birthdate.split('-')
+                userData.age = (new Date()).getFullYear() - (new Date(year, month, day).getFullYear())
+                userData.location = userData.city + ', ' + userData.country
+
+                if (userData.uid !== my_uid) {
+                    var promise = this.getUserSubreddits(uid).then((subreddits) => {
+                        userData.subreddits = subreddits
+                        return userData
+                    })
+                    promises.push(promise)
+                }
+            })
+            return Promise.all(promises)
+        })
+    }
+
+    getUserSubreddits(uid) {
+        return this.usersRef.doc(uid).collection("subreddit").get().then((querySnap) => {
+            var promises = []
+            querySnap.forEach((userDoc) => {
+                // console.log(userDoc)
+                var userData = userDoc.data()
+                // console.log(userData)
+                var name = userDoc.id
+                var promise = this.subredditRef.doc(name).get().then((subDoc) => {
+                    var subData = subDoc.data()
+                    var info = {
+                        is_favorite: userData.is_favorite,
+                        is_reddit_favorite: userData.is_reddit_favorite,
+                        is_visible: userData.is_visible,
+                        subreddit: subData,
+                    }
+                    // console.log(info)
+                    return {[name]: info}
+                })
+                promises.push(promise)
+            })
+            return Promise.all(promises)
+        })
     }
 
 }
