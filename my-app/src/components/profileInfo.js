@@ -1,9 +1,9 @@
-import React, {Component} from 'react'
+import React from 'react'
 
 function profileInfo(props) {
     return  (
         <div className= 'profile-info'>
-            <h2>{props.info.username}</h2>
+            <h2><div className='profile-username'>{props.info.username}</div></h2>
             <div className='info'>
                 <div className= 'info-column' style={{width:'40%'}}>
                     <div className='info-item'>

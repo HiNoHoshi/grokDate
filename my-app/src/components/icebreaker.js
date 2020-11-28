@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import Posts from '../postsDB'
+// import Posts from '../postsDB'
 import ArrowButton from "./arrow_button"
 import Post from "./post"
 import {REDDIT} from '../comm/common.js'
@@ -22,7 +22,7 @@ class Icebreaker extends Component {
 
     //  Example to call Reddit API right after the icebreaker appears
     componentDidMount() {
-        console.log(this.props.my_uid, this.props.their_uid, this.props.username)
+        // console.log(this.props)
         this._isMounted = true;
         this.calcIcebreakerSubOrdering().then((subOrdering) => {
             this.fetchSubredditsTopPosts(subOrdering).then((topPosts) => {
@@ -108,7 +108,7 @@ class Icebreaker extends Component {
                         <option value="What do you think about this?">What do you think about this?</option>
                     </select>
                     <h4>Choose a subreddit</h4>
-                    <a className= 'subreddit-name' target="_blank" href = {'https://www.reddit.com/r/'+subreddit_name}>{'r/' + subreddit_name}</a>
+                    <a className= 'subreddit-name' target="_blank" rel="noreferrer" href={'https://www.reddit.com/r/'+subreddit_name}>{'r/' + subreddit_name}</a>
                     <p className='subreddit-reason'>{subreddit_reason}</p>
                     <div className='profile-nav'>
                         <ArrowButton 
@@ -138,7 +138,7 @@ class Icebreaker extends Component {
         }
         return (
             <div className='icebreaker'>
-                <h2>Create an Icebreaker for <a href='/#'>{this.props.username}</a></h2>
+                <h2>Create an Icebreaker for <div className='profile-username'>{this.props.username}</div></h2>
                 {icebreaker}
             </div>
         );

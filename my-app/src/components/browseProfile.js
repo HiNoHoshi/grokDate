@@ -23,9 +23,8 @@ class BrowseProfiles extends Component {
         this.my_uid = auth.currentUser.uid;
         this.props.dbManager.getAllOtherUsers(this.my_uid).then((profiles) => {
             this.setState({profiles: profiles})
-            // console.log(this.state.profiles)
             this.setState({activeProfile: profiles[0], activePID: 0})
-            console.log(this.state.activeProfile)
+            // console.log(this.state.activeProfile)
         })
     }
 
@@ -45,7 +44,7 @@ class BrowseProfiles extends Component {
         if(prevState.activePID  !== this.state.activePID){
             const activeProfile = this.state.profiles[this.state.activePID]
             this.setState({activeProfile})
-            console.log(this.state.activeProfile)
+            // console.log(this.state.activeProfile)
         }
     }
 

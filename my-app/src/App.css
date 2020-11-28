@@ -571,6 +571,10 @@ margin-top: 4px;
   height: 30px;
 } */
 
+.profile-username {
+  color: var(--main-color)
+}
+
 /* Chat */
 
 .chat-container{

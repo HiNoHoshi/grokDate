@@ -57,7 +57,7 @@ class TagItem extends Component {
                 {this.props.image && 
                 <img alt={this.props.name} src={this.props.image} style={imgStyle}/>}
                 
-                <a href={"https://www.reddit.com/r/"+this.props.name} target= "_blank">{this.props.name}</a>
+                <a href={"https://www.reddit.com/r/"+this.props.name} target= "_blank" rel="noreferrer">{this.props.name}</a>
 
                 {this.props.editable && <button onClick = {this.clicked} className=" close-button secondary-button" alt="close" style={editButton}/>}
             </div>
