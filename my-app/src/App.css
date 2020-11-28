@@ -393,6 +393,50 @@ margin-top: 4px;
   /* TODO: show the arrow https://www.w3schools.com/css/tryit.asp?filename=trycss_buttons_animate1*/
 }
 
+/* Chats menu styles */
+.chats-container{
+  height: 100vh;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 200px auto;
+  align-items: stretch;
+}
+
+.chat-menu-container{
+  font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
+  height: 100%;
+  background-color: var(--background-light-color);
+}
+
+.chat-type-header{
+  font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
+  text-transform: uppercase;
+  padding-left: 1em;
+}
+
+.chat-menu-tabs{
+  margin-top: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.chat-menu-tab{
+  border-radius: 1px;
+  margin: 0.3em 0px;
+  text-align: left;
+  padding-left: 1em;
+  font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
+  font-size: 12px;
+  text-transform: uppercase;
+  background-color: var(--background-light-color);
+}
+
+.chat-menu-tab:hover{
+  background-color: var(--background-dark-color); 
+  /* TODO: show the arrow https://www.w3schools.com/css/tryit.asp?filename=trycss_buttons_animate1*/
+}
+
 /* Profile browser */
 
 .profile-container{
@@ -478,6 +522,39 @@ margin-top: 4px;
   vertical-align: middle;
 }
 
+
+/* Chat */
+
+.chat-container{
+  margin: 1em;
+}
+
+.message {
+  display: flex;
+  align-items: center;
+}
+
+.sent {
+  flex-direction: row-reverse;
+}
+
+.sent p {
+  color: white;
+  background: var(--main-color);
+  align-self: flex-end;
+  padding: 0.5em;
+  border-radius: 30px;
+}
+.received p {
+  background: #e5e5ea;
+  color: black;
+  padding: 0.5em;
+  border-radius: 30px;
+}
+
+input {
+  width: 100%;
+}
 
 
 /* @media (prefers-reduced-motion: no-preference) {

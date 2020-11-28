@@ -1,6 +1,7 @@
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import firebase from 'firebase/app';
 import {useState} from 'react';
+import { auth } from '../comm/firebaseCredentials'
 
 class FirebaseManager{
     
@@ -45,6 +46,7 @@ class FirebaseManager{
     getUserInfo(uid){
         let userInfo = this.usersRef.doc(uid).get()
             .then((docContent)=>{ 
+                console.log(docContent.data())
                 return docContent.data()
             })
         return userInfo
@@ -106,19 +108,68 @@ class FirebaseManager{
         })
     }
 
-    getMessages(uid1, uid2){
+    getAllMessages(){
+        var uid = auth.currentUser.uid;
+        var messagesRef = this.usersRef.doc(uid).collection('messages');
 
-        // TODO add .where("accepted", "==", true)
-        var messagesRef = this.usersRef.doc(uid1).collection('messages').doc(uid2).collection('chat');
+        function RetrieveMessages(){
+            const query = messagesRef.orderBy('accepted');
+            const requests = [];
+            const chats = [];
+            const result = useCollectionData(query)[0]; 
+            if(result){
+                for(var i=0; i<result.length; i++){
+                    var accepted = result[i].accepted; //TODO how to get these in db?
+                    var senderUID = result[i].senderUID; //TODO how to get these in db?
+                    if(accepted){
+                        chats.push(senderUID);
+                    }
+                    else{
+                        requests.push(senderUID);
+                    }
+                }
+            }
+            return [requests, chats];
+        }
+        var [requests, chats] = RetrieveMessages();
+        
+        return [requests, chats];
+    }
 
-        function GetMessages(){
-            const query = messagesRef.orderBy('createdAt');
+    getMessagesBetween2Users(uid1, uid2){
+
+        if(!uid2 || uid2.length == 0){
+            uid2 = "NaN";
+        }
+        var messagesRef = this.usersRef.doc(uid1).collection('messages').doc(uid2);
+        var collectionsRef = messagesRef ? messagesRef.collection('chat') : null;
+
+        function RetrieveMessages(){
+            const query = collectionsRef.orderBy('createdAt');
             const [messages] = useCollectionData(query, { idField: 'id' }); 
             return messages;
         }
-        var messages = GetMessages();
+        var messages = RetrieveMessages();
 
-        return [messagesRef, messages];
+        return [collectionsRef, messages];
+    }
+
+    getUsernameFromUID(uid){
+        let username = this.usersRef.doc("NBWmUOSzU5WToFPNCB41DUwX2Hy2").get().then((docContent)=>{
+            let result;
+            if(docContent.data()){
+                let data = docContent.data();
+                if(data.username){
+                    result = data.username;
+                }else{
+                    result = true;
+                }
+            }else{
+                result =  false;
+            }
+            return result;
+        })
+        return username;
     }
 
     getTimestamp(){

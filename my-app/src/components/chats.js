@@ -1,72 +1,66 @@
-import React, {useState, useRef, Component} from 'react'
-import PCard from './profileCard'
-import ArrowButton from "./arrow_button"
-import GenIcebreaker from "./genIcebreakers"
+import React, {Component, useState} from 'react'
+import Chat from './chat'
 import { auth } from '../comm/firebaseCredentials'
+
 
 function Chats(props){
 
-    return (
-        <div className="Chats">
-            <PrivateChat dbManager={props.dbManager}/>
-        </div>
-      );
+     const [requests, chats] = GetAllMessages(props);
+     const [selectedMessager, setSelectedMessager] = useState([]);
 
-}
+     const requestButtons = [];
+     for(let request of requests){
+        var username = "temp";
+        console.log(request);
+        requestButtons.push(<button className= 'chat-menu-tab' value = {request} onClick = {ChangeSelectedMessager}>{username}</button>)
+     }
 
-function PrivateChat(props) {
+     const chatButtons = [];
+     for(let chat of chats){
+        var username = "";
+        var user = props.dbManager.getUsernameFromUID(chat);
+        var un = user.then((username)=>{
+            console.log(username);
+        });
+        console.log(un)
 
-    const uid1 = auth.currentUser.uid;
-    const uid2 = "67t6Yt6Z8IUuBfJU1VORFNbFFoT2"; // TODO how to get other user's ID?
+        chatButtons.push(<button className= 'chat-menu-tab' value = {chat} onClick = {ChangeSelectedMessager}>{chat}</button>)
+     }
 
-    const [messagesRef, messages] = props.dbManager.getMessages(uid1, uid2);
-
-    const sendMessage = async (event) => {
-        event.preventDefault();
-
-        await messagesRef.add({
-          text: formValue,
-          createdAt: props.dbManager.getTimestamp(),
-          uid: uid1,
-        })
-
-        setFormValue('');
+     function ChangeSelectedMessager(event){
+        const selection = event.target.value;
+        console.log(selection);
+        setSelectedMessager(selectedMessager => selection);
     }
 
-    const [formValue, setFormValue] = useState('');
+    return  (
+        <div className='chats-container'>
+            <div className='chat-menu-container'>
+                <div className= 'chat-request-tabs'>
+                    <p className='chat-type-header'>Requests</p>
+                    {requestButtons}
+                </div>
+                <hr/>
+                <div className= 'chat-menu-tabs'>
+                    <p className='chat-type-header'>Chats</p>
+                    {chatButtons}
+                </div>
 
-    console.log(messages);
-
-    return (
-    <>
-        <main>
-
-            {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
-
-        </main>
-
-        <form onSubmit={sendMessage}>
-
-            <input value={formValue} onChange={(event) => setFormValue(event.target.value)} placeholder="[insert text here]" />
-
-            <button type="submit" disabled={!formValue}>Send</button>
-
-        </form>
-    </>
+            </div>
+            <div className='chat-container'>
+                    <Chat dbManager={props.dbManager} uid1 = {auth.currentUser.uid} uid2 = {selectedMessager}/>
+            </div>
+            {/*< Menu changeSection = {this.changeSection} SignOut= {this.props.SignOut}/>
+            {displayedSection}*/}
+        </div>
     );
 }
 
-function ChatMessage(props) {
-    const { text, uid} = props.message;
+function GetAllMessages(props){
+    const uid = auth.currentUser.uid;
+    const [requests, chats] = props.dbManager.getAllMessages(uid);
 
-  // Here we set it up so we can apply different styling based on whether the message is sent or received
-  const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
-
-  return (<>
-    <div className={`message ${messageClass}`}>
-      <p>{text}</p>
-    </div>
-  </>)
+    return [requests, chats];
 }
 
 export default Chats;
