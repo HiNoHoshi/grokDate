@@ -12,7 +12,7 @@ class Popup extends Component {
         <div className="popup-container">
             <div className="popup light-border" >
                 <button className='secondary-button close-button' onClick={this.props.close}></button>
-                <Icebreaker username= "Hoshi" dbManager={this.props.dbManager} my_uid='oaHZIbeZcHXJAfBqEXHuglDi3Yo1' their_uid='NBWmUOSzU5WToFPNCB41DUwX2Hy2' />   
+                <Icebreaker username={this.props.details.their_username} dbManager={this.props.dbManager} my_uid={this.props.details.my_uid} their_uid={this.props.details.their_uid} />   
             </div>
         </div>
         );

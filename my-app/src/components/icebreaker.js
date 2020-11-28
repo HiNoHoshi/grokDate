@@ -22,6 +22,7 @@ class Icebreaker extends Component {
 
     //  Example to call Reddit API right after the icebreaker appears
     componentDidMount() {
+        console.log(this.props.my_uid, this.props.their_uid, this.props.username)
         this._isMounted = true;
         this.calcIcebreakerSubOrdering().then((subOrdering) => {
             this.fetchSubredditsTopPosts(subOrdering).then((topPosts) => {

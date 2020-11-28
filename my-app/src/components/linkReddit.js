@@ -74,9 +74,10 @@ class LinkReddit extends Component {
     fetch('https://www.reddit.com/api/v1/access_token', {
       method: 'POST',
       headers: {
+        // TODO: likely something wrong with promises
         'Content-Type': 'application/x-www-form-urlencoded',
         'Authorization': 'Basic ' + btoa(REDDIT.APP_ID + ":" + REDDIT.APP_SECRET),
-        'User-Agent': REDDIT.APP_NAME + ' by u/' + REDDIT.APP_DEV,
+        // 'User-Agent': REDDIT.APP_NAME + ' by u/' + REDDIT.APP_DEV,
       },
       body: data,
     }).then(this.status).then(this.json)
@@ -95,7 +96,8 @@ class LinkReddit extends Component {
         method: 'GET',
         headers: {
           'Authorization': 'bearer ' + token,
-          'User-Agent': REDDIT.APP_NAME + ' by u/' + REDDIT.APP_DEV,
+          // TODO: see above
+          // 'User-Agent': REDDIT.APP_NAME + ' by u/' + REDDIT.APP_DEV,
         }
       }).then(this.status).then(this.json)
       .then((respJSON) => {
