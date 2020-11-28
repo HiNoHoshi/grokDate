@@ -8,13 +8,13 @@ class TagItem extends Component {
         this.state = {
             visible: 'true'}
         this.clicked = this.clicked.bind(this)
-
-
     }
+    
     clicked(){
         this.setState(state => {
             return {visible: !state.visible}
         });
+        this.props.updateVisibility(this.props.name, this.state.visible)
     }
     render(){
 
@@ -57,7 +57,7 @@ class TagItem extends Component {
                 {this.props.image && 
                 <img alt={this.props.name} src={this.props.image} style={imgStyle}/>}
                 
-                <a href={"https://www.reddit.com/"+this.props.name} target= "_blank">{this.props.name}</a>
+                <a href={"https://www.reddit.com/r/"+this.props.name} target= "_blank">{this.props.name}</a>
 
                 {this.props.editable && <button onClick = {this.clicked} className=" close-button secondary-button" alt="close" style={editButton}/>}
             </div>

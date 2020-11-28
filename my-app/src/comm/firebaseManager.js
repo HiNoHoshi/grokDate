@@ -77,6 +77,43 @@ class FirebaseManager{
         })
     }
 
+    // Updates the visivility of the communities and the favorite community for the user
+    updateUserCommunities(uid, communities, fav){
+        console.log('updating communities')
+        const ref = this.usersRef.doc(uid).collection("subreddit")
+        for(let c in communities){
+                ref.doc(c).update({is_visible: communities[c].is_visible})
+            if(c ===fav){
+                ref.doc(c).update({is_favorite: true})
+            }else{
+                ref.doc(c).update({is_favorite: false})
+            }
+        }
+    }
+
+    
+    listenToRedditSynch(uid, loadSubs) {
+        return this.usersRef.doc(uid).collection("subreddit")
+        .onSnapshot(function(querySnapshot) {
+            var subs = {}
+
+            querySnapshot.forEach(function(doc) {
+                var subData = doc.data()
+                var subName = doc.id
+
+
+                subs[subName] = {
+                    is_favorite: subData.is_favorite,
+                    is_visible: subData.is_visible,
+                }
+            })
+            loadSubs(subs)
+            return subs
+        });
+    
+    }
+
+
     getUserVisibleSubreddits(uid) {
         return this.usersRef.doc(uid).collection("subreddit").where("is_visible", "==", true).get().then((querySnap) => {
             var promises = []

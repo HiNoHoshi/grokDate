@@ -19,13 +19,15 @@ class DragAndDrop extends Component {
     e.stopPropagation();
     // console.log(e)
     this.setState({tagState: "dropped", favorite: this.props.fav})
+    this.props.setFavorite(this.props.fav)
   };
   
   handleDragLeave = e => {
     e.preventDefault();
     e.stopPropagation();
+
     this.setState({tagState: null, favorite: null})
-    
+    this.props.setFavorite(null)    
   };
 
   // handleDragEnter = e => {
@@ -42,7 +44,7 @@ class DragAndDrop extends Component {
       fav = <TagItem name = {this.state.favorite} 
                       editable= {false}
                       is-visible = {true}
-                      // selectTag = {this.props.selectTag} 
+                      selectTag = {this.props.selectTag}
                       />
     }
 
