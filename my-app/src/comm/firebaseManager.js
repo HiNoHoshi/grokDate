@@ -62,8 +62,7 @@ class FirebaseManager{
         return this.usersRef.doc(uid).set({email: user.email}, {merge: true}).then(()=>{
             docRef = this.usersRef.doc(uid).collection('subreddit').doc(display_name)
             // Don't overwrite is_visible nor is_favorite
-            docRef.get()
-            .then((docContent) => {
+            return docRef.get().then((docContent) => {
                 if (docContent.data()) {
                     var data = docContent.data()
                     var curr_is_visible = data.is_visible

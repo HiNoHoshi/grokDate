@@ -143,9 +143,9 @@ class LinkReddit extends Component {
           'subreddit_ref': this.props.dbManager.subredditRef.doc(data.display_name),
           'is_visible': true,
         }
-        return this.props.dbManager.registerUserSubreddit(data.display_name, user_subreddit, this.props.user).then(() => {
-          // console.log("DONE with one", (new Date()).getTime());
-        })
+        return this.props.dbManager.registerUserSubreddit(data.display_name, user_subreddit, this.props.user)
+      }).then(() => {
+        // console.log("DONE with one", (new Date()).getTime()); 
       })
       promises.push(promise)
     });
