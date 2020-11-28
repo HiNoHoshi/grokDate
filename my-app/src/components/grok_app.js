@@ -1,7 +1,10 @@
 import React, {Component} from 'react'
 import Browser from './browseProfile'
+import Chats from './chats'
+import Chat from './chat'
 import Menu from './menu'
 import PopUp from './popup'
+import { auth } from '../comm/firebaseCredentials'
 
 
 class GrokApp extends Component {
@@ -44,6 +47,7 @@ class GrokApp extends Component {
 
     /** This methods defines what to show in the component */
   render(){
+    console.log(this.props)
     var displayedSection
     switch(this.state.section){
       case "Browse": 
@@ -54,8 +58,7 @@ class GrokApp extends Component {
           // displayedSection = <Profile />
           break;
         case "Chats": 
-          console.log("chat")
-          // displayedSection = <Chats />
+          displayedSection = <Chats dbManager={this.props.dbManager}/>
           break;
         case "Settings": 
           console.log("Settings")
