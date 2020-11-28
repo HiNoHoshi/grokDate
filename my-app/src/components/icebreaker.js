@@ -297,8 +297,8 @@ class Icebreaker extends Component {
                 // List the subreddits in prioritized order, with justification
                 var subOrdering = []
                 subOrdering.push(...this.addSubsWithReason(intersectFavs, "{sub} is both of your favorites!"))
-                subOrdering.push(...this.addSubsWithReason(theirFavs, "{sub} is their favorite and you're both subscribed to it!"))
-                subOrdering.push(...this.addSubsWithReason(myFavs, "{sub} is your favorite and you're both subscribed to it!"))
+                subOrdering.push(...this.addSubsWithReason(this.filterIntersect(theirFavs, mySubs), "{sub} is their favorite and you're both subscribed to it!"))
+                subOrdering.push(...this.addSubsWithReason(this.filterIntersect(myFavs, theirSubs), "{sub} is your favorite and you're both subscribed to it!"))
                 subOrdering.push(...this.addSubsWithReason(intersectSubs, "{sub} is subscribed to by both of you!"))
                 subOrdering.push(...this.addSubsWithReason(theirFavs, "{sub} is their favorite subreddit!"))
                 subOrdering.push(...this.addSubsWithReason(theirSubs, "{sub} is their most popular subreddit!", 1))
