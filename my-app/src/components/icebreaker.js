@@ -335,7 +335,7 @@ class Icebreaker extends Component {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Authorization': 'Basic ' + btoa(REDDIT.APP_ID + ":" + REDDIT.APP_SECRET),
-                'User-Agent': REDDIT.APP_NAME + ' by u/' + REDDIT.APP_DEV
+                // 'User-Agent': REDDIT.APP_NAME + ' by u/' + REDDIT.APP_DEV
             },
                 body: data
             })
@@ -353,7 +353,7 @@ class Icebreaker extends Component {
                 method: 'GET',
                 headers: {
                     'Authorization': 'bearer ' + token,
-                    'User-Agent': REDDIT.APP_NAME + ' by u/' + REDDIT.APP_DEV
+                    // 'User-Agent': REDDIT.APP_NAME + ' by u/' + REDDIT.APP_DEV
                 }
             })
             .then(this.status).then(this.json)
