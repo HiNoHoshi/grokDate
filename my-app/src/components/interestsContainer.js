@@ -8,11 +8,12 @@ function InterestsContainer (props) {
     for (let sub of props.subreddits) {
         let name = Object.keys(sub)[0]
         let info = sub[name]
-        let {icon, link, type} = info.subreddit
+        let {icon, link} = info.subreddit
         if (icon === '' || icon.endsWith('subreddit_default_icon.png')) {
             icon = default_icon
         }
         let {is_favorite, is_visible} = info
+        // console.log(name, is_visible)
         if (is_visible) {
             if (!favorite && is_favorite) {
                 favorite = {name: name, icon, link}
