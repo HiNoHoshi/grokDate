@@ -220,6 +220,10 @@ class FirebaseManager{
             querySnap.forEach((userDoc) => {
                 var userData = userDoc.data()
                 var uid = userDoc.id
+                // Don't include incomplete profiles
+                if (!userData.username) {
+                    return
+                }
                 userData.uid = uid
                 let [year, month, day] = userData.birthdate.split('-')
                 userData.age = (new Date()).getFullYear() - (new Date(year, month, day).getFullYear())
