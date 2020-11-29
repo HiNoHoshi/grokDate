@@ -46,7 +46,7 @@ class LinkReddit extends Component {
     console.log(auth_url)
 
     // Once user accepts/declines, handleRedirectURI() is called
-    window.location.href = auth_url
+    window.open(auth_url)
   }
 
   // Check if Reddit redirected user back to us
@@ -76,6 +76,7 @@ class LinkReddit extends Component {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Authorization': 'Basic ' + btoa(REDDIT.APP_ID + ":" + REDDIT.APP_SECRET),
+        // 'User-Agent': REDDIT.APP_NAME + ' by u/' + REDDIT.APP_DEV,
       },
       body: data,
     }).then(this.status).then(this.json)
@@ -90,10 +91,11 @@ class LinkReddit extends Component {
   // Get the user's community info
   getSubRedditInfo(token) {
     if (token) {
-      fetch('https://oauth.reddit.com/subreddits/mine/subscriber', {
+      fetch('https://oauth.reddit.com/subreddits/mine/subscriber?limit=100', {
         method: 'GET',
         headers: {
           'Authorization': 'bearer ' + token,
+          // 'User-Agent': REDDIT.APP_NAME + ' by u/' + REDDIT.APP_DEV,
         }
       }).then(this.status).then(this.json)
       .then((respJSON) => {
@@ -127,7 +129,7 @@ class LinkReddit extends Component {
         'description': data.public_description,
         'display_name': data.display_name,
         'display_name_prefixed': data.display_name_prefixed,
-        'icon': (data.communityIcon || data.icon_img || '../images/external/subreddit_default_icon.png').split('?')[0],
+        'icon': (data.communityIcon || data.icon_img || 'images/external/subreddit_default_icon.png').split('?')[0],
         'link': 'http://www.reddit.com' + data.url,
         'primary_color': data.primary_color || data.key_color || '#0079d3',
         'subscribers': data.subscribers,
@@ -141,15 +143,15 @@ class LinkReddit extends Component {
           'subreddit_ref': this.props.dbManager.subredditRef.doc(data.display_name),
           'is_visible': true,
         }
-        return this.props.dbManager.registerUserSubreddit(data.display_name, user_subreddit, this.props.user).then(() => {
-          // console.log("DONE with one", (new Date()).getTime());
-        })
+        return this.props.dbManager.registerUserSubreddit(data.display_name, user_subreddit, this.props.user)
+      }).then(() => {
+        // console.log("DONE with one", (new Date()).getTime()); 
       })
       promises.push(promise)
     });
     Promise.all(promises).then(() => {
       // console.log("DONE with all", (new Date()).getTime());
-      window.location.href = REDDIT.TERMINAL_URI;
+      window.close()
     });
   }
 }

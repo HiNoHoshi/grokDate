@@ -45,7 +45,7 @@ function Form (props){
                         <option value ="none" disabled>Select your love interest</option>
                         <option value="Female">Woman</option>
                         <option value="Male">Man</option>
-                        <option value="Female Trans">Woman or Man</option>
+                        <option value="Woman or Man">Woman or Man</option>
                     </select>
                     <div className="form-error">{errors.interest}</div>
                 </div>

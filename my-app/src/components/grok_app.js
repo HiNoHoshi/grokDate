@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
 import Browser from './browseProfile'
 import Chats from './chats'
-import Chat from './chat'
+// import Chat from './chat'
 import Menu from './menu'
 import PopUp from './popup'
-import { auth } from '../comm/firebaseCredentials'
+// import { auth } from '../comm/firebaseCredentials'
 
 
 class GrokApp extends Component {
@@ -50,7 +50,7 @@ class GrokApp extends Component {
     var displayedSection
     switch(this.state.section){
       case "Browse": 
-          displayedSection = <Browser updatePopup ={this.showPopup} dbManager={this.props.dbManager} />
+          displayedSection = <Browser updatePopup ={this.showPopup} dbManager={this.props.dbManager} user={this.props.user} />
           break;
         case "Profile": 
         console.log("Profile")
@@ -68,7 +68,7 @@ class GrokApp extends Component {
 
     return  (
         <div className="general-container">
-            {this.state.popup.active && <PopUp details={this.state.popup.details} close={this.closePopup} />}
+            {this.state.popup.active && <PopUp details={this.state.popup.details} close={this.closePopup} dbManager={this.props.dbManager} />}
             < Menu changeSection = {this.changeSection} SignOut= {this.props.SignOut}/>
             {displayedSection}               
         </div>

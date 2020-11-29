@@ -1,7 +1,6 @@
 import React, {useState, useRef, Component} from 'react'
 import PCard from './profileCard'
 import ArrowButton from "./arrow_button"
-import GenIcebreaker from "./genIcebreakers"
 import { auth } from '../comm/firebaseCredentials'
 
 function Chat(props){

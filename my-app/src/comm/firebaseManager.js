@@ -9,6 +9,8 @@ class FirebaseManager{
         this.db = firestore
         this.usersRef = firestore.collection('users');
         this.subredditRef = firestore.collection('subreddit')
+
+        this.getAllOtherUsers = this.getAllOtherUsers.bind(this)
     }
 
     // Check if the user exist, and returns its information if there is any
@@ -67,8 +69,7 @@ class FirebaseManager{
         return this.usersRef.doc(uid).set({email: user.email}, {merge: true}).then(()=>{
             docRef = this.usersRef.doc(uid).collection('subreddit').doc(display_name)
             // Don't overwrite is_visible nor is_favorite
-            docRef.get()
-            .then((docContent) => {
+            return docRef.get().then((docContent) => {
                 if (docContent.data()) {
                     var data = docContent.data()
                     var curr_is_visible = data.is_visible
@@ -82,28 +83,65 @@ class FirebaseManager{
         })
     }
 
+    // Updates the visivility of the communities and the favorite community for the user
+    updateUserCommunities(uid, communities, fav){
+        console.log('updating communities')
+        const ref = this.usersRef.doc(uid).collection("subreddit")
+        for(let c in communities){
+                ref.doc(c).update({is_visible: communities[c].is_visible})
+            if(c ===fav){
+                ref.doc(c).update({is_favorite: true})
+            }else{
+                ref.doc(c).update({is_favorite: false})
+            }
+        }
+    }
+
+    
+    listenToRedditSynch(uid, loadSubs) {
+        return this.usersRef.doc(uid).collection("subreddit")
+        .onSnapshot(function(querySnapshot) {
+            var subs = {}
+
+            querySnapshot.forEach(function(doc) {
+                var subData = doc.data()
+                var subName = doc.id
+
+
+                subs[subName] = {
+                    is_favorite: subData.is_favorite,
+                    is_visible: subData.is_visible,
+                }
+            })
+            loadSubs(subs)
+            return subs
+        });
+    
+    }
+
+
     getUserVisibleSubreddits(uid) {
-        this.usersRef.doc(uid).collection("subreddit").where("is_visible", "==", true).get().then((querySnap) => {
+        return this.usersRef.doc(uid).collection("subreddit").where("is_visible", "==", true).get().then((querySnap) => {
             var promises = []
             querySnap.forEach((userDoc) => {
+                // console.log(userDoc)
                 var userData = userDoc.data()
+                // console.log(userData)
                 var name = userDoc.id
                 var promise = this.subredditRef.doc(name).get().then((subDoc) => {
                     var subData = subDoc.data()
                     var info = {
-                        is_favorite: subData.is_favorite,
-                        is_reddit_favorite: subData.is_reddit_favorite,
-                        is_visible: subData.is_visible,
+                        is_favorite: userData.is_favorite,
+                        is_reddit_favorite: userData.is_reddit_favorite,
+                        is_visible: userData.is_visible,
                         subreddit: subData,
                     }
-                    return {name: info}
+                    // console.log(info)
+                    return {[name]: info}
                 })
                 promises.push(promise)
             })
-            // When all the documents are done being stupid
-            Promise.all(promises).then((subreddits) => {
-                console.log(subreddits)
-            });
+            return Promise.all(promises)
         })
     }
 
@@ -158,6 +196,58 @@ class FirebaseManager{
 
     getTimestamp(){
         return firebase.firestore.FieldValue.serverTimestamp();
+    }
+
+    getAllOtherUsers(my_uid) {
+        return this.usersRef.get().then((querySnap) => {
+            var promises = []
+            querySnap.forEach((userDoc) => {
+                var userData = userDoc.data()
+                var uid = userDoc.id
+                // Don't include incomplete profiles
+                if (!userData.username) {
+                    return
+                }
+                userData.uid = uid
+                let [year, month, day] = userData.birthdate.split('-')
+                userData.age = (new Date()).getFullYear() - (new Date(year, month, day).getFullYear())
+                userData.location = userData.city + ', ' + userData.country
+
+                if (userData.uid !== my_uid) {
+                    var promise = this.getUserSubreddits(uid).then((subreddits) => {
+                        userData.subreddits = subreddits
+                        return userData
+                    })
+                    promises.push(promise)
+                }
+            })
+            return Promise.all(promises)
+        })
+    }
+
+    getUserSubreddits(uid) {
+        return this.usersRef.doc(uid).collection("subreddit").get().then((querySnap) => {
+            var promises = []
+            querySnap.forEach((userDoc) => {
+                // console.log(userDoc)
+                var userData = userDoc.data()
+                // console.log(userData)
+                var name = userDoc.id
+                var promise = this.subredditRef.doc(name).get().then((subDoc) => {
+                    var subData = subDoc.data()
+                    var info = {
+                        is_favorite: userData.is_favorite,
+                        is_reddit_favorite: userData.is_reddit_favorite,
+                        is_visible: userData.is_visible,
+                        subreddit: subData,
+                    }
+                    // console.log(info)
+                    return {[name]: info}
+                })
+                promises.push(promise)
+            })
+            return Promise.all(promises)
+        })
     }
 
 }

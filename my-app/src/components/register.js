@@ -16,11 +16,15 @@ class Register extends Component {
                 city:"",
                 description: ""
             },
+            sending: false,
+            communities: {},
             errors: {}  
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.updateCommunities = this.updateCommunities.bind(this);
+        
     }
 
     handleChange(event) {
@@ -32,17 +36,23 @@ class Register extends Component {
         this.setState({
           input
         });
-      }
+    }
     
-     
+    updateCommunities(communities){
+        this.setState({communities})
+    }
+
     handleSubmit(event) {
         event.preventDefault();
         if(this.validate()){
-            console.log(this.state.input);
+            // Let other components know that the registrations is been sent
+            this.setState({sending:true}) 
+            // Send the basic info of the user to the database
             this.props.dbManager.registerUserInfo(this.props.user.uid, this.state.input).then(() =>{
                 this.props.setUserInfo();
             });
         }
+        // this.setState({sending:false}) // Just for testing purpose
     }
 
     render(){
@@ -53,7 +63,8 @@ class Register extends Component {
                 <h2>Profile Information.</h2>
                 <Form data={this.state} handleChange={this.handleChange}/>
             </div>
-            <RegisterInterests dbManager={this.props.dbManager} user={this.props.user} />
+            <RegisterInterests dbManager={this.props.dbManager} user={this.props.user} sending = {this.state.sending} updateCommunities={this.updateCommunities} error={this.state.errors.interests}/>
+
             <button className= 'register-button' onClick={this.handleSubmit}>Create Account</button>
         </div>
         );
@@ -63,6 +74,7 @@ class Register extends Component {
     // Inspired by https://www.itsolutionstuff.com/post/username-and-password-validation-in-react-exampleexample.html
     validate(){
         let input = this.state.input;
+        let communities = this.state.communities
         let errors = {};
         let isValid = true;
         
@@ -117,6 +129,21 @@ class Register extends Component {
         if (!input["city"]) {
             isValid = false;
             errors["city"] = "* Please select your city.";
+        }
+        if(Object.entries(communities).length === 0){
+            isValid = false;
+            errors["interests"] = "* Please sychronize at least one of your interests.";
+        }else{
+            let allHidden = true
+            for(var c in communities){
+                if(communities[c].is_visible){
+                    allHidden = false
+                }
+            }
+            if(allHidden){
+                isValid = false;
+                errors["interests"] = "* Please make at least on interest visible";
+            }
         }
         this.setState({errors: errors});
         return isValid;
