@@ -47,7 +47,6 @@ class GrokApp extends Component {
 
     /** This methods defines what to show in the component */
   render(){
-    console.log(this.props)
     var displayedSection
     switch(this.state.section){
       case "Browse": 

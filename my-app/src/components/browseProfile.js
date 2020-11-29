@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {useRef,Component} from 'react'
 import PCard from './profileCard'
 import profiles from '../usersDB'
 import ArrowButton from "./arrow_button"

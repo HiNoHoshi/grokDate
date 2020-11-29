@@ -556,6 +556,10 @@ input {
   width: 100%;
 }
 
+.no-results {
+  color: gray;
+  font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
+}
 
 /* @media (prefers-reduced-motion: no-preference) {
   .App-logo {

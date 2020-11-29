@@ -4,7 +4,7 @@ import {useState} from 'react';
 import { auth } from '../comm/firebaseCredentials'
 
 class FirebaseManager{
-    
+
     constructor(firestore){
         this.db = firestore
         this.usersRef = firestore.collection('users');
@@ -16,7 +16,7 @@ class FirebaseManager{
         // console.log("referencing user")
         let user = this.usersRef.doc(uid).get()
         .then((docContent)=>{
-            let result 
+            let result
             // If the user exist
             if(docContent.data()){
                 let data = docContent.data();
@@ -28,7 +28,7 @@ class FirebaseManager{
                     result = true;
                 }
             }else{
-                // if the user does not exist, return false 
+                // if the user does not exist, return false
                 result =  false
                 // console.log("user doesn't exist")
             }
@@ -45,8 +45,7 @@ class FirebaseManager{
     // Get the information of an existent user based on it's id
     getUserInfo(uid){
         let userInfo = this.usersRef.doc(uid).get()
-            .then((docContent)=>{ 
-                console.log(docContent.data())
+            .then((docContent)=>{
                 return docContent.data()
             })
         return userInfo
@@ -108,36 +107,39 @@ class FirebaseManager{
         })
     }
 
-    getAllMessages(){
+    async getAllMessages(){
         var uid = auth.currentUser.uid;
         var messagesRef = this.usersRef.doc(uid).collection('messages');
 
-        function RetrieveMessages(){
-            const query = messagesRef.orderBy('accepted');
-            const requests = [];
-            const chats = [];
-            const result = useCollectionData(query)[0]; 
-            if(result){
-                for(var i=0; i<result.length; i++){
-                    var accepted = result[i].accepted; //TODO how to get these in db?
-                    var senderUID = result[i].senderUID; //TODO how to get these in db?
-                    if(accepted){
-                        chats.push(senderUID);
-                    }
-                    else{
-                        requests.push(senderUID);
-                    }
-                }
+        var requestIDs = [];
+        var chatIDs = [];
+        var requestUsernames = [];
+        var chatUsernames = [];
+
+        const snapshot = await messagesRef.get()
+        snapshot.docs.map(doc => {
+            var id = doc.id;
+            var accepted = doc.data().accepted;
+            var username = doc.data().username;
+            console.log(username);
+            if(accepted){
+                chatIDs.push(id)
+                chatUsernames.push(username)
             }
-            return [requests, chats];
-        }
-        var [requests, chats] = RetrieveMessages();
-        
-        return [requests, chats];
+            else{
+                requestIDs.push(id)
+                requestUsernames.push(username)
+            }
+            console.log(doc.data())
+        });
+        return [requestIDs, chatIDs, requestUsernames, chatUsernames];
     }
 
     getMessagesBetween2Users(uid1, uid2){
 
+        if(!uid1 || uid1.length == 0){
+            uid1 = "NaN";
+        }
         if(!uid2 || uid2.length == 0){
             uid2 = "NaN";
         }
@@ -146,30 +148,12 @@ class FirebaseManager{
 
         function RetrieveMessages(){
             const query = collectionsRef.orderBy('createdAt');
-            const [messages] = useCollectionData(query, { idField: 'id' }); 
+            const [messages] = useCollectionData(query, { idField: 'id' });
             return messages;
         }
         var messages = RetrieveMessages();
 
-        return [collectionsRef, messages];
-    }
-
-    getUsernameFromUID(uid){
-        let username = this.usersRef.doc("NBWmUOSzU5WToFPNCB41DUwX2Hy2").get().then((docContent)=>{
-            let result;
-            if(docContent.data()){
-                let data = docContent.data();
-                if(data.username){
-                    result = data.username;
-                }else{
-                    result = true;
-                }
-            }else{
-                result =  false;
-            }
-            return result;
-        })
-        return username;
+        return [messagesRef, collectionsRef, messages];
     }
 
     getTimestamp(){
