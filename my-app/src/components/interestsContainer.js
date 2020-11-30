@@ -23,16 +23,27 @@ function InterestsContainer (props) {
         }
     }
 
-    const tags = others.map(sub =><Tag key={sub.name} editable={false} name={sub.name} image={sub.icon} link={sub.link} />)
+    const tags = others.map(sub =><Tag key={sub.name} 
+        editable={false} 
+        name={sub.name} 
+        image={sub.icon} 
+        link={sub.link} 
+        visible = {true}/>)
+        
     return  (
-        <div className="interests-container">
+        <div className="interests-container" style = {{ height: '100%', maxHeight: '9em', overflowY: 'scroll' }}>
             {favorite && 
                 <div style={{display:'inline-flex', alignItems: 'center', margin:'0.3em'}}>
-                    <span style={{fontSize:'0.75em', fontFamily: 'Courier New', fontWeight: 'bold'}}>#1</span>
-                    <Tag image={favorite.icon} name={favorite.name} editable={false} link={favorite.link} />
+                    <span style={{fontSize:'0.75em', fontFamily: 'Proxima Nova', fontWeight: 'bold'}}>Favorite: </span>
+                    <Tag 
+                    image={favorite.icon} 
+                    name={favorite.name} 
+                    editable={false}
+                    visible = {true} 
+                    link={favorite.link} />
                 </div>
             }
-            <div>
+            <div style = {{marginTop:'1em'}}>
                 {tags}
             </div>
         </div>

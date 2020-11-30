@@ -3,9 +3,6 @@ import firebase  from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/auth';
 
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
-
 firebase.initializeApp({
   apiKey: "AIzaSyD-cNAtjiQgnStGM3HEQv4Rlgq3kMhWXi4",
   authDomain: "grokdate-fdf76.firebaseapp.com",

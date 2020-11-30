@@ -140,7 +140,8 @@ textarea{
   margin: 0em 1em;
   min-width: 20%;
 }
-.tab-button:active{
+.tab-button.selected{
+  opacity: 100%;
   outline: 0;
   border-style: solid;
   border-width: 0 0 3px;
@@ -361,6 +362,11 @@ padding: 0.5em;
 .item input, .item section{
 width: 100%;
 }
+
+.item input:disabled, .item section:disabled{
+  opacity: 50%;
+}
+
 .form-error{
 font-size: small;
 color: #C40EC5;
@@ -561,6 +567,17 @@ margin-top: 4px;
   /* display: inline-block; */
 }
 
+/* For the profile edition */
+.edit-container{
+  display: block;
+  text-align: center;
+  padding: 0em 1em 1em 1em;
+}
+.edit-info{
+  text-align: left;
+  margin: 1em;
+
+}
 /* 
 .post-url {
   font-size: 12px;
@@ -608,6 +625,9 @@ input {
   width: 100%;
 }
 
+::-webkit-inner-spin-button {
+  display: none;
+}
 
 /* @media (prefers-reduced-motion: no-preference) {
   .App-logo {

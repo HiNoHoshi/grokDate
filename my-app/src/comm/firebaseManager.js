@@ -48,8 +48,23 @@ class FirebaseManager{
     getUserInfo(uid){
         let userInfo = this.usersRef.doc(uid).get()
             .then((docContent)=>{ 
-                console.log(docContent.data())
                 return docContent.data()
+            })
+        return userInfo
+    }
+
+    // Get the information of an existent user including communities
+    getUserExtendedInfo(uid){
+        let userInfo = this.usersRef.doc(uid).get()
+            .then((docContent)=>{ 
+                var userExtendedInfo = docContent.data()
+                let [year, month, day] = userExtendedInfo.birthdate.split('-')
+                userExtendedInfo.age = (new Date()).getFullYear() - (new Date(year, month, day).getFullYear())
+                userExtendedInfo.location = userExtendedInfo.city + ', ' + userExtendedInfo.country
+                return this.getUserSubreddits(uid).then((subs) =>{
+                    return {... userExtendedInfo,
+                    subreddits: subs}
+                }) 
             })
         return userInfo
     }
@@ -257,7 +272,6 @@ class FirebaseManager{
                         is_visible: userData.is_visible,
                         subreddit: subData,
                     }
-                    // console.log(info)
                     return {[name]: info}
                 })
                 promises.push(promise)

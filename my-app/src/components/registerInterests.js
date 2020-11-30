@@ -30,7 +30,14 @@ class RegisterInterests extends Component {
     }
     // Adds the subreddits to the component state
     loadSubs(subReddits){
-        this.setState({subReddits});
+        let fav
+        for (let sub in  subReddits){
+            if(subReddits[sub].is_favorite){
+                fav = sub
+            }
+        }
+        this.setState({subReddits, redditFav: fav});
+        this.selectTag(fav)
         this.props.updateCommunities(subReddits)
     }
 
@@ -58,6 +65,7 @@ class RegisterInterests extends Component {
         }
         if(prevState.subReddits !== this.state.subReddits){
             this.props.updateCommunities(this.state.subReddits)
+
         }
     }
 
@@ -79,7 +87,7 @@ class RegisterInterests extends Component {
             <TagItem key= {sub} 
                 name = {sub} 
                 editable= {true} 
-                is-visible = {this.state.subReddits[sub].is_visible} 
+                visible = {this.state.subReddits[sub].is_visible} 
                 selectTag = {this.selectTag}
                 updateVisibility = {this.updateTagVisibility}/>
             );
@@ -87,13 +95,13 @@ class RegisterInterests extends Component {
         }
         
         return  (
-            <div className= 'register-interest'>
-                <h2>Your Interests.</h2>
+            <div className= 'register-interest' style= {this.props.isEdit && {width: '100%'} }>
+                {!this.props.isEdit && <h2>Your Interests.</h2>}
                 <div className= 'synchronize-interests'>
                     <div className= "sub-interests">
                         <div className= 'interests-nav'>
                             <button className='secondary-button tab-button' disabled>Channels </button>
-                            <button className='secondary-button tab-button' active = "true">Communities </button>
+                            <button className='secondary-button tab-button selected' >Communities </button>
                             <button className='secondary-button tab-button' disabled>Games </button>
                         </div>
                         
