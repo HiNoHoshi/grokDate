@@ -398,10 +398,9 @@ margin-top: 4px;
 
 .menu-container{
   font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
-  font-size: 18px;
   height: 100%;
   background-color: var(--main-color);
-  min-width: 19em;
+  /* min-width: 16em; */
 }
 .menu-container .App-logo{
   max-width: 8em;
@@ -421,6 +420,7 @@ margin-top: 4px;
   text-align: left;
   padding-left: 3em;
   height: 3em;
+  font-size: 18px;
   font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
   text-transform: uppercase;
   display: inline-flex;
