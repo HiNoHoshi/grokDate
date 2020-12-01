@@ -33,7 +33,7 @@ function InterestsContainer (props) {
         <div className="interests-container" style = {{ height: '100%', maxHeight: '9em', overflowY: 'scroll' }}>
             {favorite && 
                 <div style={{display:'inline-flex', alignItems: 'center', margin:'0.3em'}}>
-                    <span style={{fontSize:'0.75em', fontFamily: 'Proxima Nova', fontWeight: 'bold'}}>Favorite: </span>
+                    <span style={{fontSize:'0.75em', fontWeight: 'bold'}}>Favorite: </span>
                     <Tag 
                     image={favorite.icon} 
                     name={favorite.name} 
