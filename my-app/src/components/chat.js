@@ -1,7 +1,6 @@
 import React, {useState, useRef, Component} from 'react'
-import PCard from './profileCard'
-import ArrowButton from "./arrow_button"
 import { auth } from '../comm/firebaseCredentials'
+import Post from "./post"
 
 function Chat(props){
 
@@ -101,7 +100,7 @@ function PrivateChat(props) {
 }
 
 function ChatMessage(props) {
-  const { text, uid } = props.message;
+  const { text, uid, is_icebreaker, icebreaker } = props.message;
 
   // Here we set it up so we can apply different styling based on whether the message is sent or received
   const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
@@ -110,6 +109,7 @@ function ChatMessage(props) {
     <div className={`message ${messageClass}`}>
       <p>{text}</p>
     </div>
+    {is_icebreaker ? <Post data={icebreaker} /> : null}
   </>)
 }
 
