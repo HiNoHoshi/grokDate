@@ -14,6 +14,7 @@ class Chats extends Component {
             pending_requests: [],
             selected_uid: null,
             selected_type: null,
+            selected_username: null,
         };
         this._isMounted = false;
         this.handleAccept = this.handleAccept.bind(this);
@@ -80,7 +81,7 @@ class Chats extends Component {
                     <div className='chat-request-tabs'>
                         <p className='chat-type-header'>Requests</p>
                         {this.state.recieved_requests.map((info,idx)=> (
-                            <button className={this.state.selected_uid === info.uid ? 'chat-menu-tab active' : 'chat-menu-tab'} key={info.uid} value={info.uid} onClick={() => this.setState({ selected_uid: info.uid, selected_type: 'REQUEST' })} >
+                            <button className={this.state.selected_uid === info.uid ? 'chat-menu-tab active' : 'chat-menu-tab'} key={info.uid} value={info.uid} onClick={() => this.setState({ selected_uid: info.uid, selected_username: info.username, selected_type: 'REQUEST' })} >
                             {this.state.selected_uid === info.uid && <img src={arrow} alt = "arrow" style={{paddingRight:'1em', 'height': '1em', 'width': 'auto'}}/>}{info.username} </button>
                         ))}
                     </div>
@@ -88,7 +89,7 @@ class Chats extends Component {
                     <div className='chat-menu-tabs'>
                         <p className='chat-type-header'>Chats</p>
                         {this.state.accepted_chats.map((info,idx)=> (
-                            <button className={this.state.selected_uid === info.uid ? 'chat-menu-tab active' : 'chat-menu-tab'} key={info.uid} value={info.uid} onClick={() => this.setState({ selected_uid: info.uid, selected_type: 'CHAT' })}>
+                            <button className={this.state.selected_uid === info.uid ? 'chat-menu-tab active' : 'chat-menu-tab'} key={info.uid} value={info.uid} onClick={() => this.setState({ selected_uid: info.uid, selected_username: info.username, selected_type: 'CHAT' })}>
                             {this.state.selected_uid === info.uid && <img src={arrow} alt = "arrow" style={{paddingRight:'1em', 'height': '1em', 'width': 'auto'}}/>}{info.username} </button>
                         ))}
                     </div>
@@ -96,24 +97,27 @@ class Chats extends Component {
                     <div className='chat-menu-tabs'>
                         <p className='chat-type-header'>Pending</p>
                         {this.state.pending_requests.map((info,idx)=> (
-                            <button className={this.state.selected_uid === info.uid ? 'chat-menu-tab active' : 'chat-menu-tab'} key={info.uid} value={info.uid} onClick={() => this.setState({ selected_uid: info.uid, selected_type: 'PENDING' })}>
+                            <button className={this.state.selected_uid === info.uid ? 'chat-menu-tab active' : 'chat-menu-tab'} key={info.uid} value={info.uid} onClick={() => this.setState({ selected_uid: info.uid, selected_username: info.username, selected_type: 'PENDING' })}>
                             {this.state.selected_uid === info.uid && <img src={arrow} alt = "arrow" style={{paddingRight:'1em', 'height': '1em', 'width': 'auto'}}/>}{info.username} </button>
                         ))}
                     </div>
                 </div>
                     { (this.state.selected_uid && this.state.selected_type === 'CHAT') ? 
                         <div className='chat-container'>
+                        <h2 className='chat-header'>Chat with <a className='profile-username'>{this.state.selected_username}</a></h2>
                         <Chat dbManager={this.props.dbManager} uid1={auth.currentUser.uid} uid2={this.state.selected_uid} />
                         </div>
 
                         : (this.state.selected_uid && this.state.selected_type === 'REQUEST') ? 
                         <div className='request-container'>
+                        <h2 className='chat-header'>Request from <a className='profile-username'>{this.state.selected_username}</a></h2>
                         <Request dbManager={this.props.dbManager} uid1={auth.currentUser.uid} uid2={this.state.selected_uid} />
                         <button onClick={this.handleAccept}>Answer</button><button className='decline-button' onClick={this.handleDecline}>Decline</button>
                         </div>
 
                         : (this.state.selected_uid && this.state.selected_type === 'PENDING') ? 
                         <div className='request-container'>
+                        <h2 className='chat-header'>Request to <a className='profile-username'>{this.state.selected_username}</a></h2>
                         <Request dbManager={this.props.dbManager} uid1={auth.currentUser.uid} uid2={this.state.selected_uid} />
                         {/* <button className='decline-button' onClick={this.handleRecind} >Recind</button> */}
                         </div>
