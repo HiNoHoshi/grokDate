@@ -527,6 +527,12 @@ margin-top: 4px;
   color: var(--subtitle-text-color);
 }
 
+.get-info-icon {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+}
+
 .profile-info p{
   font-size: 18px;
   color: var(--text-color);
@@ -700,6 +706,46 @@ input {
 .no-results {
   color: gray;
   font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
+}
+
+#tooltip
+{
+  position: relative;
+  left: 0px;
+  top: 0px;
+  font-family: Helvetica Neue,Helvetica,Arial,sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: normal;
+  line-height: 1.42857143;
+  text-align: left;
+  text-align: start;
+  text-shadow: none;
+  text-transform: none;
+  white-space: normal;
+  word-break: normal;
+  word-spacing: normal;
+  word-wrap: normal;
+  font-size: 12px;
+}
+
+.tooltip-label
+{
+  position: absolute;
+  max-width: 200px;
+  padding: 3px 8px;
+  color: #fff;
+  text-align: center;
+  background-color: #000;
+  border-radius: 4px;
+}
+
+.hide{ 
+  display: none;
+}
+
+.show{
+  display: block;
 }
 
 ::-webkit-inner-spin-button {
