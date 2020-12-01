@@ -400,6 +400,7 @@ margin-top: 4px;
   font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
   height: 100%;
   background-color: var(--main-color);
+  /* min-width: 16em; */
 }
 .menu-container .App-logo{
   max-width: 8em;
@@ -486,7 +487,13 @@ margin-top: 4px;
 }
 
 .chat-menu-tab:hover{
-  background-color: var(--background-dark-color); 
+  background-color: var(--background-separators); 
+  /* TODO: show the arrow https://www.w3schools.com/css/tryit.asp?filename=trycss_buttons_animate1*/
+}
+
+.chat-menu-tab.active{
+  background-color: var(--background-color); 
+  color: var(--main-color)
   /* TODO: show the arrow https://www.w3schools.com/css/tryit.asp?filename=trycss_buttons_animate1*/
 }
 

@@ -2,6 +2,7 @@ import React, { Component, useState, useEffect } from 'react'
 import Chat from './chat'
 import Request from './request'
 import { auth } from '../comm/firebaseCredentials'
+import arrow from '../images/icons/arrow_white_big.png';
 
 class Chats extends Component {
 
@@ -55,9 +56,9 @@ class Chats extends Component {
     handleAccept() {
         let uid1 = auth.currentUser.uid;
         let uid2 = this.state.selected_uid;
-        this.props.dbManager.acceptRequest(uid1, uid2);
-        this.setState({selected_type: 'CHAT'});
-        // TODO: remove from pending & add to accepted so screen updates with right info
+        this.props.dbManager.acceptRequest(uid1, uid2).then(() => {
+            this.setState({selected_type: 'CHAT'});
+        });
     }
 
     handleDecline() {
@@ -79,21 +80,24 @@ class Chats extends Component {
                     <div className='chat-request-tabs'>
                         <p className='chat-type-header'>Requests</p>
                         {this.state.recieved_requests.map((info,idx)=> (
-                            <button className='chat-menu-tab' key={info.uid} value={info.uid} onClick={() => this.setState({ selected_uid: info.uid, selected_type: 'REQUEST' })}>{info.username}</button>
+                            <button className={this.state.selected_uid === info.uid ? 'chat-menu-tab active' : 'chat-menu-tab'} key={info.uid} value={info.uid} onClick={() => this.setState({ selected_uid: info.uid, selected_type: 'REQUEST' })} >
+                            {this.state.selected_uid === info.uid && <img src={arrow} alt = "arrow" style={{paddingRight:'1em', 'height': '1em', 'width': 'auto'}}/>}{info.username} </button>
                         ))}
                     </div>
                     <hr />
                     <div className='chat-menu-tabs'>
                         <p className='chat-type-header'>Chats</p>
                         {this.state.accepted_chats.map((info,idx)=> (
-                            <button className='chat-menu-tab' key={info.uid} value={info.uid} onClick={() => this.setState({ selected_uid: info.uid, selected_type: 'CHAT' })}>{info.username}</button>
+                            <button className={this.state.selected_uid === info.uid ? 'chat-menu-tab active' : 'chat-menu-tab'} key={info.uid} value={info.uid} onClick={() => this.setState({ selected_uid: info.uid, selected_type: 'CHAT' })}>
+                            {this.state.selected_uid === info.uid && <img src={arrow} alt = "arrow" style={{paddingRight:'1em', 'height': '1em', 'width': 'auto'}}/>}{info.username} </button>
                         ))}
                     </div>
                     <hr />
                     <div className='chat-menu-tabs'>
                         <p className='chat-type-header'>Pending</p>
                         {this.state.pending_requests.map((info,idx)=> (
-                            <button className='chat-menu-tab' key={info.uid} value={info.uid} onClick={() => this.setState({ selected_uid: info.uid, selected_type: 'PENDING' })}>{info.username}</button>
+                            <button className={this.state.selected_uid === info.uid ? 'chat-menu-tab active' : 'chat-menu-tab'} key={info.uid} value={info.uid} onClick={() => this.setState({ selected_uid: info.uid, selected_type: 'PENDING' })}>
+                            {this.state.selected_uid === info.uid && <img src={arrow} alt = "arrow" style={{paddingRight:'1em', 'height': '1em', 'width': 'auto'}}/>}{info.username} </button>
                         ))}
                     </div>
                 </div>
