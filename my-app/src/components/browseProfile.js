@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {useRef,Component} from 'react'
 import PCard from './profileCard'
 import ArrowButton from "./arrow_button"
 import { auth } from '../comm/firebaseCredentials'
