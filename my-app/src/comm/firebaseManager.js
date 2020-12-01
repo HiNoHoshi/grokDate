@@ -355,5 +355,19 @@ class FirebaseManager{
         })
     }
 
+    getRecieverIcebreakerReason(reason) {
+        return reason ? reason.replace("{sendr}", "them").replace("{sendr's}", "their").replace("{recvr}", "you").replace("{recvr's}", "your") : '';
+    }
+
+    getSenderIcebreakerReason(reason) {
+        return reason ? reason.replace("{sendr}", "you").replace("{sendr's}", "your").replace("{recvr}", "them").replace("{recvr's}", "their") : '';
+    }
+
+    getIcebreakerInfo(my_uid, their_uid) {
+        return this.usersRef.doc(my_uid).collection('messages').doc(their_uid).collection("chat").where('is_icebreaker', '==', true).orderBy('createdAt').get().then((snapshot) => {
+            return snapshot.docs[0].data();
+        })
+    }
+
 }
 export default FirebaseManager;
