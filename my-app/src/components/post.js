@@ -34,7 +34,7 @@ class Post extends Component {
 
         return  (
         <div className="post-container light-border">
-            <a className='subreddit-subreddit' target="_blank" rel="noreferrer" href = {'https://www.reddit.com/r/'+subreddit}>{'r/' + subreddit}</a>
+            <a className='subreddit-name' target="_blank" rel="noreferrer" href = {'https://www.reddit.com/r/'+subreddit}>{'r/' + subreddit}</a>
             {/* {reason ? <a className='reason'>{'\t\t\t(' + reason + ')'}</a> : null} */}
             {title_preview}
             {content_preview}
