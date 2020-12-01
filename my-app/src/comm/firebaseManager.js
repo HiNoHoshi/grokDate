@@ -365,7 +365,7 @@ class FirebaseManager{
 
     getIcebreakerInfo(my_uid, their_uid) {
         return this.usersRef.doc(my_uid).collection('messages').doc(their_uid).collection("chat").where('is_icebreaker', '==', true).orderBy('createdAt').get().then((snapshot) => {
-            return snapshot.docs[0].data();
+            return snapshot.docs.slice(-1)[0].data();
         })
     }
 

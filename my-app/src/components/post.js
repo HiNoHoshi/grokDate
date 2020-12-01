@@ -12,7 +12,7 @@ class Post extends Component {
 
     render(){
         // let {author, awards, comments, id, link, sticky, subreddit, text, title, type, upvotes, url} = this.props.data
-        let {link, subreddit, title} = this.props.data
+        let {link, name, title} = this.props.data
 
         let title_preview = <p><a className= 'post-title' target="_blank" rel="noreferrer" href={link}>{this.getTextPreview(title, 40)}</a></p>
 
@@ -34,8 +34,8 @@ class Post extends Component {
 
         return  (
         <div className="post-container light-border">
-            <a className='subreddit-name' target="_blank" rel="noreferrer" href = {'https://www.reddit.com/r/'+subreddit}>{'r/' + subreddit}</a>
-            {/* {reason ? <a className='subreddit-reason'>{'\t\t\t(' + reason + ')'}</a> : null} */}
+            <a className='subreddit-name' target="_blank" rel="noreferrer" href = {'https://www.reddit.com/r/'+name}>{'r/' + name}</a>
+            {/* {reason ? <a className='reason'>{'\t\t\t(' + reason + ')'}</a> : null} */}
             {title_preview}
             {content_preview}
         </div>

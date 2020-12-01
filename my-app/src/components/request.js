@@ -20,7 +20,7 @@ class Request extends Component {
         this.props.dbManager.getUserProfileInfo(this.props.uid2).then((profile_info) => {
             this.setState({profile_info: profile_info, uid2: this.props.uid2})
         })
-
+        // TODO: should this be sync
         this.props.dbManager.getIcebreakerInfo(this.props.uid1, this.props.uid2).then((ice_info) => {
             this.setState({icebreaker_chat: ice_info});
         })

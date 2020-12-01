@@ -10,6 +10,7 @@ class Chats extends Component {
         this.state = {
             recieved_requests: [],
             accepted_chats: [],
+            pending_requests: [],
             selected_uid: null,
             selected_type: null,
         };
@@ -20,7 +21,7 @@ class Chats extends Component {
         // Get requests and chats from db
         this._isMounted = true;
         this.props.dbManager.getAllContacts().then(contacts => {
-            // var sent_requests = []
+            var pending_requests = []
             var recieved_requests = []
             // var declined_requests = []
             var accepted_chats = []
@@ -33,11 +34,13 @@ class Chats extends Component {
                         recieved_requests.push(contact);
                     } else if (contact.is_req_accepted) {
                         accepted_chats.push(contact);
+                    } else if (contact.is_requester && !(contact.is_req_accepted || contact.is_req_declined)) {
+                        pending_requests.push(contact)
                     }
                 }
             }
             if (this._isMounted) {
-                this.setState({ recieved_requests: recieved_requests, accepted_chats: accepted_chats });
+                this.setState({ recieved_requests: recieved_requests, accepted_chats: accepted_chats, pending_requests: pending_requests });
             }
         });
     }
@@ -65,6 +68,13 @@ class Chats extends Component {
                             <button className='chat-menu-tab' key={info.uid} value={info.uid} onClick={() => this.setState({ selected_uid: info.uid, selected_type: 'CHAT' })}>{info.username}</button>
                         ))}
                     </div>
+                    <hr />
+                    <div className='chat-menu-tabs'>
+                        <p className='chat-type-header'>Pending</p>
+                        {this.state.pending_requests.map((info,idx)=> (
+                            <button className='chat-menu-tab' key={info.uid} value={info.uid} onClick={() => this.setState({ selected_uid: info.uid, selected_type: 'PENDING' })}>{info.username}</button>
+                        ))}
+                    </div>
                 </div>
                     { (this.state.selected_uid && this.state.selected_type === 'CHAT') ? 
                         <div className='chat-container'>
@@ -72,6 +82,11 @@ class Chats extends Component {
                         </div>
 
                         : (this.state.selected_uid && this.state.selected_type === 'REQUEST') ? 
+                        <div className='request-container'>
+                        <Request dbManager={this.props.dbManager} uid1={auth.currentUser.uid} uid2={this.state.selected_uid} />
+                        </div>
+
+                        : (this.state.selected_uid && this.state.selected_type === 'PENDING') ? 
                         <div className='request-container'>
                         <Request dbManager={this.props.dbManager} uid1={auth.currentUser.uid} uid2={this.state.selected_uid} />
                         </div>

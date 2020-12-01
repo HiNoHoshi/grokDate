@@ -97,8 +97,8 @@ class Icebreaker extends Component {
             icebreaker = (<div className="post-container">Loading icebreakers...</div>)
         } else {
             let post = <Post data={icebreakers[subreddit_idx].posts[post_idx]} />
-            let subreddit_name = icebreakers[subreddit_idx].name
-            let subreddit_reason = icebreakers[subreddit_idx].reason.replace('r/' + subreddit_name + ' is ', ' ').replace(' to it', '')
+            let name = icebreakers[subreddit_idx].name
+            let reason = icebreakers[subreddit_idx].reason.replace('r/' + name + ' is ', ' ').replace(' to it', '')
             let prevSubredditActive = subreddit_idx > 0
             let nextSubredditActive = subreddit_idx < icebreakers.length - 1
             let prevPostActive = post_idx > 0
@@ -111,8 +111,9 @@ class Icebreaker extends Component {
                         <option value="What do you think about this?">What do you think about this?</option>
                     </select>
                     <h4>Choose a subreddit</h4>
-                    <a className= 'subreddit-name' target="_blank" rel="noreferrer" href={'https://www.reddit.com/r/'+subreddit_name}>{'r/' + subreddit_name}</a>
-                    <p className='subreddit-reason'>{subreddit_reason}</p>
+                    {console.log(name)}
+                    <a className= 'subreddit-name' target="_blank" rel="noreferrer" href={'https://www.reddit.com/r/'+name}>{'r/' + name}</a>
+                    <p className='reason'>{reason}</p>
                     <div className='profile-nav'>
                         <ArrowButton 
                             active={prevSubredditActive} 
@@ -157,15 +158,15 @@ class Icebreaker extends Component {
         let subreddit = icebreakers[subreddit_idx];
         let post = subreddit.posts[post_idx];
         let {link, title} = post;
-        let subreddit_name = subreddit.name;
+        let name = subreddit.name;
         let message = this.state.message;
-        let subreddit_reason = subreddit.reason.replace('r/' + subreddit_name + ' is ', '').replace(' to it', '');
+        let reason = subreddit.reason.replace('r/' + name + ' is ', '').replace(' to it', '');
         let icebreaker = {
             // createdAt: currentTime (filled by sendIcebreaker),
             icebreaker: {
                 link: link,
-                subreddit_name: subreddit_name,
-                subreddit_reason: subreddit_reason,
+                name: name,
+                reason: reason,
                 title: title,
             },
             is_icebreaker: true,
