@@ -38,10 +38,12 @@ class Request extends Component {
     render() {
         return (
             <div className="Request">
-                {this.state.profile_info ? <PCard key={this.state.profile_info.uid} info={this.state.profile_info} /> : null}
-                { 
-                    this.state.icebreaker_chat ? 
-                    <Post data={this.state.icebreaker_chat.icebreaker} /> : null
+                {!this.state.profile_info || !this.state.icebreaker_chat ? null : 
+                    <div>
+                        <PCard key={this.state.profile_info.uid} info={this.state.profile_info} />
+                        <p><a className='profile-username'>{this.state.icebreaker_chat.uid == this.state.uid1 ? 'Me': this.state.profile_info.username}</a>: {this.state.icebreaker_chat.text}</p>
+                        <Post data={this.state.icebreaker_chat.icebreaker} />
+                    </div>
                 }
             </div>
         )
