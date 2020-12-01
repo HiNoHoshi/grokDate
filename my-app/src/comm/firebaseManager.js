@@ -319,5 +319,41 @@ class FirebaseManager{
         return this.usersRef.doc(uid).delete()
     }
 
+    getUsername(uid) {
+        return this.usersRef.doc(uid).get().then((doc) => {
+            let data = doc.data();
+            return data.username;
+        })
+    }
+
+    sendIcebreaker(icebreaker, sender_uid, reciever_uid, reciever_user) {
+        console.log(icebreaker, sender_uid, reciever_uid, reciever_user);
+        icebreaker.createdAt = this.getTimestamp();
+        var sender_doc = this.usersRef.doc(sender_uid).collection('messages').doc(reciever_uid);
+        let reciever_doc = this.usersRef.doc(reciever_uid).collection('messages').doc(sender_uid);
+        let info = {
+            is_req_accepted: false,
+            is_req_declined: false,
+            is_requester: true,
+            username: reciever_user,
+        }
+        // Create/update sender's copy of chat
+        return sender_doc.set(info, {merge: true}).then(() => {
+            // Add icebreaker to sender's copy of chat
+            return sender_doc.collection('chat').add(icebreaker).then(() => {
+                info.is_requester = false;
+                // Get username of sender
+                return this.getUsername(sender_uid).then((sender_user) => {
+                    info.username = sender_user
+                    // Create/update reciever's copy of chat
+                    return reciever_doc.set(info, {merge: true}).then(() => {
+                        // Add icebreaker to recievers copy of chat
+                        return reciever_doc.collection('chat').add(icebreaker).then(() => true);
+                    })
+                })
+            })
+        })
+    }
+
 }
 export default FirebaseManager;

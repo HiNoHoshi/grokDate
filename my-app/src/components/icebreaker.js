@@ -12,12 +12,15 @@ class Icebreaker extends Component {
             subreddit_idx: -1,
             post_idx: -1,
             icebreakers: [], // E.g [['UIUC', 'r/UIUC is both of your favorites!', [posts...]]]
+            message: 'Did you see this?',
         }
         this._isMounted = false
         this.prevSubreddit = this.prevSubreddit.bind(this)
         this.nextSubreddit = this.nextSubreddit.bind(this)
         this.prevPost = this.prevPost.bind(this)
         this.nextPost = this.nextPost.bind(this)
+        this.handleMessageChange = this.handleMessageChange.bind(this)
+        this.handleSendIcebreaker = this.handleSendIcebreaker.bind(this)
     }
 
     //  Example to call Reddit API right after the icebreaker appears
@@ -103,7 +106,7 @@ class Icebreaker extends Component {
             icebreaker = (
                 <div>
                     <h4>Choose a message</h4>
-                    <select>
+                    <select value={this.state.message} onChange={this.handleMessageChange}>
                         <option value="Did you see this?">Did you see this?</option>
                         <option value="What do you think about this?">What do you think about this?</option>
                     </select>
@@ -144,8 +147,35 @@ class Icebreaker extends Component {
         );
     }
 
+    handleMessageChange(e) {
+        this.setState({message: e.target.value});
+    }
+
+    // TODO: store icebreaker as message in database. Switch to chats screen or just exit popup
     handleSendIcebreaker() {
-        
+        let {icebreakers, loading, subreddit_idx, post_idx} = this.state;
+        let subreddit = icebreakers[subreddit_idx];
+        let post = subreddit.posts[post_idx];
+        let {link, title} = post;
+        let subreddit_name = subreddit.name;
+        let message = this.state.message;
+        let subreddit_reason = subreddit.reason.replace('r/' + subreddit_name + ' is ', '').replace(' to it', '');
+        let icebreaker = {
+            // createdAt: currentTime (filled by sendIcebreaker),
+            icebreaker: {
+                link: link,
+                subreddit_name: subreddit_name,
+                subreddit_reason: subreddit_reason,
+                title: title,
+            },
+            is_icebreaker: true,
+            text: message,
+            uid: this.props.my_uid,
+        }
+        this.props.dbManager.sendIcebreaker(icebreaker, this.props.my_uid, this.props.their_uid, this.props.username).then(() => {
+            // TODO: give confirmation that icebreaker was sent
+            this.props.close();
+        })
     }
 
 

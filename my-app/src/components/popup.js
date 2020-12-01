@@ -16,7 +16,8 @@ class Popup extends Component {
                 username={this.props.details.their_username} 
                 dbManager={this.props.dbManager} 
                 my_uid={this.props.details.my_uid} 
-                their_uid={this.props.details.their_uid} />   
+                their_uid={this.props.details.their_uid}
+                close={this.props.close} />   
 
         }if (this.props.type === 'profileEdit'){
             console.log(this.props.details)
