@@ -165,7 +165,7 @@ class Icebreaker extends Component {
             // createdAt: currentTime (filled by sendIcebreaker),
             icebreaker: {
                 link: link,
-                name: name,
+                subreddit: name,
                 reason: reason,
                 title: title,
             },

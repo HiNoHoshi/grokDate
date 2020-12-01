@@ -18,11 +18,9 @@ class Request extends Component {
     componentDidMount() {
         // charge the user profiles from the database
         this.props.dbManager.getUserProfileInfo(this.props.uid2).then((profile_info) => {
-            this.setState({profile_info: profile_info, uid2: this.props.uid2})
-        })
-        // TODO: should this be sync
-        this.props.dbManager.getIcebreakerInfo(this.props.uid1, this.props.uid2).then((ice_info) => {
-            this.setState({icebreaker_chat: ice_info});
+            this.props.dbManager.getIcebreakerInfo(this.props.uid1, this.props.uid2).then((ice_info) => {
+                this.setState({profile_info: profile_info, uid2: this.props.uid2, icebreaker_chat: ice_info});
+            })
         })
     }
 
@@ -30,7 +28,9 @@ class Request extends Component {
         if (this.props.uid2 !== this.state.uid2) {
             this.setState({uid2: this.props.uid2})
             this.props.dbManager.getUserProfileInfo(this.props.uid2).then((profile_info) => {
-                this.setState({profile_info: profile_info})
+                this.props.dbManager.getIcebreakerInfo(this.props.uid1, this.props.uid2).then((ice_info) => {
+                    this.setState({profile_info: profile_info, uid2: this.props.uid2, icebreaker_chat: ice_info});
+                })
             })
         }
     }

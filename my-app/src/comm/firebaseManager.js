@@ -355,6 +355,16 @@ class FirebaseManager{
         })
     }
 
+    acceptRequest(my_uid, their_uid) {
+        console.log('accept requst', my_uid, their_uid);
+        this.usersRef.doc(my_uid).collection('messages').doc(their_uid).set({is_req_accepted: true}, {merge: true}).then(() => true);
+    }
+
+    declineRequest(my_uid, their_uid) {
+        console.log('decline requst', my_uid, their_uid);
+        this.usersRef.doc(my_uid).collection('messages').doc(their_uid).set({is_req_declined: true}, {merge: true}).then(() => true);
+    }
+
     getRecieverIcebreakerReason(reason) {
         return reason ? reason.replace("{sendr}", "them").replace("{sendr's}", "their").replace("{recvr}", "you").replace("{recvr's}", "your") : '';
     }

@@ -15,6 +15,9 @@ class Chats extends Component {
             selected_type: null,
         };
         this._isMounted = false;
+        this.handleAccept = this.handleAccept.bind(this);
+        this.handleDecline = this.handleDecline.bind(this);
+        // this.handleRecind = this.handleRecind.bind(this);
     }
 
     componentDidMount() {
@@ -48,6 +51,24 @@ class Chats extends Component {
     componentWillUnmount() {
         this._isMounted = false
     }
+
+    handleAccept() {
+        let uid1 = auth.currentUser.uid;
+        let uid2 = this.state.selected_uid;
+        this.props.dbManager.acceptRequest(uid1, uid2);
+        this.setState({selected_type: 'CHAT'});
+        // TODO: remove from pending & add to accepted so screen updates with right info
+    }
+
+    handleDecline() {
+        let uid1 = auth.currentUser.uid;
+        let uid2 = this.state.selected_uid;
+        this.props.dbManager.declineRequest(uid1, uid2);
+    }   
+
+    // handleRecind() {
+
+    // }
 
     render() {
         //console.log(this.state.chats_usernames)
@@ -84,11 +105,13 @@ class Chats extends Component {
                         : (this.state.selected_uid && this.state.selected_type === 'REQUEST') ? 
                         <div className='request-container'>
                         <Request dbManager={this.props.dbManager} uid1={auth.currentUser.uid} uid2={this.state.selected_uid} />
+                        <button onClick={this.handleAccept}>Answer</button><button className='decline-button' onClick={this.handleDecline}>Decline</button>
                         </div>
 
                         : (this.state.selected_uid && this.state.selected_type === 'PENDING') ? 
                         <div className='request-container'>
                         <Request dbManager={this.props.dbManager} uid1={auth.currentUser.uid} uid2={this.state.selected_uid} />
+                        {/* <button className='decline-button' onClick={this.handleRecind} >Recind</button> */}
                         </div>
 
                         : <div className='chat-container'><p className='no-results'>Select a message</p></div>
