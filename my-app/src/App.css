@@ -85,7 +85,7 @@ span{
   font-size: small;
   color: var(--background-separators);
 }
-input, select, textarea{
+input, select, textarea {
   outline: 0;
   border-style: solid;
   border-width: 0 0 3px;
@@ -102,6 +102,12 @@ textarea{
 
 [draggable=true] {
   cursor: move;
+}
+.decline-button{
+  background-color: var(--decline-color);
+}
+.decline-button:hover{
+  background-color: var(--attention-color);
 }
 .secondary-button{
   background-color: transparent;
@@ -140,7 +146,8 @@ textarea{
   margin: 0em 1em;
   min-width: 20%;
 }
-.tab-button:active{
+.tab-button.selected{
+  opacity: 100%;
   outline: 0;
   border-style: solid;
   border-width: 0 0 3px;
@@ -204,6 +211,8 @@ textarea{
 /* Landing: Register or login */
 
 .App-logo {
+  /* width: 12em; */
+  /* height: auto; */
   /* height: 4vmin; */
   pointer-events: none;
   display: block;
@@ -223,6 +232,9 @@ textarea{
 
 .arrow-list > li {
   list-style-image: url(images/icons/arrow_white_big.png); 
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 22px;
+  margin-bottom: 0.6em;
   /* TODO: adds space between the marker and the text*/
 }
 
@@ -232,10 +244,11 @@ textarea{
   align-items: center;
   justify-content: space-between;
   column-gap: 2em;
+  width: 55%;
 }
 
 .access-card{
-  /* width: 100%; TODO: fix size*/
+  width: 100%; 
   border-radius: 15px;
   border-color: var(--main-light-color);
   border-width: 3px;
@@ -246,6 +259,12 @@ textarea{
   justify-content: center;
   text-align: center;
   padding: 50px;
+  max-width: 10em;
+}
+.access-card p{
+  text-align:left;
+  margin-bottom:2em;
+  line-height: 1.5em;
 }
 
 
@@ -253,7 +272,7 @@ textarea{
 /* Register */
 .register-container{
   display: grid;
-  width: 100%;
+  width: 90%;
   height: 100vh;
   grid-template-columns: 50% 50%;
   grid-template-rows: 15% 70% 15%;
@@ -272,6 +291,7 @@ textarea{
 .register-logo{
 grid-area: header;
 justify-self: center;
+max-width: 8em;
 }
 
 .register-button{
@@ -314,7 +334,7 @@ align-items: center;
 border-width: 1px;
 border: dashed;
 border-color: var(--background-separators);
-margin: 1em 0em;
+margin: 0.7em 0em;
 }
 
 .dropping-area span{
@@ -358,9 +378,14 @@ width: 100%;
 height: 3em;
 padding: 0.5em;
 }
-.item input, .item section{
+.item input, .item select{
 width: 100%;
 }
+
+.item input:disabled, .item select:disabled{
+  opacity: 20%;
+}
+
 .form-error{
 font-size: small;
 color: #C40EC5;
@@ -375,6 +400,11 @@ margin-top: 4px;
   font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
   height: 100%;
   background-color: var(--main-color);
+  /* min-width: 16em; */
+}
+.menu-container .App-logo{
+  max-width: 75%;
+  /* max-width: 8em; */
 }
 
 .menu-tabs{
@@ -385,19 +415,39 @@ margin-top: 4px;
 }
 
 .menu-tab{
+  padding-top: 1em;
   border-radius: 1px;
   margin: 0.3em 0px;
   text-align: left;
   padding-left: 3em;
+  height: 3em;
+  font-size: 18px;
   font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
   text-transform: uppercase;
+  display: inline-flex;
 }
 
 .menu-tab:hover{
-  background-color: var(--main-dark-color); 
+  background-color: var(--main-light-color); 
   /* TODO: show the arrow https://www.w3schools.com/css/tryit.asp?filename=trycss_buttons_animate1*/
 }
+.menu-tab.active{
+  background-color: var(--main-dark-color);
+}
+.menu-tab.logout{
+  position: absolute;
+  left: 0px;
+  bottom:0px;
+  align-self: flex-end;
+  width: fit-content;
+  opacity: 60%;
+}
 
+.menu-tab.logout:hover{
+  background-color: transparent;
+  opacity: 100%;
+
+}
 /* Chats menu styles */
 .chats-container{
   height: 100vh;
@@ -431,14 +481,21 @@ margin-top: 4px;
   margin: 0.3em 0px;
   text-align: left;
   padding-left: 1em;
-  font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
-  font-size: 12px;
-  text-transform: uppercase;
+  /* font-family: 'Proxima Nova', 'Nunito Sans', sans-serif; */
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+  /* text-transform: uppercase; */
   background-color: var(--background-light-color);
 }
 
 .chat-menu-tab:hover{
-  background-color: var(--background-dark-color); 
+  background-color: var(--background-separators); 
+  /* TODO: show the arrow https://www.w3schools.com/css/tryit.asp?filename=trycss_buttons_animate1*/
+}
+
+.chat-menu-tab.active{
+  background-color: var(--background-color); 
+  color: var(--main-color)
   /* TODO: show the arrow https://www.w3schools.com/css/tryit.asp?filename=trycss_buttons_animate1*/
 }
 
@@ -543,11 +600,12 @@ margin-top: 4px;
   padding: 0em 0em;
 }
 
-.subreddit-reason {
+.reason {
   color: #51505D;
   margin: 0.25em 0em 0.5em 0em;
   /* margin: 0em 0em; */
   padding: 0em 0em;
+  font-size: 18px;
 }
 
 .post-title {
@@ -565,6 +623,28 @@ margin-top: 4px;
   overflow-wrap: break-word;
   /* word-break: break-word; */
   /* display: inline-block; */
+}
+
+/* For the profile edition */
+.edit-container{
+  display: block;
+  text-align: center;
+  max-width: 650px;
+  padding: 0em 1em 1em 1em;
+}
+.edit-info{
+  text-align: left;
+  margin: 1em;
+
+}
+
+.settings-container{
+  padding: 2em;
+  text-align: left;
+}
+
+.settings-container button{
+  font-size: 16px;
 }
 
 /* 
@@ -585,6 +665,15 @@ margin-top: 4px;
 
 .chat-container{
   margin: 1em;
+}
+
+.chat-header {
+  outline: 0;
+  border-style: solid;
+  border-width: 0 0 3px;
+  border-color: var(--background-separators);
+  background-color: transparent;
+  padding-bottom: 1em;
 }
 
 .message {
@@ -657,6 +746,16 @@ input {
 
 .show{
   display: block;
+}
+
+::-webkit-inner-spin-button {
+  display: none;
+}
+
+/* Request 
+  TODO: don't know how to make align correctly */
+.request-container {
+  margin: 1em;
 }
 
 /* @media (prefers-reduced-motion: no-preference) {

@@ -1,6 +1,5 @@
 import React, {useRef,Component} from 'react'
 import PCard from './profileCard'
-import profiles from '../usersDB'
 import ArrowButton from "./arrow_button"
 import { auth } from '../comm/firebaseCredentials'
 
@@ -24,7 +23,6 @@ class BrowseProfiles extends Component {
         this.props.dbManager.getAllOtherUsers(this.my_uid).then((profiles) => {
             this.setState({profiles: profiles})
             this.setState({activeProfile: profiles[0], activePID: 0})
-            // console.log(this.state.activeProfile)
         })
     }
 
@@ -44,7 +42,6 @@ class BrowseProfiles extends Component {
         if(prevState.activePID  !== this.state.activePID){
             const activeProfile = this.state.profiles[this.state.activePID]
             this.setState({activeProfile})
-            // console.log(this.state.activeProfile)
         }
     }
 
@@ -54,7 +51,7 @@ class BrowseProfiles extends Component {
                 {this.state.activeProfile &&  <PCard key={this.state.activeProfile.uid} info={this.state.activeProfile} />}
                 <div className= 'profile-nav'>
                     < ArrowButton active={this.state.activePID> 0} direction='Back' change={this.prevProfile} />
-                    <button onClick={()=>{this.props.updatePopup(true,{'their_uid': this.state.activeProfile.uid, 'their_username': this.state.activeProfile.username, 'my_uid': this.my_uid})}}>Break the Ice!</button>
+                    <button onClick={()=>{this.props.updatePopup(true, 'icebreaker', {'their_uid': this.state.activeProfile.uid, 'their_username': this.state.activeProfile.username, 'my_uid': this.my_uid})}}>Break the Ice!</button>
                     < ArrowButton active={this.state.activePID<this.state.profiles.length-1} direction='Next' change={this.nextProfile} />
                 </div>
             </div>

@@ -14,7 +14,8 @@ class RegisterInterests extends Component {
             subReddits: {},
             redditFav: null,
             channels: {},
-            games: {}
+            games: {},
+            unsubscribeListener: null
         }
         this.selectTag = this.selectTag.bind(this);
         this.loadSubs = this.loadSubs.bind(this);
@@ -26,14 +27,26 @@ class RegisterInterests extends Component {
 
     // Adds a listener that calls loadSubs when the database is updated
     componentDidMount () {
-        this.props.dbManager.listenToRedditSynch(this.props.user.uid, this.loadSubs)
+        console.log(this.props)
+        var unsubscribe = this.props.dbManager.listenToRedditSynch(this.props.user.uid, this.loadSubs)
+        this.setState({unsubscribeListener: unsubscribe});
+
     }
     // Adds the subreddits to the component state
     loadSubs(subReddits){
-        this.setState({subReddits});
+        let fav
+        for (let sub in  subReddits){
+            if(subReddits[sub].is_favorite){
+                fav = sub
+            }
+        }
+        this.setState({subReddits, redditFav: fav});
+        this.selectTag(fav)
         this.props.updateCommunities(subReddits)
     }
-
+    componentWillUnmount() {
+        this.state.unsubscribeListener()
+    }
     // Change the visibility of a subredding in the component state
     updateTagVisibility(sub){
         this.setState(state => {
@@ -58,6 +71,7 @@ class RegisterInterests extends Component {
         }
         if(prevState.subReddits !== this.state.subReddits){
             this.props.updateCommunities(this.state.subReddits)
+
         }
     }
 
@@ -79,21 +93,28 @@ class RegisterInterests extends Component {
             <TagItem key= {sub} 
                 name = {sub} 
                 editable= {true} 
-                is-visible = {this.state.subReddits[sub].is_visible} 
+                visible = {this.state.subReddits[sub].is_visible} 
                 selectTag = {this.selectTag}
                 updateVisibility = {this.updateTagVisibility}/>
             );
-
         }
         
+        var editStyle = {}
+        if(this.props.isEdit){
+            editStyle.width = '100%'
+            if(!this.props.active){
+                editStyle.display = 'none'
+            }
+        }
+
         return  (
-            <div className= 'register-interest'>
-                <h2>Your Interests.</h2>
+            <div className= 'register-interest' style= {editStyle }>
+                {!this.props.isEdit && <h2>Your Interests.</h2>}
                 <div className= 'synchronize-interests'>
                     <div className= "sub-interests">
                         <div className= 'interests-nav'>
                             <button className='secondary-button tab-button' disabled>Channels </button>
-                            <button className='secondary-button tab-button' active = "true">Communities </button>
+                            <button className='secondary-button tab-button selected' >Communities </button>
                             <button className='secondary-button tab-button' disabled>Games </button>
                         </div>
                         

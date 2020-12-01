@@ -1,9 +1,8 @@
 import React, {Component} from 'react'
-import logo from '../images/logos/logo_mid.png';
 import Form from './form'
 import RegisterInterests from './registerInterests'
 
-class Register extends Component {
+class EditProfile extends Component {
     constructor(){
         super();
         this.state = {
@@ -18,13 +17,17 @@ class Register extends Component {
             },
             sending: false,
             communities: {},
+            formActive: true,
             errors: {}  
         };
-
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.updateCommunities = this.updateCommunities.bind(this);
         
+    }
+
+    componentDidMount() {
+        this.setState({input: this.props.userInfo})
     }
 
     handleChange(event) {
@@ -32,7 +35,6 @@ class Register extends Component {
         const {name, value} = event.target
         input[name] = value;
         
-        //TODO: Check uniqueness of the username
         this.setState({
           input
         });
@@ -44,36 +46,51 @@ class Register extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
+
         if(this.validate()){
-            // Let other components know that the registrations is been sent
+            const infoUpdate = {
+                username: this.state.input.username,
+                country: this.state.input.country,
+                city: this.state.input.city,
+                interest: this.state.input.interest,
+                description: this.state.input.description
+            }
+            // Let other components know the new info is been sent
             this.setState({sending:true}) 
             // Send the basic info of the user to the database
-            this.props.dbManager.registerUserInfo(this.props.user.uid, this.state.input).then(() =>{
-                this.props.setUserInfo();
+            this.props.dbManager.registerUserInfo(this.props.user.uid, infoUpdate).then(() =>{
+                this.props.updateProfile({infoUpdate, communities:this.state.communities})
+                this.props.close()
             });
         }
-        // this.setState({sending:false}) // Just for testing purpose
     }
 
     render(){
         return  (
-        <div className="register-container">
-            <img src={logo} className="register-logo" alt="logo" />
-            <div className= 'register-info'>
-                <h2>Profile Information.</h2>
-                <Form data = {this.state} 
-                    handleChange = {this.handleChange}
-                    active = {true}/>
+        <div className="edit-container">
+            <h2>Edit Profile</h2>
+            <div>
+                            <button className={this.state.formActive ? 'secondary-button tab-button selected': 'secondary-button tab-button'} onClick={() =>{this.setState({formActive: true})}}>Information </button>
+                            <button className={!this.state.formActive ? 'secondary-button tab-button selected': 'secondary-button tab-button'} onClick={() =>{this.setState({formActive: false})}}>Interests </button>
+                        </div>
+            <div className= 'edit-info'>
+                <Form data={this.state} 
+                    handleChange={this.handleChange} 
+                    isEdit={true}
+                    active = {this.state.formActive} />
 
+                <RegisterInterests 
+                    dbManager={this.props.dbManager} 
+                    isEdit={true}
+                    user={this.props.user} 
+                    sending = {this.state.sending} 
+                    updateCommunities={this.updateCommunities} 
+                    error={this.state.errors.interests}
+                    active = {!this.state.formActive} />
+            
             </div>
-            <RegisterInterests dbManager={this.props.dbManager} 
-            user={this.props.user} 
-            sending = {this.state.sending} 
-            updateCommunities={this.updateCommunities} 
-            error={this.state.errors.interests}
-            active = {true}/>
-
-            <button className= 'register-button' onClick={this.handleSubmit}>Create Account</button>
+      
+            <button onClick={this.handleSubmit}>Save Changes</button>
         </div>
         );
     }
@@ -159,4 +176,4 @@ class Register extends Component {
 
 
 }
-export default Register;
+export default EditProfile;

@@ -10,6 +10,11 @@ class TagItem extends Component {
         this.clicked = this.clicked.bind(this)
     }
     
+    componentDidMount () {
+        this.setState(state => {
+            return {visible: this.props.visible}
+        });    }
+
     clicked(){
         this.setState(state => {
             return {visible: !state.visible}
@@ -49,7 +54,7 @@ class TagItem extends Component {
 
         return  (
             <div className= {this.state.visible ? 'tag': 'tag actionable'}  
-            draggable = {this.state.visible} 
+            draggable = {this.state.visible && this.props.editable} //TODO: Check if it still works in the registration
             onDrag={e => {this.props.selectTag(this.props.name)}} 
             onDragEnd={e =>{this.props.selectTag(null)}}
             style = {tagStyle}>

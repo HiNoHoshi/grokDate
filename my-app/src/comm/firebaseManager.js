@@ -1,6 +1,5 @@
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import firebase from 'firebase/app';
-import {useState} from 'react';
 import { auth } from '../comm/firebaseCredentials'
 
 class FirebaseManager{
@@ -47,10 +46,40 @@ class FirebaseManager{
     // Get the information of an existent user based on it's id
     getUserInfo(uid){
         let userInfo = this.usersRef.doc(uid).get()
-            .then((docContent)=>{
+            .then((docContent)=>{ 
                 return docContent.data()
             })
         return userInfo
+    }
+
+    // Get the information of an existent user including communities
+    getUserExtendedInfo(uid){
+        let userInfo = this.usersRef.doc(uid).get()
+            .then((docContent)=>{ 
+                var userExtendedInfo = docContent.data()
+                let [year, month, day] = userExtendedInfo.birthdate.split('-')
+                userExtendedInfo.age = (new Date()).getFullYear() - (new Date(year, month, day).getFullYear())
+                userExtendedInfo.location = userExtendedInfo.city + ', ' + userExtendedInfo.country
+                return this.getUserSubreddits(uid).then((subs) =>{
+                    return {...userExtendedInfo,
+                    subreddits: subs}
+                }) 
+            })
+        return userInfo
+    }
+
+    listenToUserExtendedInfo(uid, updateComponent){
+
+        return this.usersRef.doc(uid)
+            .onSnapshot((docContent)=>{ 
+                var userExtendedInfo = docContent.data()
+                let [year, month, day] = userExtendedInfo.birthdate.split('-')
+                userExtendedInfo.age = (new Date()).getFullYear() - (new Date(year, month, day).getFullYear())
+                userExtendedInfo.location = userExtendedInfo.city + ', ' + userExtendedInfo.country
+                return this.getUserSubreddits(uid).then((subs) =>{
+                    updateComponent({...userExtendedInfo, subreddits: subs}) 
+                }) 
+            })
     }
 
     // Register the information for an existent user
@@ -85,7 +114,6 @@ class FirebaseManager{
 
     // Updates the visivility of the communities and the favorite community for the user
     updateUserCommunities(uid, communities, fav){
-        console.log('updating communities')
         const ref = this.usersRef.doc(uid).collection("subreddit")
         for(let c in communities){
                 ref.doc(c).update({is_visible: communities[c].is_visible})
@@ -175,10 +203,10 @@ class FirebaseManager{
 
     getMessagesBetween2Users(uid1, uid2){
 
-        if(!uid1 || uid1.length == 0){
+        if(!uid1 || uid1.length === 0){
             uid1 = "NaN";
         }
-        if(!uid2 || uid2.length == 0){
+        if(!uid2 || uid2.length === 0){
             uid2 = "NaN";
         }
         var messagesRef = this.usersRef.doc(uid1).collection('messages').doc(uid2);
@@ -196,6 +224,23 @@ class FirebaseManager{
 
     getTimestamp(){
         return firebase.firestore.FieldValue.serverTimestamp();
+    }
+
+    // Returns the information about messages & requests (e.g. [uid: 123, is_req_accepted: false, ...])
+    getAllContacts() {
+        var uid = auth.currentUser.uid;
+        var messagesRef = this.usersRef.doc(uid).collection('messages');
+
+        return messagesRef.get().then((snapshot) => {
+            let contacts = []
+            snapshot.docs.map(doc => {
+                var id = doc.id;
+                var data = doc.data();
+                data.uid = id;
+                contacts.push(data);
+            });
+            return contacts
+        })
     }
 
     getAllOtherUsers(my_uid) {
@@ -225,6 +270,26 @@ class FirebaseManager{
         })
     }
 
+    getUserProfileInfo(uid) {
+        return this.usersRef.doc(uid).get().then((userDoc) => {
+            var userData = userDoc.data()
+            var uid = userDoc.id
+            // Don't include incomplete profiles
+            if (!userData.username) {
+                console.log('Incomplete profile')
+                return
+            }
+            userData.uid = uid
+            let [year, month, day] = userData.birthdate.split('-')
+            userData.age = (new Date()).getFullYear() - (new Date(year, month, day).getFullYear())
+            userData.location = userData.city + ', ' + userData.country
+            return this.getUserSubreddits(uid).then((subreddits) => {
+                userData.subreddits = subreddits
+                return userData
+            })
+        })
+    }
+
     getUserSubreddits(uid) {
         return this.usersRef.doc(uid).collection("subreddit").get().then((querySnap) => {
             var promises = []
@@ -241,12 +306,78 @@ class FirebaseManager{
                         is_visible: userData.is_visible,
                         subreddit: subData,
                     }
-                    // console.log(info)
                     return {[name]: info}
                 })
                 promises.push(promise)
             })
             return Promise.all(promises)
+        })
+    }
+
+    deleteUser(uid){
+        console.log("Noooo, don't goooo")
+        return this.usersRef.doc(uid).delete()
+    }
+
+    getUsername(uid) {
+        return this.usersRef.doc(uid).get().then((doc) => {
+            let data = doc.data();
+            return data.username;
+        })
+    }
+
+    sendIcebreaker(icebreaker, sender_uid, reciever_uid, reciever_user) {
+        console.log(icebreaker, sender_uid, reciever_uid, reciever_user);
+        icebreaker.createdAt = this.getTimestamp();
+        var sender_doc = this.usersRef.doc(sender_uid).collection('messages').doc(reciever_uid);
+        let reciever_doc = this.usersRef.doc(reciever_uid).collection('messages').doc(sender_uid);
+        let info = {
+            is_req_accepted: false,
+            is_req_declined: false,
+            is_requester: true,
+            username: reciever_user,
+        }
+        // Create/update sender's copy of chat
+        return sender_doc.set(info, {merge: true}).then(() => {
+            // Add icebreaker to sender's copy of chat
+            return sender_doc.collection('chat').add(icebreaker).then(() => {
+                info.is_requester = false;
+                // Get username of sender
+                return this.getUsername(sender_uid).then((sender_user) => {
+                    info.username = sender_user
+                    // Create/update reciever's copy of chat
+                    return reciever_doc.set(info, {merge: true}).then(() => {
+                        // Add icebreaker to recievers copy of chat
+                        return reciever_doc.collection('chat').add(icebreaker).then(() => true);
+                    })
+                })
+            })
+        })
+    }
+
+    acceptRequest(my_uid, their_uid) {
+        return this.usersRef.doc(my_uid).collection('messages').doc(their_uid).set({is_req_accepted: true}, {merge: true}).then(() => {
+            return this.usersRef.doc(their_uid).collection('messages').doc(my_uid).set({is_req_accepted: true}, {merge: true}).then(() => true);
+        });
+    }
+
+    declineRequest(my_uid, their_uid) {
+        return this.usersRef.doc(my_uid).collection('messages').doc(their_uid).set({is_req_declined: true}, {merge: true}).then(() => {
+            return this.usersRef.doc(their_uid).collection('messages').doc(my_uid).set({is_req_declined: true}, {merge: true}).then(() => true);
+        });
+    }
+
+    getRecieverIcebreakerReason(reason) {
+        return reason ? reason.replace("{sendr}", "them").replace("{sendr's}", "their").replace("{recvr}", "you").replace("{recvr's}", "your") : '';
+    }
+
+    getSenderIcebreakerReason(reason) {
+        return reason ? reason.replace("{sendr}", "you").replace("{sendr's}", "your").replace("{recvr}", "them").replace("{recvr's}", "their") : '';
+    }
+
+    getIcebreakerInfo(my_uid, their_uid) {
+        return this.usersRef.doc(my_uid).collection('messages').doc(their_uid).collection("chat").where('is_icebreaker', '==', true).orderBy('createdAt').get().then((snapshot) => {
+            return snapshot.docs.slice(-1)[0].data();
         })
     }
 

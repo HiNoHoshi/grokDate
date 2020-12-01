@@ -24,8 +24,10 @@ function profileInfo(props) {
                     </div>
                 </div>
                 <div className= 'info-column' style={{width:'60%'}}>
-                    <label>Description:</label>
-                    <p>{props.info.description}</p>
+                    <div className='info-item'>
+                        <label>Description:</label>
+                        <p>{props.info.description}</p>
+                    </div>
                 </div>
             </div>
         </div>

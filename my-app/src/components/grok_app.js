@@ -1,10 +1,11 @@
 import React, {Component} from 'react'
 import Browser from './browseProfile'
+import MyProfile from './profile'
 import Chats from './chats'
-// import Chat from './chat'
+import Settings from './settings'
+
 import Menu from './menu'
 import PopUp from './popup'
-// import { auth } from '../comm/firebaseCredentials'
 
 
 class GrokApp extends Component {
@@ -14,7 +15,11 @@ class GrokApp extends Component {
     // and show popups
     this.state = {
         section: 'Browse',
-        popup:{active:false, details:{}}
+        popup:{
+          active:false, 
+          type: null,
+          details: {}
+        }
     }
     this.changeSection = this.changeSection.bind(this)
     this.showPopup = this.showPopup.bind(this)
@@ -25,11 +30,11 @@ class GrokApp extends Component {
     this.setState({section});
   }
 
-  showPopup(active, details) { 
+  showPopup(active, type, details) { 
     this.setState(state => {
         let newState = {
           section: state.section, 
-          popup: {active:active, details:details}
+          popup: {active, type, details}
         }
         return newState
     });
@@ -45,31 +50,30 @@ class GrokApp extends Component {
   /** This methods is called when the component disappears, good for cleaning */
   componentWillUnmount() {}
 
+  
     /** This methods defines what to show in the component */
   render(){
     var displayedSection
     switch(this.state.section){
       case "Browse": 
-          displayedSection = <Browser updatePopup ={this.showPopup} dbManager={this.props.dbManager} user={this.props.user} />
+          displayedSection = <Browser updatePopup ={this.showPopup} dbManager={this.props.dbManager} />
           break;
         case "Profile": 
-        console.log("Profile")
-          // displayedSection = <Profile />
+          displayedSection = <MyProfile updatePopup ={this.showPopup} dbManager={this.props.dbManager}/>
           break;
         case "Chats": 
           displayedSection = <Chats dbManager={this.props.dbManager}/>
           break;
         case "Settings": 
-          console.log("Settings")
-          // displayedSection = <Settings />
+          displayedSection = <Settings  dbManager={this.props.dbManager} SignOut= {this.props.SignOut}/>
           break;
         default:
     }
 
     return  (
         <div className="general-container">
-            {this.state.popup.active && <PopUp details={this.state.popup.details} close={this.closePopup} dbManager={this.props.dbManager} />}
-            < Menu changeSection = {this.changeSection} SignOut= {this.props.SignOut}/>
+            {this.state.popup.active && <PopUp type = {this.state.popup.type} details={this.state.popup.details} close={this.closePopup} dbManager={this.props.dbManager} />}
+            < Menu changeSection = {this.changeSection} section = {this.state.section} SignOut= {this.props.SignOut}/>
             {displayedSection}               
         </div>
     );
