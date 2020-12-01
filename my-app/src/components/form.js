@@ -5,7 +5,7 @@ function Form (props){
     let errors = props.data.errors
 
     return  (
-        <form>
+        <form style = {props.active ? {display:'block'} : {display:'none'}}>
             <div className = 'row'>
                 <div className= "item">
                     <h4>Nickname</h4>

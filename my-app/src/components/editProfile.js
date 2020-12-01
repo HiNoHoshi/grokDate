@@ -20,11 +20,9 @@ class EditProfile extends Component {
             formActive: true,
             errors: {}  
         };
-        this.formActive= true
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.updateCommunities = this.updateCommunities.bind(this);
-        this.changeTab = this.changeTab.bind(this);
         
     }
 
@@ -45,18 +43,11 @@ class EditProfile extends Component {
     updateCommunities(communities){
         this.setState({communities})
     }
-    changeTab(formActive){
-        this.formActive = formActive
-        // this.setState({formActive})
-        console.log(formActive)
-    }
 
     handleSubmit(event) {
         event.preventDefault();
 
         if(this.validate()){
-            console.log(this.state.input)
-
             const infoUpdate = {
                 username: this.state.input.username,
                 country: this.state.input.country,
@@ -68,10 +59,10 @@ class EditProfile extends Component {
             this.setState({sending:true}) 
             // Send the basic info of the user to the database
             this.props.dbManager.registerUserInfo(this.props.user.uid, infoUpdate).then(() =>{
-                // sthis.props.setUserInfo();
+                this.props.updateProfile({infoUpdate, communities:this.state.communities})
+                this.props.close()
             });
         }
-        // this.setState({sending:false}) // Just for testing purpose
     }
 
     render(){
@@ -79,24 +70,26 @@ class EditProfile extends Component {
         <div className="edit-container">
             <h2>Edit Profile</h2>
             <div>
-                            <button className='secondary-button tab-button' className={this.state.formActive ? 'secondary-button tab-button selected': 'secondary-button tab-button'} onClick={() =>{this.setState({formActive: true})}}>Information </button>
-                            <button className='secondary-button tab-button' className={!this.state.formActive ? 'secondary-button tab-button selected': 'secondary-button tab-button'} onClick={() =>{this.setState({formActive: false})}}>Interests </button>
+                            <button className={this.state.formActive ? 'secondary-button tab-button selected': 'secondary-button tab-button'} onClick={() =>{this.setState({formActive: true})}}>Information </button>
+                            <button className={!this.state.formActive ? 'secondary-button tab-button selected': 'secondary-button tab-button'} onClick={() =>{this.setState({formActive: false})}}>Interests </button>
                         </div>
             <div className= 'edit-info'>
-            {this.state.formActive 
-                ? <Form data={this.state} handleChange={this.handleChange} isEdit={true}/>
-                : <RegisterInterests 
+                <Form data={this.state} 
+                    handleChange={this.handleChange} 
+                    isEdit={true}
+                    active = {this.state.formActive} />
+
+                <RegisterInterests 
                     dbManager={this.props.dbManager} 
                     isEdit={true}
                     user={this.props.user} 
                     sending = {this.state.sending} 
                     updateCommunities={this.updateCommunities} 
-                    error={this.state.errors.interests}/>
-            }
+                    error={this.state.errors.interests}
+                    active = {!this.state.formActive} />
+            
             </div>
       
-            
-
             <button onClick={this.handleSubmit}>Save Changes</button>
         </div>
         );
@@ -162,23 +155,22 @@ class EditProfile extends Component {
             isValid = false;
             errors["city"] = "* Please select your city.";
         }
-        // if(Object.entries(communities).length === 0){
-        //     isValid = false;
-        //     errors["interests"] = "* Please sychronize at least one of your interests.";
-        // }else{
-        //     let allHidden = true
-        //     for(var c in communities){
-        //         if(communities[c].is_visible){
-        //             allHidden = false
-        //         }
-        //     }
-        //     if(allHidden){
-        //         isValid = false;
-        //         errors["interests"] = "* Please make at least on interest visible";
-        //     }
-        // }
+        if(Object.entries(communities).length === 0){
+            isValid = false;
+            errors["interests"] = "* Please sychronize at least one of your interests.";
+        }else{
+            let allHidden = true
+            for(var c in communities){
+                if(communities[c].is_visible){
+                    allHidden = false
+                }
+            }
+            if(allHidden){
+                isValid = false;
+                errors["interests"] = "* Please make at least on interest visible";
+            }
+        }
         this.setState({errors: errors});
-        console.log(errors)
         return isValid;
     }
 

@@ -14,7 +14,8 @@ class RegisterInterests extends Component {
             subReddits: {},
             redditFav: null,
             channels: {},
-            games: {}
+            games: {},
+            unsubscribeListener: null
         }
         this.selectTag = this.selectTag.bind(this);
         this.loadSubs = this.loadSubs.bind(this);
@@ -26,7 +27,10 @@ class RegisterInterests extends Component {
 
     // Adds a listener that calls loadSubs when the database is updated
     componentDidMount () {
-        this.props.dbManager.listenToRedditSynch(this.props.user.uid, this.loadSubs)
+        console.log(this.props)
+        var unsubscribe = this.props.dbManager.listenToRedditSynch(this.props.user.uid, this.loadSubs)
+        this.setState({unsubscribeListener: unsubscribe});
+
     }
     // Adds the subreddits to the component state
     loadSubs(subReddits){
@@ -40,7 +44,9 @@ class RegisterInterests extends Component {
         this.selectTag(fav)
         this.props.updateCommunities(subReddits)
     }
-
+    componentWillUnmount() {
+        this.state.unsubscribeListener()
+    }
     // Change the visibility of a subredding in the component state
     updateTagVisibility(sub){
         this.setState(state => {
@@ -91,11 +97,18 @@ class RegisterInterests extends Component {
                 selectTag = {this.selectTag}
                 updateVisibility = {this.updateTagVisibility}/>
             );
-
         }
         
+        var editStyle = {}
+        if(this.props.isEdit){
+            editStyle.width = '100%'
+            if(!this.props.active){
+                editStyle.display = 'none'
+            }
+        }
+
         return  (
-            <div className= 'register-interest' style= {this.props.isEdit && {width: '100%'} }>
+            <div className= 'register-interest' style= {editStyle }>
                 {!this.props.isEdit && <h2>Your Interests.</h2>}
                 <div className= 'synchronize-interests'>
                     <div className= "sub-interests">

@@ -61,9 +61,17 @@ class Register extends Component {
             <img src={logo} className="register-logo" alt="logo" />
             <div className= 'register-info'>
                 <h2>Profile Information.</h2>
-                <Form data={this.state} handleChange={this.handleChange}/>
+                <Form data={this.state} 
+                    handleChange={this.handleChange}
+                    active = {true}/>
+
             </div>
-            <RegisterInterests dbManager={this.props.dbManager} user={this.props.user} sending = {this.state.sending} updateCommunities={this.updateCommunities} error={this.state.errors.interests}/>
+            <RegisterInterests dbManager={this.props.dbManager} 
+            user={this.props.user} 
+            sending = {this.state.sending} 
+            updateCommunities={this.updateCommunities} 
+            error={this.state.errors.interests}
+            active = {true}/>
 
             <button className= 'register-button' onClick={this.handleSubmit}>Create Account</button>
         </div>

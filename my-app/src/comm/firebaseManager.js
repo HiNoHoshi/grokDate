@@ -1,6 +1,5 @@
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import firebase from 'firebase/app';
-import {useState} from 'react';
 import { auth } from '../comm/firebaseCredentials'
 
 class FirebaseManager{
@@ -62,11 +61,25 @@ class FirebaseManager{
                 userExtendedInfo.age = (new Date()).getFullYear() - (new Date(year, month, day).getFullYear())
                 userExtendedInfo.location = userExtendedInfo.city + ', ' + userExtendedInfo.country
                 return this.getUserSubreddits(uid).then((subs) =>{
-                    return {... userExtendedInfo,
+                    return {...userExtendedInfo,
                     subreddits: subs}
                 }) 
             })
         return userInfo
+    }
+
+    listenToUserExtendedInfo(uid, updateComponent){
+
+        return this.usersRef.doc(uid)
+            .onSnapshot((docContent)=>{ 
+                var userExtendedInfo = docContent.data()
+                let [year, month, day] = userExtendedInfo.birthdate.split('-')
+                userExtendedInfo.age = (new Date()).getFullYear() - (new Date(year, month, day).getFullYear())
+                userExtendedInfo.location = userExtendedInfo.city + ', ' + userExtendedInfo.country
+                return this.getUserSubreddits(uid).then((subs) =>{
+                    updateComponent({...userExtendedInfo, subreddits: subs}) 
+                }) 
+            })
     }
 
     // Register the information for an existent user
@@ -101,7 +114,6 @@ class FirebaseManager{
 
     // Updates the visivility of the communities and the favorite community for the user
     updateUserCommunities(uid, communities, fav){
-        console.log('updating communities')
         const ref = this.usersRef.doc(uid).collection("subreddit")
         for(let c in communities){
                 ref.doc(c).update({is_visible: communities[c].is_visible})
@@ -278,6 +290,11 @@ class FirebaseManager{
             })
             return Promise.all(promises)
         })
+    }
+
+    deleteUser(uid){
+        console.log("Noooo, don't goooo")
+        return this.usersRef.doc(uid).delete()
     }
 
 }

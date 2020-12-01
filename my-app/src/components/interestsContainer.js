@@ -13,7 +13,6 @@ function InterestsContainer (props) {
             icon = default_icon
         }
         let {is_favorite, is_visible} = info
-        // console.log(name, is_visible)
         if (is_visible) {
             if (!favorite && is_favorite) {
                 favorite = {name: name, icon, link}

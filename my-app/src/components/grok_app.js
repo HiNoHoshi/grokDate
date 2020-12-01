@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
 import Browser from './browseProfile'
 import MyProfile from './profile'
-
 import Chats from './chats'
+import Settings from './settings'
+
 import Menu from './menu'
 import PopUp from './popup'
 
@@ -65,8 +66,7 @@ class GrokApp extends Component {
           displayedSection = <Chats dbManager={this.props.dbManager}/>
           break;
         case "Settings": 
-          console.log("Settings")
-          // displayedSection = <Settings />
+          displayedSection = <Settings  dbManager={this.props.dbManager} SignOut= {this.props.SignOut}/>
           break;
         default:
     }

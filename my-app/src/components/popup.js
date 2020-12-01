@@ -12,10 +12,20 @@ class Popup extends Component {
     render(){
         var show
         if (this.props.type === 'icebreaker'){
-            show =  <Icebreaker username={this.props.details.their_username} dbManager={this.props.dbManager} my_uid={this.props.details.my_uid} their_uid={this.props.details.their_uid} />   
+                show =  <Icebreaker 
+                username={this.props.details.their_username} 
+                dbManager={this.props.dbManager} 
+                my_uid={this.props.details.my_uid} 
+                their_uid={this.props.details.their_uid} />   
 
         }if (this.props.type === 'profileEdit'){
-            show = <EditProfile user = {this.props.details.user} dbManager = {this.props.dbManager} userInfo = {this.props.details} />
+            console.log(this.props.details)
+            show = <EditProfile 
+                user = {this.props.details.user} 
+                dbManager = {this.props.dbManager} 
+                userInfo = {this.props.details.userInfo} 
+                updateProfile= {this.props.details.updateProfile} 
+                close = {this.props.close}/>
 
         }
 

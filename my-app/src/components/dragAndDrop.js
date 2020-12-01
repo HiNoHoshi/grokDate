@@ -14,10 +14,11 @@ class DragAndDrop extends Component {
     // this.handleDragLeave = this.handleDragLeave.bind(this);
   }
   // Adds a listener that calls loadSubs when the database is updated
-  componentDidMount () {
-    console.log(this.props.fav)
-    this.setState({favorite: this.props.fav})
-  }
+  componentDidUpdate(prevProps, prevState) {
+    if(!prevProps.fav && this.props.fav){
+      this.setState({favorite: this.props.fav})
+    }
+}
   // If we drop a tag into the box, make it the favorite
   handleDrop = e => {
     e.preventDefault();
@@ -58,7 +59,6 @@ class DragAndDrop extends Component {
         onDrop={e => this.handleDrop(e)}
         onDragOver={e => this.handleDragOver(e)}
         onDragEnter={e => this.handleDragEnter(e)}
-      // onDragLeave={e => this.handleDragLeave(e)}
       >
 
       {!this.state.favorite ? <span> Drag your favorite here</span> : <span style={{textAlign:'left'}}> Favorite:</span>}

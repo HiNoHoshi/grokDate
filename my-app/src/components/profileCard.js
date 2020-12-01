@@ -11,7 +11,7 @@ class ProfileCard extends Component {
         let total_subs = this.props.info.subreddits.length
         return  (
             <div className="profile-container light-border">
-                {<ProfileInfo info = {this.props.info}/>}
+                <ProfileInfo key = {this.props.info} info = {this.props.info}/>  
                 <div className= 'interests-info'>
                     <div className= 'interests-nav'>
                         <button className='secondary-button tab-button' disabled>Channels <span>0/0</span></button>
