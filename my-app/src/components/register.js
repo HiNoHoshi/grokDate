@@ -61,8 +61,8 @@ class Register extends Component {
             <img src={logo} className="register-logo" alt="logo" />
             <div className= 'register-info'>
                 <h2>Profile Information.</h2>
-                <Form data={this.state} 
-                    handleChange={this.handleChange}
+                <Form data = {this.state} 
+                    handleChange = {this.handleChange}
                     active = {true}/>
 
             </div>

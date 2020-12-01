@@ -211,6 +211,8 @@ textarea{
 /* Landing: Register or login */
 
 .App-logo {
+  width: 12em;
+  height: auto;
   /* height: 4vmin; */
   pointer-events: none;
   display: block;
@@ -230,6 +232,9 @@ textarea{
 
 .arrow-list > li {
   list-style-image: url(images/icons/arrow_white_big.png); 
+  font-family: 'Courier New';
+  font-size: 22px;
+  margin-bottom: 0.6em;
   /* TODO: adds space between the marker and the text*/
 }
 
@@ -239,10 +244,11 @@ textarea{
   align-items: center;
   justify-content: space-between;
   column-gap: 2em;
+  width: 55%;
 }
 
 .access-card{
-  /* width: 100%; TODO: fix size*/
+  width: 100%; 
   border-radius: 15px;
   border-color: var(--main-light-color);
   border-width: 3px;
@@ -253,6 +259,12 @@ textarea{
   justify-content: center;
   text-align: center;
   padding: 50px;
+  max-width: 10em;
+}
+.access-card p{
+  text-align:left;
+  margin-bottom:2em;
+  line-height: 1.5em;
 }
 
 
@@ -260,7 +272,7 @@ textarea{
 /* Register */
 .register-container{
   display: grid;
-  width: 100%;
+  width: 90%;
   height: 100vh;
   grid-template-columns: 50% 50%;
   grid-template-rows: 15% 70% 15%;
@@ -279,6 +291,7 @@ textarea{
 .register-logo{
 grid-area: header;
 justify-self: center;
+max-width: 8em;
 }
 
 .register-button{
@@ -321,7 +334,7 @@ align-items: center;
 border-width: 1px;
 border: dashed;
 border-color: var(--background-separators);
-margin: 1em 0em;
+margin: 0.7em 0em;
 }
 
 .dropping-area span{
@@ -388,6 +401,9 @@ margin-top: 4px;
   height: 100%;
   background-color: var(--main-color);
 }
+.menu-container .App-logo{
+  max-width: 8em;
+}
 
 .menu-tabs{
   margin-top: 1em;
@@ -397,19 +413,39 @@ margin-top: 4px;
 }
 
 .menu-tab{
+  padding-top: 1em;
   border-radius: 1px;
   margin: 0.3em 0px;
   text-align: left;
   padding-left: 3em;
+  height: 3em;
+  font-size: 18px;
   font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
   text-transform: uppercase;
+  display: inline-flex;
 }
 
 .menu-tab:hover{
-  background-color: var(--main-dark-color); 
+  background-color: var(--main-light-color); 
   /* TODO: show the arrow https://www.w3schools.com/css/tryit.asp?filename=trycss_buttons_animate1*/
 }
+.menu-tab.active{
+  background-color: var(--main-dark-color);
+}
+.menu-tab.logout{
+  position: absolute;
+  left: 0px;
+  bottom:0px;
+  align-self: flex-end;
+  width: fit-content;
+  opacity: 60%;
+}
 
+.menu-tab.logout:hover{
+  background-color: transparent;
+  opacity: 100%;
+
+}
 /* Chats menu styles */
 .chats-container{
   height: 100vh;

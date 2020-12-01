@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import logo from '../images/logos/logo_big.png';
 import SignIn from './signIn'
-import SignUp from './signUp'
 
 class Landing extends Component {
     constructor(){
@@ -19,22 +18,7 @@ class Landing extends Component {
         })
     }
 
-    login(isRegistered){
-        
-    }
-
     render(){
-        var card
-        var cardOptionText 
-        if (this.state.login){
-            card = < SignIn login = {this.props.SignIn}/>
-            cardOptionText = <p>You don't have an account yet? <a href = '#' onClick= {this.changeCard} >Sign up</a></p>
-        }else{
-            card = < SignUp login = {this.props.SignIn} />
-            cardOptionText = <p>Already have an account? <a href = '#' onClick= {this.changeCard}>Sign in</a></p>
-
-        }
-
         return  (
         <div className="landing-container">
 
@@ -47,8 +31,7 @@ class Landing extends Component {
                 </ul>
             </div>
             <div style=  {{textAlign: 'center'}}>
-            {card}
-            {cardOptionText}
+            < SignIn login = {this.props.SignIn}/>
             </div>
 
         </div>

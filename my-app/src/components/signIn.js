@@ -5,9 +5,9 @@ class SignIn extends Component {
     render(){
         return  (
             <div className='access-card'>
-                <h1>Sign in</h1>
-                {/* <input type="email"></input> */}
-                <button onClick= {(event) => this.props.login()}>Sign in</button>
+                <h1>Enter</h1>
+                <p>Enter to grok.date usign you Google account, and enjoy the new esperience </p>
+                <button onClick= {(event) => this.props.login()}>Enter with Google</button>
             </div>
         );
     }

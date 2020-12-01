@@ -73,7 +73,7 @@ class GrokApp extends Component {
     return  (
         <div className="general-container">
             {this.state.popup.active && <PopUp type = {this.state.popup.type} details={this.state.popup.details} close={this.closePopup} dbManager={this.props.dbManager} />}
-            < Menu changeSection = {this.changeSection} SignOut= {this.props.SignOut}/>
+            < Menu changeSection = {this.changeSection} section = {this.state.section} SignOut= {this.props.SignOut}/>
             {displayedSection}               
         </div>
     );
