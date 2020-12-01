@@ -41,7 +41,7 @@ class Request extends Component {
                 {!this.state.profile_info || !this.state.icebreaker_chat ? null : 
                     <div>
                         <PCard key={this.state.profile_info.uid} info={this.state.profile_info} />
-                        <p><a className='profile-username'>{this.state.icebreaker_chat.uid == this.state.uid1 ? 'Me': this.state.profile_info.username}</a>: {this.state.icebreaker_chat.text}</p>
+                        <h2><a className='profile-username'>{this.state.icebreaker_chat.uid == this.state.uid1 ? 'Me': this.state.profile_info.username}</a>: {this.state.icebreaker_chat.text}</h2>
                         <Post data={this.state.icebreaker_chat.icebreaker} />
                     </div>
                 }
