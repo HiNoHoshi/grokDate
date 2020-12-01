@@ -211,8 +211,6 @@ textarea{
 /* Landing: Register or login */
 
 .App-logo {
-  width: 12em;
-  height: auto;
   /* height: 4vmin; */
   pointer-events: none;
   display: block;
@@ -403,7 +401,8 @@ margin-top: 4px;
   /* min-width: 16em; */
 }
 .menu-container .App-logo{
-  max-width: 8em;
+  max-width: 70%;
+  max-height: auto;
 }
 
 .menu-tabs{
