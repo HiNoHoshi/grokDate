@@ -3,7 +3,7 @@ import ProfileInfo from './profileInfo'
 import InterestsContainer from './interestsContainer'
 
 class ProfileCard extends Component {
-    render(){
+    render() {
         let num_visible_subs = this.props.info.subreddits.filter((sub) => {
             let name = Object.keys(sub)[0]
             return sub[name].is_visible

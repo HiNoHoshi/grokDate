@@ -203,10 +203,10 @@ class FirebaseManager{
 
     getMessagesBetween2Users(uid1, uid2){
 
-        if(!uid1 || uid1.length == 0){
+        if(!uid1 || uid1.length === 0){
             uid1 = "NaN";
         }
-        if(!uid2 || uid2.length == 0){
+        if(!uid2 || uid2.length === 0){
             uid2 = "NaN";
         }
         var messagesRef = this.usersRef.doc(uid1).collection('messages').doc(uid2);
@@ -224,6 +224,23 @@ class FirebaseManager{
 
     getTimestamp(){
         return firebase.firestore.FieldValue.serverTimestamp();
+    }
+
+    // Returns the information about messages & requests (e.g. [uid: 123, is_req_accepted: false, ...])
+    getAllContacts() {
+        var uid = auth.currentUser.uid;
+        var messagesRef = this.usersRef.doc(uid).collection('messages');
+
+        return messagesRef.get().then((snapshot) => {
+            let contacts = []
+            snapshot.docs.map(doc => {
+                var id = doc.id;
+                var data = doc.data();
+                data.uid = id;
+                contacts.push(data);
+            });
+            return contacts
+        })
     }
 
     getAllOtherUsers(my_uid) {
@@ -250,6 +267,26 @@ class FirebaseManager{
                 }
             })
             return Promise.all(promises)
+        })
+    }
+
+    getUserProfileInfo(uid) {
+        return this.usersRef.doc(uid).get().then((userDoc) => {
+            var userData = userDoc.data()
+            var uid = userDoc.id
+            // Don't include incomplete profiles
+            if (!userData.username) {
+                console.log('Incomplete profile')
+                return
+            }
+            userData.uid = uid
+            let [year, month, day] = userData.birthdate.split('-')
+            userData.age = (new Date()).getFullYear() - (new Date(year, month, day).getFullYear())
+            userData.location = userData.city + ', ' + userData.country
+            return this.getUserSubreddits(uid).then((subreddits) => {
+                userData.subreddits = subreddits
+                return userData
+            })
         })
     }
 

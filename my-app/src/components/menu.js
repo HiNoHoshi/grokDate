@@ -4,7 +4,7 @@ import logo from '../images/logos/logo_big.png';
 
 class Menu extends Component {
     render(){
-     // If props.active == to what? the what displays the arrow
+     // If props.active === to what? the what displays the arrow
         return  (
         <div className="menu-container">
             <img src={logo} className="App-logo" alt="logo" />

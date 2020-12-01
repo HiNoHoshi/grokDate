@@ -445,7 +445,7 @@ margin-top: 4px;
   padding-left: 1em;
   font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
   font-size: 12px;
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   background-color: var(--background-light-color);
 }
 
@@ -649,6 +649,12 @@ input {
 
 ::-webkit-inner-spin-button {
   display: none;
+}
+
+/* Request 
+  TODO: don't know how to make align correctly */
+.request-container {
+  margin: 1em;
 }
 
 /* @media (prefers-reduced-motion: no-preference) {

@@ -127,7 +127,7 @@ class Icebreaker extends Component {
                             active={prevPostActive} 
                             direction = 'Back' change = {this.prevPost}
                         />
-                        <button>Send message</button>
+                        <button onClick={this.handleSendIcebreaker} > Send message</button>
                         <ArrowButton 
                             active={nextPostActive} 
                             direction = 'Next'change = {this.nextPost}
@@ -142,6 +142,10 @@ class Icebreaker extends Component {
                 {icebreaker}
             </div>
         );
+    }
+
+    handleSendIcebreaker() {
+        
     }
 
 

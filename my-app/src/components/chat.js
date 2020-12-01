@@ -88,7 +88,7 @@ function PrivateChat(props) {
         <span ref={dummy}></span>
         </main>
 
-        { uid2.length == 0 ? <p className='no-results'>Select a message to view</p> :
+        { uid2.length === 0 ? <p className='no-results'>Select a message to view</p> :
         <form onSubmit={sendMessage}>
 
             <input value={formValue} onChange={(event) => setFormValue(event.target.value)} placeholder="// type your message" />
