@@ -12,37 +12,50 @@ class BrowseProfiles extends Component {
             profiles:[],
             activeProfile: null,
         }
+        this._isMounted = false;
         this.my_uid = null
         this.prevProfile = this.prevProfile.bind(this)
         this.nextProfile = this.nextProfile.bind(this)
     }
 
     componentDidMount() {
+        this._isMounted = true;
         // charge the user profiles from the database
         this.my_uid = auth.currentUser.uid;
         this.props.dbManager.getAllOtherUsers(this.my_uid).then((profiles) => {
-            this.setState({profiles: profiles})
-            this.setState({activeProfile: profiles[0], activePID: 0})
+            if (this._isMounted) {
+                this.setState({profiles: profiles, activeProfile: profiles[0], activePID: 0})
+            }
         })
     }
 
     prevProfile(){
-        this.setState(state => {
-            return {activePID: state.activePID-1}
-        });
+        if (this._isMounted) {
+            this.setState(state => {
+                return {activePID: state.activePID-1}
+            });
+        }
     }
 
     nextProfile(){
-        this.setState(state => {
-            return {activePID: state.activePID+1}
-        });
+        if (this._isMounted) {
+            this.setState(state => {
+                return {activePID: state.activePID+1}
+            });
+        }
     }
 
     componentDidUpdate(prevProps, prevState) {
         if(prevState.activePID  !== this.state.activePID){
             const activeProfile = this.state.profiles[this.state.activePID]
-            this.setState({activeProfile})
+            if (this._isMounted) {
+                this.setState({activeProfile})
+            }
         }
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     render(){

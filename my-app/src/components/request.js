@@ -13,23 +13,28 @@ class Request extends Component {
             uid2: this.props.uid2,
             icebreaker_chat: null,
         }
+        this._isMounted = false;
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     componentDidMount() {
         // charge the user profiles from the database
         this.props.dbManager.getUserProfileInfo(this.props.uid2).then((profile_info) => {
             this.props.dbManager.getIcebreakerInfo(this.props.uid1, this.props.uid2).then((ice_info) => {
-                this.setState({profile_info: profile_info, uid2: this.props.uid2, icebreaker_chat: ice_info});
+                if (this._isMounted) this.setState({profile_info: profile_info, uid2: this.props.uid2, icebreaker_chat: ice_info});
             })
         })
     }
 
     componentDidUpdate() {
         if (this.props.uid2 !== this.state.uid2) {
-            this.setState({uid2: this.props.uid2})
+            if (this._isMounted) this.setState({uid2: this.props.uid2})
             this.props.dbManager.getUserProfileInfo(this.props.uid2).then((profile_info) => {
                 this.props.dbManager.getIcebreakerInfo(this.props.uid1, this.props.uid2).then((ice_info) => {
-                    this.setState({profile_info: profile_info, uid2: this.props.uid2, icebreaker_chat: ice_info});
+                    if (this._isMounted) this.setState({profile_info: profile_info, uid2: this.props.uid2, icebreaker_chat: ice_info});
                 })
             })
         }
