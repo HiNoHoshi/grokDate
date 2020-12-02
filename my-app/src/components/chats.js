@@ -17,6 +17,7 @@ class Chats extends Component {
             selected_uid: null,
             selected_type: null,
             selected_username: null,
+            selected_pic: null
         };
         this._isMounted = false;
         this.handleAccept = this.handleAccept.bind(this);
@@ -104,15 +105,26 @@ class Chats extends Component {
                     <div className='chat-menu-tabs'>
                         <p className='chat-type-header'>Chats</p>
                         {this.state.accepted_chats.map((info,idx)=> (
-                            <button className={this.state.selected_uid === info.uid ? 'chat-menu-tab active' : 'chat-menu-tab'} key={info.uid} value={info.uid} onClick={() => this.setState({ selected_uid: info.uid, selected_username: info.username, selected_type: 'CHAT' })}>
-                            {this.state.selected_uid === info.uid && <img src={arrow} alt = "arrow" style={{paddingRight:'0.5em', 'height': '1em', 'width': 'auto'}}/>}{info.username} </button>
+                            <button 
+                                className={this.state.selected_uid === info.uid ? 'chat-menu-tab active' : 'chat-menu-tab'} 
+                                key={info.uid} 
+                                value={info.uid} 
+                                onClick={() => this.setState({ selected_uid: info.uid, selected_username: info.username, selected_type: 'CHAT' })}>
+                                {this.state.selected_uid === info.uid && <img src={arrow} alt = "arrow" style={{paddingRight:'0.5em', 'height': '1em', 'width': 'auto'}}/>}
+                                <img className= 'profile-pic' src={info.profilePic ? info.profilePic: defaultPP}/>
+                                {info.username}
+                            </button>
                         ))}
                     </div>
                 </div>
                     { (this.state.selected_uid && this.state.selected_type === 'CHAT') ? 
                         <div className='chat-container'>
-                        <h2 className='chat-header'>Chat with <a className='profile-username'>{this.state.selected_username}</a></h2>
-                        <Chat dbManager={this.props.dbManager} uid1={auth.currentUser.uid} uid2={this.state.selected_uid} />
+                            <Chat dbManager={this.props.dbManager} 
+                                uid1={auth.currentUser.uid}
+                                uid2={this.state.selected_uid}
+                                u2Username = {this.state.selected_username}
+                                u2Pic = {this.state.selected_pic ? this.state.selected_pic: defaultPP}
+                                 />
                         </div>
 
                         : (this.state.selected_uid && this.state.selected_type === 'REQUEST') ? 

@@ -5,8 +5,8 @@ import Post from "./post"
 function Chat(props){
 
     return (
-        <div className="Chat">
-            <PrivateChat dbManager={props.dbManager} uid1={props.uid1} uid2={props.uid2}/>
+        <div className="chat">
+            <PrivateChat dbManager={props.dbManager} uid1={props.uid1} uid2={props.uid2} u2Username = {props.u2Username} u2Pic = {props.u2Pic}/>
         </div>
       );
 
@@ -78,19 +78,23 @@ function PrivateChat(props) {
     }
 
     const [formValue, setFormValue] = useState('');
-
+    console.log(props)
     return (
     <>
+        <h2 className='chat-header'>
+          <img className= 'profile-pic' src={props.u2Pic}/>
+          <a className='profile-username'>{props.u2Username}</a>
+          </h2>
+
         <main>
-        {<IcebreakerMessage/>}
-        {messages1 && messages1.map(msg => <ChatMessage key={msg.id} message={msg}/>)}
-        <span ref={dummy}></span>
+          {messages1 && messages1.map(msg => <ChatMessage key={msg.id} message={msg}/>)}
+          <span ref={dummy}/>
         </main>
 
         { uid2.length === 0 ? <p className='no-results'>Select a message to view</p> :
-        <form onSubmit={sendMessage}>
+        <form className= 'chat-input' onSubmit={sendMessage}>
 
-            <input value={formValue} onChange={(event) => setFormValue(event.target.value)} placeholder="// type your message" />
+            <input value={formValue} onChange={(event) => setFormValue(event.target.value)} placeholder="Type something here … " />
 
             <button className = 'send-chat-button' type="submit" disabled={!formValue}>Send</button>
 
@@ -110,12 +114,6 @@ function ChatMessage(props) {
       <p>{text}</p>
     </div>
     {is_icebreaker ? <Post data={icebreaker} /> : null}
-  </>)
-}
-
-//TODO add icebreaker here to top of messages
-function IcebreakerMessage(props){
-  return(<>
   </>)
 }
 

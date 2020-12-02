@@ -66,6 +66,7 @@ button:disabled{
 hr{
   border: 1px solid var(--background-separators);
   margin: 0px;
+  margin-top: 0.3em;
   opacity: 40%;
 }
 h1{
@@ -559,6 +560,7 @@ margin-top: 4px;
 .post-container a{
   text-decoration: none;
   font-weight:400;
+  line-height: 1.5em;
 }
 .icebreaker .item{
   display: inline-flex;
@@ -706,20 +708,62 @@ margin-top: 4px;
 }
 
 .chat-header {
-  outline: 0;
+  /* outline: 0;
   border-style: solid;
   border-width: 0 0 3px;
-  border-color: var(--background-separators);
-  background-color: transparent;
-  padding-bottom: 1em;
+  border-color: var(--background-separators); */
+  background-color: var(--background-dark-color);
+  padding: 0px 1em;
+  height: 2.5em;
+  display: inline-flex;
+  align-items: center;
+  margin: 0px;
 }
-
+.chat-header .profile-pic{
+  max-width: 1.5em;
+  height: 1.5em;
+  margin-right: 1em;
+}
+main{
+  width: 90%;
+  justify-self: center;
+}
+.chat{
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 3em auto 2em;
+  align-items: stretch;
+}
 .message {
   display: flex;
   align-items: center;
 }
+.chat-input {
+  /* border-width: 2px;
+  border-style: solid;
+  border-color: var(--background-separators); */
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5px 0.5em;
+}
+.chat-input input{
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 50px;
+  padding: 0.2em 1em 0.5px 1em;
+  border-color: var(--background-separators);
+  height: 2em;
+  margin-right: 1em;
+}
+.send-chat-button{
+  font-size: 14px;
+  min-width: 6em;
+  height: 3em;
+}
 
 .sent {
+  border-radius: 0px 6px 6px 6px;
   flex-direction: row-reverse;
 }
 
