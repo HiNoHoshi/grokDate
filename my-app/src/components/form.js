@@ -15,7 +15,7 @@ function Form (props){
             </div>
             <div className = 'row'>
                 <div className= "item" style = {{maxWidth: 'fit-content'}}>
-                    <h4>birthdate</h4>
+                    <h4>Birthdate</h4>
                     <input type="date" placeholder="mm/dd/yyyy" name= "birthdate" value={input.birthdate} onChange={props.handleChange} disabled={props.isEdit}></input>    
                     <div className="form-error">{errors.birthdate}</div>
                 </div>
