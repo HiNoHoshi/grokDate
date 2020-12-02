@@ -74,7 +74,11 @@ class Chats extends Component {
     handleDecline() {
         let uid1 = auth.currentUser.uid;
         let uid2 = this.state.selected_uid;
-        this.props.dbManager.declineRequest(uid1, uid2);
+        this.props.dbManager.declineRequest(uid1, uid2).then(() => {
+            this.recalculateAllChatStatuses().then(() => {
+                if (this._isMounted) this.setState({selected_type: null});
+            })
+        });
     }   
 
     // handleRecind() {
