@@ -36,16 +36,19 @@ class Request extends Component {
     }
 
     render() {
-        return (
-            <div className="Request">
-                {!this.state.profile_info || !this.state.icebreaker_chat ? null : 
-                    <div className='content-container'>
+        var request = <div className="request-container"></div>
+        if (!(!this.state.profile_info || !this.state.icebreaker_chat)){
+            request = <div className="request-container">
                         <PCard key={this.state.profile_info.uid} info={this.state.profile_info} />
-                        <h2><a className='profile-username'>{this.state.icebreaker_chat.uid == this.state.uid1 ? 'Me': this.state.profile_info.username}</a>: {this.state.icebreaker_chat.text}</h2>
-                        <Post data={this.state.icebreaker_chat.icebreaker} />
+                        <div className='request'>
+                            <h2><a className='profile-username'>{this.state.icebreaker_chat.uid == this.state.uid1 ? 'Me': this.state.profile_info.username}</a>: {this.state.icebreaker_chat.text}</h2>
+                            <Post data={this.state.icebreaker_chat.icebreaker} />
+                        </div>
                     </div>
-                }
-            </div>
+        }
+
+        return (
+            request
         )
     }
 

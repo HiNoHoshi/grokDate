@@ -104,39 +104,57 @@ class Icebreaker extends Component {
             let prevPostActive = post_idx > 0
             let nextPostActive = post_idx < icebreakers[subreddit_idx].posts.length - 1
             icebreaker = (
-                <div>
-                    <h4>Choose a message</h4>
-                    <select value={this.state.message} onChange={this.handleMessageChange}>
-                        <option value="Did you see this?">Did you see this?</option>
-                        <option value="What do you think about this?">What do you think about this?</option>
-                    </select>
-                    <h4>Choose a subreddit</h4>
-                    {console.log(name)}
-                    <a className= 'subreddit-name' target="_blank" rel="noreferrer" href={'https://www.reddit.com/r/'+name}>{'r/' + name}</a>
-                    <p className='reason'>{reason}</p>
-                    <div className='profile-nav'>
+                <div>   
+                    <div>
+                        <h4>Choose a message</h4>
+                        <select value={this.state.message} onChange={this.handleMessageChange}>
+                            <option value="Did you see this?">Did you see this?</option>
+                            <option value="What do you think about this?">What do you think about this?</option>
+                        </select>
+                    </div>
+                    <div  style={{marginTop: '1.5em'}}>
+                        <h4>Choose a subreddit</h4>
+                        <div style={{display:'inline-flex'}}>
                         <ArrowButton 
                             active={prevSubredditActive} 
-                            direction = 'Back' change = {this.prevSubreddit}
-                        />
+                            direction = 'Back' 
+                            change = {this.prevSubreddit}
+                            simple = {true} />
+
+                        <div>
+                            <a className= 'subreddit-name' target="_blank" rel="noreferrer" href={'https://www.reddit.com/r/'+name}>{'r/' + name}</a>
+                            <p className='reason'>{reason}</p>
+                        </div>
                         <ArrowButton 
-                            active={nextSubredditActive} 
-                            direction = 'Next'change = {this.nextSubreddit}
-                        />
+                        active={nextSubredditActive} 
+                        direction = 'Next'
+                        change = {this.nextSubreddit}
+                        simple = {true} />
+
                     </div>
-                    <h4>Choose a post</h4>
-                    {post}
-                    <div className='profile-nav'>
+
+                    </div>
+                    
+                    <div style={{display:'inline-flex',width:'80%', justifyContent: 'space-between', marginBottom: '1em'}}>
+
                         <ArrowButton 
                             active={prevPostActive} 
-                            direction = 'Back' change = {this.prevPost}
-                        />
-                        <button onClick={this.handleSendIcebreaker} > Send message</button>
+                            direction = 'Back' 
+                            change = {this.prevPost}
+                            simple = {true} />
+                        <div>
+                        <h4 style = {{textAlign: 'left'}}>  Choose a post</h4>
+                        {post}
+                        </div>
                         <ArrowButton 
                             active={nextPostActive} 
-                            direction = 'Next'change = {this.nextPost}
-                        />
-                    </div>
+                            direction = 'Next'
+                            change = {this.nextPost}
+                            simple = {true} />
+                    
+                </div>
+                    <button onClick={this.handleSendIcebreaker} > Send message</button>
+
                 </div>
             )
         }

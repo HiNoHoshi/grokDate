@@ -63,6 +63,11 @@ button:disabled{
   opacity: 20%;
 }
 
+hr{
+  border: 1px solid var(--background-separators);
+  margin: 0px;
+  opacity: 40%;
+}
 h1{
   font-size: 40px;
   font-family: 'Courier New', Courier, monospace;
@@ -166,7 +171,9 @@ textarea{
  border-color: var(--background-separators);
  border-style: solid;
 }
-
+.profile-pic{
+  border-radius: 50%;
+}
 .App-link {
   color: #61dafb;
 }
@@ -185,7 +192,7 @@ textarea{
   height: 100vh;
   width: 100%;
   display: grid;
-  grid-template-columns: 300px auto;
+  grid-template-columns: 12em auto;
   align-items: stretch;
 }
 
@@ -204,22 +211,26 @@ textarea{
   background-color: var(--background-color);
   display: flex;
   flex-direction: column;
-  max-width: 60%;
+  width: 50%;
+  align-items: center;
+
 }
 
 
 /* Landing: Register or login */
 
 .App-logo {
-  /* width: 12em; */
-  /* height: auto; */
-  /* height: 4vmin; */
   pointer-events: none;
   display: block;
   margin-left: auto;
   margin-right: auto;
   margin-top: 60px;
 }
+#App-punch-line img{
+  max-width: 13em;
+}
+
+
 .App-header {
   min-height: 100vh;
   display: flex;
@@ -429,7 +440,6 @@ margin-top: 4px;
 
 .menu-tab:hover{
   background-color: var(--main-light-color); 
-  /* TODO: show the arrow https://www.w3schools.com/css/tryit.asp?filename=trycss_buttons_animate1*/
 }
 .menu-tab.active{
   background-color: var(--main-dark-color);
@@ -448,56 +458,6 @@ margin-top: 4px;
   opacity: 100%;
 
 }
-/* Chats menu styles */
-.chats-container{
-  height: 100vh;
-  width: 100%;
-  display: grid;
-  grid-template-columns: 200px auto;
-  align-items: stretch;
-}
-
-.chat-menu-container{
-  font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
-  height: 100%;
-  background-color: var(--background-light-color);
-}
-
-.chat-type-header{
-  font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
-  text-transform: uppercase;
-  padding-left: 1em;
-}
-
-.chat-menu-tabs{
-  margin-top: 1em;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-.chat-menu-tab{
-  border-radius: 1px;
-  margin: 0.3em 0px;
-  text-align: left;
-  padding-left: 1em;
-  /* font-family: 'Proxima Nova', 'Nunito Sans', sans-serif; */
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 14px;
-  /* text-transform: uppercase; */
-  background-color: var(--background-light-color);
-}
-
-.chat-menu-tab:hover{
-  background-color: var(--background-separators); 
-  /* TODO: show the arrow https://www.w3schools.com/css/tryit.asp?filename=trycss_buttons_animate1*/
-}
-
-.chat-menu-tab.active{
-  background-color: var(--background-color); 
-  color: var(--main-color)
-  /* TODO: show the arrow https://www.w3schools.com/css/tryit.asp?filename=trycss_buttons_animate1*/
-}
 
 /* Profile browser */
 
@@ -513,12 +473,24 @@ margin-top: 4px;
   align-self: center;
   margin-bottom: 1em;
 }
-.profile-info h2{
+.profile-header {
   background-color: var(--background-dark-color);
-  align-self: start;
-  margin: 0px;
-  padding: 0.5em 0;
+  display: inline-flex;
+  border-radius: 6px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
 }
+
+.profile-header .profile-pic{
+  max-width: 2em;
+  height: 2em;
+  margin-right: 1em;
+}
+.profile-username{
+  color: var(--main-color);
+}
+
 
 .profile-info label{
   margin-right: 1em;
@@ -571,18 +543,36 @@ margin-top: 4px;
   align-content: center;
   padding: 1em;
   text-align: center;
-
 }
 .icebreaker select{
   width: fit-content;
   align-self: center;
 }
-
 .post-container{
  padding: 1em;
- margin: 1em;
+ /* margin: 1em; */
  align-content: center;
  text-align: left;
+ min-width: 10em;
+ /* width: 80%; */
+}
+.post-container a{
+  text-decoration: none;
+  font-weight:400;
+}
+.icebreaker .item{
+  display: inline-flex;
+  align-items: center;
+}
+.icebreaker h2{
+  font-size: 28px;
+  margin-top: 0px;
+}
+
+.icebreaker h4{
+  font-size: 22px;
+  color: var(--subtitle-text-color);
+  margin-right: 1em;
 }
 
 .platform-icon {
@@ -621,8 +611,6 @@ margin-top: 4px;
   margin: 0em 0em;
   padding: 0em 0em;
   overflow-wrap: break-word;
-  /* word-break: break-word; */
-  /* display: inline-block; */
 }
 
 /* For the profile edition */
@@ -647,24 +635,74 @@ margin-top: 4px;
   font-size: 16px;
 }
 
-/* 
-.post-url {
-  font-size: 12px;
+/* Chats menu styles */
+
+.chats-container{
+  width: 100%;
+  display: grid;
+  grid-template-columns: 9em auto;
+  align-items: stretch;
 }
 
-.post-img {
-  width: 30px;
-  height: 30px;
-} */
+.chat-menu-container{
+  font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
+  background-color: var(--background-light-color);
+  padding-top: 2em;
+}
 
-.profile-username {
+.chat-type-header{
+  font-family: 'Courier New', Courier, monospace;
+  color: var(--text-dark-color);
+  text-transform: uppercase;
+  padding-left: 1em;
+  font-weight: bold;
+}
+
+.chat-menu-tabs{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.chat-menu-tab{
+  text-align: left;
+  padding-left: 1em;
+  border-radius: 1px;
+  display: inline-flex;
+  align-items: center;
+  height: 3em;
+  font-weight: 600;
+  font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
+  font-size: 14px;
+  background-color: var(--background-light-color);
+}
+.chat-menu-tab img{
+  height: 2em;
+  width: 2em;
+  margin-right: 1em;
+}
+
+.chat-menu-tab:hover{
+  background-color: var(--background-color); 
+}
+
+.chat-menu-tab.active{
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--background-color); 
   color: var(--main-color)
+  /* TODO: show the arrow https://www.w3schools.com/css/tryit.asp?filename=trycss_buttons_animate1*/
 }
+
 
 /* Chat */
 
 .chat-container{
-  margin: 1em;
+  height: 100vh;
+  flex-direction: column;
+  display: flex;
+  overflow: scroll;
+  justify-content: center;
 }
 
 .chat-header {
@@ -698,14 +736,34 @@ margin-top: 4px;
   padding: 0.5em;
   border-radius: 30px;
 }
+.request-container {
+  overflow-y: scroll;
+  height: 100vh;
+  padding: 2em;
+}
+.request-container .profile-container{
+ width: auto;
+ margin:0;
+}
+.request h2{
+  font-size: 22px;
+}
+.request-answer{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 1em;
+}
+
 
 input {
   width: 100%;
 }
 
 .no-results {
-  color: gray;
+  color: var(--subtitle-text-color);
   font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
+  align-self: center;
 }
 
 #tooltip
@@ -752,11 +810,7 @@ input {
   display: none;
 }
 
-/* Request 
-  TODO: don't know how to make align correctly */
-.request-container {
-  margin: 1em;
-}
+
 
 /* @media (prefers-reduced-motion: no-preference) {
   .App-logo {

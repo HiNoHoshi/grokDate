@@ -1,9 +1,14 @@
 import React from 'react'
+import defaultPP from  '../images/profile-pics/default_profile_pic.jpg';
+
 
 function profileInfo(props) {
     return  (
         <div className= 'profile-info'>
-            <h2><div className='profile-username'>{props.info.username}</div></h2>
+            <div className='profile-header'>
+                <img className= 'profile-pic' src={props.info.profilePic ? props.info.profilePic: defaultPP}/>
+                <h2 className='profile-username'>{props.info.username}</h2>
+            </div>
             <div className='info'>
                 <div className= 'info-column' style={{width:'40%'}}>
                     <div className='info-item'>
