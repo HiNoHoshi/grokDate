@@ -13,6 +13,7 @@ class Icebreaker extends Component {
             post_idx: -1,
             icebreakers: [], // E.g [['UIUC', 'r/UIUC is both of your favorites!', [posts...]]]
             message: 'Did you see this?',
+            sent: false,
         }
         this._isMounted = false
         this.prevSubreddit = this.prevSubreddit.bind(this)
@@ -153,8 +154,8 @@ class Icebreaker extends Component {
                             simple = {true} />
                     
                 </div>
-                    <button onClick={this.handleSendIcebreaker} > Send message</button>
-
+                    {this.state.sent ? <h4>Message sent to <a className='profile-username'>{this.props.username}</a>!</h4> : null}
+                    <button disabled={this.state.sent} onClick={this.handleSendIcebreaker} > Send message</button>
                 </div>
             )
         }
@@ -170,7 +171,6 @@ class Icebreaker extends Component {
         this.setState({message: e.target.value});
     }
 
-    // TODO: store icebreaker as message in database. Switch to chats screen or just exit popup
     handleSendIcebreaker() {
         let {icebreakers, loading, subreddit_idx, post_idx} = this.state;
         let subreddit = icebreakers[subreddit_idx];
@@ -192,8 +192,10 @@ class Icebreaker extends Component {
             uid: this.props.my_uid,
         }
         this.props.dbManager.sendIcebreaker(icebreaker, this.props.my_uid, this.props.their_uid, this.props.username).then(() => {
-            // TODO: give confirmation that icebreaker was sent
-            this.props.close();
+            this.setState({sent: true})
+            setTimeout(() => {
+                if (this._isMounted) this.props.close();
+            }, 3000)
         })
     }
 

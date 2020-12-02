@@ -5,21 +5,32 @@ import { auth } from '../comm/firebaseCredentials'
 class MyProfile extends Component {
     constructor(){
         super();
+        this._isMounted = false;
         this.state = {userInfo:null, userInfoUnsubscribe: null}
         this.my_uid = null
         this.updateProfile = this.updateProfile.bind(this)
     }
 
     componentDidMount() {
+        this._isMounted = true;
         this.my_uid = auth.currentUser.uid;
         this.props.dbManager.getUserExtendedInfo(this.my_uid).then((result)=>{
-            this.setState({userInfo: {...result, user: auth.currentUser}})
+            if (this._isMounted) {
+                this.setState({userInfo: {...result, user: auth.currentUser}})
+            }
         })
-
     }
+
+    componentWillUnmount() {
+        this._isMounted = false;
+    }
+
     // Updates the profile information after editing it 
     // TODO: discover why in the world only the subreddits are being updated
     updateProfile(updatedUserInfo){
+        if (!this._isMounted) {
+            return;
+        }
         this.setState(state => {
             const updInfo = updatedUserInfo.infoUpdate;
             const updComm = updatedUserInfo.communities;

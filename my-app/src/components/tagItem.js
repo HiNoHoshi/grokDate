@@ -52,11 +52,20 @@ class TagItem extends Component {
             marginRight:'0.4em'
         }
 
+        let onDrag, onDragEnd
+        if (this.props.editable) {
+            onDrag = e => {this.props.selectTag(this.props.name)};
+            onDragEnd = e => {this.props.selectTag(null)}
+        } else {
+            onDrag = () => null
+            onDragEnd = () => null
+        }
+
         return  (
             <div className= {this.state.visible ? 'tag': 'tag actionable'}  
             draggable = {this.state.visible && this.props.editable} //TODO: Check if it still works in the registration
-            onDrag={e => {this.props.selectTag(this.props.name)}} 
-            onDragEnd={e =>{this.props.selectTag(null)}}
+            onDrag={onDrag}
+            onDragEnd={onDragEnd}
             style = {tagStyle}>
 
                 {this.props.image && 
