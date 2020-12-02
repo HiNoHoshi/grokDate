@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from 'react'
+import React, { Component } from 'react'
 import Chat from './chat'
 import Request from './request'
 import { auth } from '../comm/firebaseCredentials'
@@ -22,18 +22,15 @@ class Chats extends Component {
         this.handleAccept = this.handleAccept.bind(this);
         this.handleDecline = this.handleDecline.bind(this);
         // this.handleRecind = this.handleRecind.bind(this);
+        this.recalculateAllChatStatuses = this.recalculateAllChatStatuses.bind(this);
     }
 
-    componentDidMount() {
-        // Get requests and chats from db
-        this._isMounted = true;
-        this.props.dbManager.getAllContacts().then(contacts => {
+    recalculateAllChatStatuses() {
+        return this.props.dbManager.getAllContacts().then(contacts => {
             var pending_requests = []
             var recieved_requests = []
-            // var declined_requests = []
             var accepted_chats = []
-            // var blocked_them = []
-            // var blocked_me = []
+            // var declined_requests, blocked_them, blocked_me = []
             for (const contact of contacts) {
                 if (!contacts.is_blocked) {
                     // Get incoming requests that I haven't responded to
@@ -49,7 +46,14 @@ class Chats extends Component {
             if (this._isMounted) {
                 this.setState({ recieved_requests: recieved_requests, accepted_chats: accepted_chats, pending_requests: pending_requests });
             }
+            return true
         });
+    }
+
+    componentDidMount() {
+        // Get requests and chats from db
+        this._isMounted = true;
+        this.recalculateAllChatStatuses()
     }
 
     componentWillUnmount() {
@@ -59,8 +63,11 @@ class Chats extends Component {
     handleAccept() {
         let uid1 = auth.currentUser.uid;
         let uid2 = this.state.selected_uid;
+        // TODO: move chat to list
         this.props.dbManager.acceptRequest(uid1, uid2).then(() => {
-            this.setState({selected_type: 'CHAT'});
+            this.recalculateAllChatStatuses().then(() => {
+                if (this._isMounted) this.setState({selected_type: 'CHAT'});
+            })
         });
     }
 
@@ -83,7 +90,7 @@ class Chats extends Component {
                         {this.state.recieved_requests.map((info,idx)=> (
                             <button className={this.state.selected_uid === info.uid ? 'chat-menu-tab active' : 'chat-menu-tab'} key={info.uid} value={info.uid} onClick={() => this.setState({ selected_uid: info.uid, selected_username: info.username, selected_type: 'REQUEST' })} >
                                 {this.state.selected_uid === info.uid && <img src={arrow} alt = "arrow" style={{paddingRight:'0.5em', 'height': '1em', 'width': 'auto'}}/>}
-                                <img className= 'profile-pic' src={info.profilePic ? info.profilePic: defaultPP}/>
+                                <img alt='profile' className= 'profile-pic' src={info.profilePic ? info.profilePic: defaultPP}/>
                                 {info.username} 
                             </button>
                         ))}
@@ -95,7 +102,7 @@ class Chats extends Component {
                             <button className={this.state.selected_uid === info.uid ? 'chat-menu-tab active' : 'chat-menu-tab'} key={info.uid} value={info.uid} onClick={() => this.setState({ selected_uid: info.uid, selected_username: info.username, selected_type: 'PENDING' })}>
                                 {this.state.selected_uid === info.uid && 
                                     <img src={arrow} alt = "arrow" style={{paddingRight:'1em', 'height': '1em', 'width': 'auto'}}/>}                
-                                <img className= 'profile-pic' src={info.profilePic ? info.profilePic: defaultPP}/>
+                                <img alt='profile' className= 'profile-pic' src={info.profilePic ? info.profilePic: defaultPP}/>
                                 {info.username} 
                                 </button>
                         ))}

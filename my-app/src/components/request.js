@@ -1,5 +1,4 @@
-import React, { Component, useState, useEffect } from 'react'
-import { auth } from '../comm/firebaseCredentials'
+import React, { Component } from 'react'
 import PCard from './profileCard'
 import Post from './post'
 
@@ -47,7 +46,7 @@ class Request extends Component {
             request = <div className="request-container">
                         <PCard key={this.state.profile_info.uid} info={this.state.profile_info} />
                         <div className='request'>
-                            <h2><a className='profile-username'>{this.state.icebreaker_chat.uid == this.state.uid1 ? 'Me': this.state.profile_info.username}</a>: {this.state.icebreaker_chat.text}</h2>
+                            <h2><a className='profile-username'>{this.state.icebreaker_chat.uid === this.state.uid1 ? 'Me': this.state.profile_info.username}</a>: {this.state.icebreaker_chat.text}</h2>
                             <Post data={this.state.icebreaker_chat.icebreaker} />
                         </div>
                     </div>
