@@ -21,6 +21,7 @@ class Request extends Component {
     }
 
     componentDidMount() {
+        this._isMounted = true;
         // charge the user profiles from the database
         this.props.dbManager.getUserProfileInfo(this.props.uid2).then((profile_info) => {
             this.props.dbManager.getIcebreakerInfo(this.props.uid1, this.props.uid2).then((ice_info) => {
