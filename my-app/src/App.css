@@ -21,7 +21,6 @@
   --dark-overlay: rgba(0,0,0,0.5)
 }
 
-
 /* @font-face {
   font-family: myFirstFont;
   src: url(sansation_light.woff);
@@ -33,7 +32,10 @@ a{
 
 body {
   background-color: var(--background-color);
-  font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
+  font-family: proxima-nova,sans-serif;
+  /* font-family: proxima-nova,sans-serif; */
+  scrollbar-base-color: transparent;
+  scrollbar-color: transparent;
 }
 
 button {
@@ -43,7 +45,6 @@ button {
   color: white;
   font-weight: bold;
   background-color: var(--main-color);
-  /* height: 3em; */
   border-radius: 30px;
   border-style: unset;
   padding: 0.6em 2em;
@@ -84,7 +85,7 @@ h4{
 }
 
 p{
-  font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
+  font-family: proxima-nova,sans-serif;
   font-size: 18px;
 }
 span{
@@ -100,7 +101,7 @@ input, select, textarea {
   font-size: 16px;
   padding-bottom: 1em;
   color: var(--text-color);
-  font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
+  font-family: proxima-nova,sans-serif;
 }
 textarea{
   border-width: 3px;
@@ -148,7 +149,7 @@ textarea{
   justify-content: center;
 }
 .tab-button{
-  font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
+  font-family: proxima-nova,sans-serif;
   margin: 0em 1em;
   min-width: 20%;
 }
@@ -409,7 +410,7 @@ margin-top: 4px;
 /* MENU STYLES */
 
 .menu-container{
-  font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
+  font-family: proxima-nova,sans-serif;
   height: 100%;
   background-color: var(--main-color);
   /* min-width: 16em; */
@@ -434,7 +435,7 @@ margin-top: 4px;
   padding-left: 3em;
   height: 3em;
   font-size: 18px;
-  font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
+  font-family: proxima-nova,sans-serif;
   text-transform: uppercase;
   display: inline-flex;
 }
@@ -647,7 +648,7 @@ margin-top: 4px;
 }
 
 .chat-menu-container{
-  font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
+  font-family: proxima-nova,sans-serif;
   background-color: var(--background-light-color);
   padding-top: 2em;
 }
@@ -674,7 +675,7 @@ margin-top: 4px;
   align-items: center;
   height: 3em;
   font-weight: 600;
-  font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
+  font-family: proxima-nova,sans-serif;
   font-size: 14px;
   background-color: var(--background-light-color);
 }
@@ -703,8 +704,15 @@ margin-top: 4px;
   height: 100vh;
   flex-direction: column;
   display: flex;
-  overflow: scroll;
+  overflow-y: scroll;
   justify-content: center;
+  scrollbar-color: transparent;
+
+}
+
+.chat-container::-webkit-scrollbar-track {
+  background-color: transparent;
+  color: transparent
 }
 
 .chat-header {
@@ -763,22 +771,23 @@ main{
 }
 
 .sent {
-  border-radius: 0px 6px 6px 6px;
   flex-direction: row-reverse;
 }
 
 .sent p {
   color: white;
-  background: var(--main-color);
+  background: var(--main-dark-color);
   align-self: flex-end;
   padding: 0.5em;
-  border-radius: 30px;
+  border-radius: 30px 1px 30px 30px;
+  padding: 0.7em 1em;
 }
 .received p {
   background: #e5e5ea;
   color: black;
   padding: 0.5em;
-  border-radius: 30px;
+  border-radius: 1px 30px 30px 30px;
+  padding: 0.7em 1em;
 }
 .request-container {
   overflow-y: scroll;
@@ -793,7 +802,7 @@ main{
   font-size: 22px;
 }
 .request-answer{
-  width: 100%;
+  /* width: 100%; */
   display: flex;
   justify-content: center;
   padding: 1em;
@@ -806,7 +815,7 @@ input {
 
 .no-results {
   color: var(--subtitle-text-color);
-  font-family: 'Proxima Nova', 'Nunito Sans', sans-serif;
+  font-family: proxima-nova,sans-serif;
   align-self: center;
 }
 
@@ -853,15 +862,30 @@ input {
 ::-webkit-inner-spin-button {
   display: none;
 }
+::-webkit-scrollbar-track {
+  background: transparent !important;
+  color: transparent !important;
+}
+
+::-webkit-scrollbar-track-piece:start {
+  background: transparent !important;
+}
+body::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+
+::-webkit-scrollbar-track-piece:end {
+  background: transparent  !important;
+}
 
 
+/* For animation references */
 
 /* @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
 } 
-
 
 @keyframes App-logo-spin {
   from {
