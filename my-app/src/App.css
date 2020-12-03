@@ -61,14 +61,14 @@ button:focus {
 }
 
 button:disabled{
-  opacity: 20%;
+  opacity: 0.20;
 }
 
 hr{
   border: 1px solid var(--background-separators);
   margin: 0px;
   margin-top: 0.3em;
-  opacity: 40%;
+  opacity: 0.40;
 }
 h1{
   font-size: 40px;
@@ -120,16 +120,16 @@ textarea{
   background-color: transparent;
   padding: 0.6em 1em;
   min-width: auto;
-  opacity: 80%;
+  opacity: 0.80;
   border-radius: 0px;
 }
 
 .secondary-button:hover{
   background-color: transparent;
-  opacity: 100%;
+  opacity: 1.0;
 }
 .secondary-button:hover:disabled{
-  opacity: 20%;
+  opacity: 0.20;
 }
 
 .close-button{
@@ -154,7 +154,7 @@ textarea{
   min-width: 20%;
 }
 .tab-button.selected{
-  opacity: 100%;
+  opacity: 1.0;
   outline: 0;
   border-style: solid;
   border-width: 0 0 3px;
@@ -353,7 +353,7 @@ margin: 0.7em 0em;
 .dropping-area span{
 font-size: 20px;
 margin: 0.4em auto;
-opacity: 60%;
+opacity: 0.60;
 }
 
 .tag{
@@ -396,7 +396,7 @@ width: 100%;
 }
 
 .item input:disabled, .item select:disabled{
-  opacity: 20%;
+  opacity: 0.20;
 }
 
 .form-error{
@@ -452,12 +452,12 @@ margin-top: 4px;
   bottom:0px;
   align-self: flex-end;
   width: fit-content;
-  opacity: 60%;
+  opacity: 0.60;
 }
 
 .menu-tab.logout:hover{
   background-color: transparent;
-  opacity: 100%;
+  opacity: 1.0;
 
 }
 
