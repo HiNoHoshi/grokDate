@@ -3,7 +3,8 @@ import { auth } from '../comm/firebaseCredentials'
 
 
 function settings(props)  {
-
+// TODO: set a cloud funtion to delete the collections
+// https://fireship.io/snippets/delete-firestore-collection/
     return  (
         
         <div className= 'settings-container'>

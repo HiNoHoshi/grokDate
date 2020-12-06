@@ -78,7 +78,6 @@ function PrivateChat(props) {
     }
 
     const [formValue, setFormValue] = useState('');
-    console.log(props)
     return (
     <>
         <h2 className='chat-header'>

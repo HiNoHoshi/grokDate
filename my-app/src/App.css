@@ -21,11 +21,6 @@
   --dark-overlay: rgba(0,0,0,0.5)
 }
 
-/* @font-face {
-  font-family: myFirstFont;
-  src: url(sansation_light.woff);
-} */
-
 a{
   color: var(--link-color)
 }
@@ -33,7 +28,6 @@ a{
 body {
   background-color: var(--background-color);
   font-family: proxima-nova,sans-serif;
-  /* font-family: proxima-nova,sans-serif; */
   scrollbar-base-color: transparent;
   scrollbar-color: transparent;
 }
@@ -199,7 +193,7 @@ textarea{
 }
 
 .popup-container{
-  position: absolute;
+  position: fixed;
   width: 100%;
   height: 100%;
   display:flex;
@@ -626,7 +620,19 @@ margin-top: 4px;
 .edit-info{
   text-align: left;
   margin: 1em;
-
+}
+.picture-selection{
+  display: grid;
+  height: 12em;
+  justify-content: center;
+}
+.picture-selection input{
+  border-style: none;
+  width: fit-content;
+}
+.picture{
+  max-height: 100%;
+  max-width: 100%;
 }
 
 .settings-container{
@@ -694,7 +700,6 @@ margin-top: 4px;
   align-items: center;
   background-color: var(--background-color); 
   color: var(--main-color)
-  /* TODO: show the arrow https://www.w3schools.com/css/tryit.asp?filename=trycss_buttons_animate1*/
 }
 
 
@@ -895,3 +900,78 @@ body::-webkit-scrollbar {
     transform: rotate(360deg);
   }
 }*/
+
+.file-display-container {
+  display: inline-flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.file-status-bar{
+  margin-top: 10px;
+  margin-bottom: 20px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.file-status-bar > div {
+  overflow: hidden;
+}
+
+.file-type {
+  position: absolute;
+  font-size: 5px;
+  font-weight: 700;
+  padding: 1px;
+  border-radius: 1px;
+  background: var(--link-color);
+  text-transform: uppercase;
+}
+
+.file-name {
+  display: inline-block;
+  vertical-align:top;
+  margin-left: 30px;
+  color: var(--link-color);
+}
+
+.file-error {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 30px;
+  color: var(--text-color);
+}
+
+.file-error-message {
+  color:var(--attention-color);
+}
+
+.file-type-logo {
+  width: 20px;
+  height: 24px;
+  background: url(./images/icons/file.png) no-repeat center center; 
+  background-size: 100%;
+  position: absolute;
+}
+
+.file-size {
+  display:inline-block;
+  vertical-align:top;
+  margin-right:5px;
+  margin-left: 10px;
+  color: var(--subtitle-text-color);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.file-remove  {
+  cursor: pointer;
+  width: 10px;
+  height: 10px;
+
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url("./images/icons/close_icon@2x.png");
+}

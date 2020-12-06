@@ -63,7 +63,7 @@ class TagItem extends Component {
 
         return  (
             <div className= {this.state.visible ? 'tag': 'tag actionable'}  
-            draggable = {this.state.visible && this.props.editable} //TODO: Check if it still works in the registration
+            draggable = {this.state.visible && this.props.editable} 
             onDrag={onDrag}
             onDragEnd={onDragEnd}
             style = {tagStyle}>

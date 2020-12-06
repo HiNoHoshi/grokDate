@@ -8,7 +8,6 @@ class FirebaseManager{
         this.db = firestore
         this.usersRef = firestore.collection('users');
         this.subredditRef = firestore.collection('subreddit')
-
         this.getAllOtherUsers = this.getAllOtherUsers.bind(this)
     }
 

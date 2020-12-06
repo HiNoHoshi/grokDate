@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import Form from './form'
 import RegisterInterests from './registerInterests'
+import PictureUploader from './pictureUploader'
 
 class EditProfile extends Component {
     constructor(){
@@ -17,6 +18,7 @@ class EditProfile extends Component {
             },
             sending: false,
             communities: {},
+            activeTab: 'picture',
             formActive: true,
             errors: {}  
         };
@@ -70,14 +72,19 @@ class EditProfile extends Component {
         <div className="edit-container">
             <h2>Edit Profile</h2>
             <div>
-                            <button className={this.state.formActive ? 'secondary-button tab-button selected': 'secondary-button tab-button'} onClick={() =>{this.setState({formActive: true})}}>Information </button>
-                            <button className={!this.state.formActive ? 'secondary-button tab-button selected': 'secondary-button tab-button'} onClick={() =>{this.setState({formActive: false})}}>Interests </button>
-                        </div>
+                <button className={this.state.activeTab === 'picture' ? 'secondary-button tab-button selected': 'secondary-button tab-button'} onClick={() =>{this.setState({activeTab: 'picture', formActive: true})}}>Picture</button>
+                <button className={this.state.activeTab === 'information' ? 'secondary-button tab-button selected': 'secondary-button tab-button'} onClick={() =>{this.setState({activeTab: 'information', formActive: true})}}>Information</button>
+                <button className={this.state.activeTab === 'interests' ? 'secondary-button tab-button selected': 'secondary-button tab-button'} onClick={() =>{this.setState({activeTab: 'interests', formActive: false})}}>Interests</button>
+            </div>
             <div className= 'edit-info'>
+
+                <PictureUploader data={this.state}
+                    active = {this.state.activeTab === 'picture'}/>
+
                 <Form data={this.state} 
                     handleChange={this.handleChange} 
                     isEdit={true}
-                    active = {this.state.formActive} />
+                    active = {this.state.activeTab === 'information'}/>
 
                 <RegisterInterests 
                     dbManager={this.props.dbManager} 
@@ -86,7 +93,7 @@ class EditProfile extends Component {
                     sending = {this.state.sending} 
                     updateCommunities={this.updateCommunities} 
                     error={this.state.errors.interests}
-                    active = {!this.state.formActive} />
+                    active = {this.state.activeTab === 'interests'}/>
             
             </div>
       

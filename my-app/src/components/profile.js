@@ -25,8 +25,6 @@ class MyProfile extends Component {
         this._isMounted = false;
     }
 
-    // Updates the profile information after editing it 
-    // TODO: discover why in the world only the subreddits are being updated
     updateProfile(updatedUserInfo){
         if (!this._isMounted) {
             return;
@@ -48,12 +46,15 @@ class MyProfile extends Component {
               userInfo: {...state.userInfo, 
                 city: updInfo.city,
                 country: updInfo.country,
+                location: updInfo.city+", "+ updInfo.country,
                 description: updInfo.description,
                 interest: updInfo.interest,
                 subreddits: newComm}, 
             }
             return newState
         });
+        console.log(this.state.input)
+
         this.forceUpdate()
     }
 
