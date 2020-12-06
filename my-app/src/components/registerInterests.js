@@ -27,7 +27,6 @@ class RegisterInterests extends Component {
 
     // Adds a listener that calls loadSubs when the database is updated
     componentDidMount () {
-        console.log(this.props)
         var unsubscribe = this.props.dbManager.listenToRedditSynch(this.props.user.uid, this.loadSubs)
         this.setState({unsubscribeListener: unsubscribe});
 

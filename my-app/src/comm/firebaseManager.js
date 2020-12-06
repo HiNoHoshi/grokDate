@@ -1,6 +1,6 @@
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import firebase from 'firebase/app';
-import { auth } from '../comm/firebaseCredentials'
+import {auth, storage } from '../comm/firebaseCredentials'
 
 class FirebaseManager{
 

@@ -5,23 +5,13 @@ class PictureUploader extends Component {
     constructor(){
         
         super();
-        this.state = {
-        }
-        this.loadPicture = this.loadPicture.bind(this);
+        this.state = {}
+        this.setPicture = this.setPicture.bind(this);
     }
 
-    componentDidMount () {
+    setPicture(picture){
+        this.props.updatePicture(picture)
     }
-
-    loadPicture(picture){
-    }
-
-    componentWillUnmount() {
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-    }
-
 
     render(){
         
@@ -32,9 +22,8 @@ class PictureUploader extends Component {
         }
 
         return  (
-            <div className= 'picture-selector' style= {editStyle }>
-                <PictureDropArea />
-                {/* <button>Upload imeage</button> */}
+            <div className= 'picture-selector' style= {editStyle}>
+                <PictureDropArea setPicture = {this.setPicture}/>
              </div>
         );
     }

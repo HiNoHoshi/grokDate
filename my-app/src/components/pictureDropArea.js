@@ -2,7 +2,7 @@ import React, {useState, useRef} from 'react'
 
 // Drag and drop component taken from: 
 // https://blog.logrocket.com/create-a-drag-and-drop-component-with-react-dropzone/
-function PictureDropArea(){
+function PictureDropArea(props){
 
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
@@ -35,6 +35,7 @@ function PictureDropArea(){
     }
     return true;
   }
+
   // returns the droped file size
   const fileSize = (size) => {
     if (size === 0) return '0 Bytes';
@@ -73,8 +74,12 @@ function PictureDropArea(){
     reader.readAsDataURL(file);
     reader.onload = function(e) {
       imageRef.current.src =  e.target.result;
+      console.log(imageRef.width)
+
     }
+    props.setPicture(file)
   }
+
 
   return (
     <div style={{alignContent:'center'}}>
@@ -86,7 +91,7 @@ function PictureDropArea(){
           
           {selectedFiles.length 
             ? <img className="picture" ref={imageRef}/>
-            :<span> Drag and drop your picture here</span> }
+            :<span> Drag and drop your a square picture here</span> }
 
       </div>
 

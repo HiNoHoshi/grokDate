@@ -4,7 +4,8 @@
 
   /* Colors: */
   --main-color: #13C4A3;
-  --main-light-color: #36F1CD;
+  /* --main-light-color: #36F1CD; */
+  --main-light-color: #22d3b3;
   --main-dark-color: #12B093;
   --link-color: #39A0ED;
   --decline-color: #8011BC;
@@ -136,6 +137,18 @@ textarea{
   background-image: url("./images/icons/close_icon@2x.png");
   align-self: flex-end;
 }
+.loader{
+  height: 5em;
+  width: 5em;
+}
+.loader-container{
+  margin: 2em;
+  align-items: center;
+  min-width: 10em;
+  min-height: 10em;
+  display: flex;
+  justify-content: center;
+}
 .interests-nav{
   display: inline-flex;
   width: 100%;
@@ -169,6 +182,7 @@ textarea{
 }
 .profile-pic{
   border-radius: 50%;
+  background-color: #CDC6E4;
 }
 .App-link {
   color: #61dafb;
@@ -328,7 +342,7 @@ border-radius: 6px;
 border-width: 3px;
 min-height: 400px;
 padding: 1em;
-padding-top: 0px;
+padding-top:0px;
 height: 80%;
 }
 
@@ -479,7 +493,7 @@ margin-top: 4px;
 }
 
 .profile-header .profile-pic{
-  max-width: 2em;
+  width: 2em;
   height: 2em;
   margin-right: 1em;
 }
@@ -623,7 +637,7 @@ margin-top: 4px;
 }
 .picture-selection{
   display: grid;
-  height: 12em;
+  height: 15em;
   justify-content: center;
 }
 .picture-selection input{
@@ -656,7 +670,7 @@ margin-top: 4px;
 .chat-menu-container{
   font-family: proxima-nova,sans-serif;
   background-color: var(--background-light-color);
-  padding-top: 2em;
+  padding-top:2em; 
 }
 
 .chat-type-header{
@@ -753,9 +767,6 @@ main{
   align-items: center;
 }
 .chat-input {
-  /* border-width: 2px;
-  border-style: solid;
-  border-color: var(--background-separators); */
   display: inline-flex;
   align-items: center;
   padding: 0.5px 0.5em;
@@ -886,20 +897,29 @@ body::-webkit-scrollbar {
 
 /* For animation references */
 
-/* @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+@media (prefers-reduced-motion: no-preference) {
+  .loader {
+    animation: loader-spin infinite 2s linear;
   }
 } 
 
-@keyframes App-logo-spin {
-  from {
+@keyframes loader-spin {
+  /* from {
     transform: rotate(0deg);
   }
   to {
     transform: rotate(360deg);
-  }
-}*/
+  } */
+  0%   {transform: rotate(0deg)}
+  12.5%  {transform: rotate(45deg)}
+  25%  {transform: rotate(90deg)}
+  37.5%  {transform: rotate(135deg)}
+  50%  {transform: rotate(180deg)}
+  62.5%  {transform: rotate(225deg)}
+  75%  {transform: rotate(270deg)}
+  87.5%  {transform: rotate(315deg)}
+  100% {transform: rotate(360deg)}
+}
 
 .file-display-container {
   display: inline-flex;

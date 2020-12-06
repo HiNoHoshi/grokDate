@@ -26,6 +26,8 @@ class MyProfile extends Component {
     }
 
     updateProfile(updatedUserInfo){
+        console.log(updatedUserInfo)
+
         if (!this._isMounted) {
             return;
         }
@@ -49,12 +51,11 @@ class MyProfile extends Component {
                 location: updInfo.city+", "+ updInfo.country,
                 description: updInfo.description,
                 interest: updInfo.interest,
-                subreddits: newComm}, 
+                subreddits: newComm, 
+                pictureURL: updInfo.pictureURL}
             }
             return newState
         });
-        console.log(this.state.input)
-
         this.forceUpdate()
     }
 
