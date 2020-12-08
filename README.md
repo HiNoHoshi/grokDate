@@ -1,4 +1,4 @@
-# grokDate
+# grok.date
 A dating app for geeks
 
 ## Install instructions
