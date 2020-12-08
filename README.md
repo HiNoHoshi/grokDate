@@ -9,7 +9,7 @@ A dating app for geeks
 - Clone the repo
 - From within the `my-app` folder,
   - run `npm i` to install dependencies
-  - then run `npm start` from within the `my-app` folder
+  - then run `npm start` from within the cloned repo
 - Go to http://localhost:3000 within your browser
 
 ## New features added since <a href="https://youtu.be/FZoiCHPYWBE">presentation on 12/3</a>
