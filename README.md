@@ -5,7 +5,7 @@ A dating app for geeks
 - Go to http://grokdating.web.illinois.edu
 - You may be asked to sign in to cPanel or you may need connect to the UIUC VPN.
 
-## Install instructions if you prefer to run the code yourself
+## Install instructions (if you prefer to run the code yourself)
 - Clone the repo
 - From within the `my-app` folder,
   - run `npm i` to install dependencies
