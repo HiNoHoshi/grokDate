@@ -1,6 +1,6 @@
 import React from 'react'
 import Tag from './tagItem'
-import default_icon from '../images/external/subreddit_default_icon.png'
+import default_icon from '../images/logos/subreddit_default_icon.png'
 
 function InterestsContainer (props) {
     var favorite = null
