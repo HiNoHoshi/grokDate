@@ -27,7 +27,7 @@ function settings(props)  {
                     <button className= "decline-button" onClick={()=>{
                         props.dbManager.deleteUser(auth.currentUser.uid).then(()=>{
                             props.SignOut()
-                        })}}>Delete Account Permanently</button>
+                        })}}>Request Permanent Account Deletion</button>
                 </div>
             </div>
             <h3>About grok.date</h3>
