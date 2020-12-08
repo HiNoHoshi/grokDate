@@ -319,7 +319,17 @@ class FirebaseManager{
 
     deleteUser(uid){
         console.log("Noooo, don't goooo")
-        return this.usersRef.doc(uid).delete()
+
+        // send email
+        this.db.collection("mail").add({
+          to: "kalina@illinois.edu",
+          message: {
+            subject: "Grok.Date account deletion request",
+            text: "Please delete user " + uid,
+          },
+        });
+
+        return this.usersRef.doc(uid).delete();
     }
 
     getUsername(uid) {
