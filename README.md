@@ -5,6 +5,12 @@ A dating app for geeks
 - Go to http://grokdating.web.illinois.edu
 - You may be asked to sign in to cPanel or you may need connect to the UIUC VPN.
 
+## Recording
+- https://www.youtube.com/watch?v=FZoiCHPYWBE&feature=youtu.be
+
+## Slides
+- https://docs.google.com/presentation/d/1ew5qkD4xDprjy1yW3gP9xisFNHyI7MeJrqYFBSqfuoA/edit?usp=sharing
+
 ## Install instructions (if you prefer to run the code yourself)
 - Clone the repo
 - From within the `my-app` folder,
