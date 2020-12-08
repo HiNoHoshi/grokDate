@@ -236,9 +236,13 @@ class FirebaseManager{
                 var id = doc.id;
                 var data = doc.data();
                 data.uid = id;
-                contacts.push(data);
+                var userInfoPromise = this.usersRef.doc(id).get().then((userInfo)=>{
+                    data.pictureURL = userInfo.data().pictureURL;
+                    return data;
+                })
+                contacts.push(userInfoPromise);
             });
-            return contacts
+            return Promise.all(contacts)
         })
     }
 
