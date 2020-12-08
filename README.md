@@ -2,7 +2,7 @@
 A dating app for geeks
 
 ## Demo link
-- Go to http://grokdating.web.illinois.edu
+- Go to http://grokdating.web.illinois.edu (Chrome preferred)
 - You may be asked to sign in to cPanel or you may need connect to the UIUC VPN.
 
 ## Recording
@@ -18,7 +18,7 @@ A dating app for geeks
 - From within the `grok.date` folder,
   - run `npm i` to install dependencies
   - then run `npm start`
-- Go to http://localhost:3000 within your browser
+- Go to http://localhost:3000 within your browser (Chrome preferred)
 
 ## New features added since <a href="https://youtu.be/FZoiCHPYWBE">presentation on 12/3</a>
 - Privacy policy and terms of service appear on sign-in/sign-up page and settings page.
