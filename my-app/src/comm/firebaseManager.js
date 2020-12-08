@@ -1,6 +1,6 @@
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import firebase from 'firebase/app';
-import { auth } from '../comm/firebaseCredentials'
+import {auth, storage } from '../comm/firebaseCredentials'
 
 class FirebaseManager{
 
@@ -8,7 +8,6 @@ class FirebaseManager{
         this.db = firestore
         this.usersRef = firestore.collection('users');
         this.subredditRef = firestore.collection('subreddit')
-
         this.getAllOtherUsers = this.getAllOtherUsers.bind(this)
     }
 
@@ -237,9 +236,13 @@ class FirebaseManager{
                 var id = doc.id;
                 var data = doc.data();
                 data.uid = id;
-                contacts.push(data);
+                var userInfoPromise = this.usersRef.doc(id).get().then((userInfo)=>{
+                    data.pictureURL = userInfo.data().pictureURL;
+                    return data;
+                })
+                contacts.push(userInfoPromise);
             });
-            return contacts
+            return Promise.all(contacts)
         })
     }
 
@@ -316,7 +319,17 @@ class FirebaseManager{
 
     deleteUser(uid){
         console.log("Noooo, don't goooo")
-        return this.usersRef.doc(uid).delete()
+
+        // send email
+        this.db.collection("mail").add({
+          to: "kalina@illinois.edu",
+          message: {
+            subject: "Grok.Date account deletion request",
+            text: "Please delete user " + uid,
+          },
+        });
+
+        return this.usersRef.doc(uid).delete();
     }
 
     getUsername(uid) {

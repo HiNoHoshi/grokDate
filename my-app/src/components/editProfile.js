@@ -1,6 +1,10 @@
 import React, {Component} from 'react'
 import Form from './form'
 import RegisterInterests from './registerInterests'
+import PictureUploader from './pictureUploader'
+import {storage } from '../comm/firebaseCredentials'
+import loader from '../images/icons/loader.png'
+
 
 class EditProfile extends Component {
     constructor(){
@@ -17,51 +21,84 @@ class EditProfile extends Component {
             },
             sending: false,
             communities: {},
+            picture: null,
+            pictureURL: null,
+            activeTab: 'picture',
             formActive: true,
             errors: {}  
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.updateCommunities = this.updateCommunities.bind(this);
-        
+        this.updatePicture = this.updatePicture.bind(this);
+        this.setPictureURL = this.setPictureURL.bind(this);
+        this.updateProfile = this.updateProfile.bind(this);
     }
 
     componentDidMount() {
         this.setState({input: this.props.userInfo})
+        // TODO: manage edition with previous picture
+        // this.setState({pictureURL: this.props.pictureURL})
     }
 
     handleChange(event) {
         let input = this.state.input;
         const {name, value} = event.target
         input[name] = value;
-        
-        this.setState({
-          input
-        });
+        this.setState({input});
     }
     
     updateCommunities(communities){
         this.setState({communities})
     }
-
+    updatePicture(picture){
+        this.setState({picture})
+    }
+    setPictureURL(pictureURL){
+        this.setState({pictureURL})
+    }
+    updateProfile(infoUpdate){
+        // Send the basic info of the user to the database
+        this.props.dbManager.registerUserInfo(this.props.user.uid, infoUpdate).then(() =>{
+                this.props.updateProfile({infoUpdate, communities:this.state.communities})
+                this.props.close();
+        });
+    }
     handleSubmit(event) {
         event.preventDefault();
 
         if(this.validate()){
-            const infoUpdate = {
+            // Let other components know the new info is been sent
+            this.setState({sending:true}) 
+            
+            var infoUpdate = {
                 username: this.state.input.username,
                 country: this.state.input.country,
                 city: this.state.input.city,
                 interest: this.state.input.interest,
                 description: this.state.input.description
             }
-            // Let other components know the new info is been sent
-            this.setState({sending:true}) 
-            // Send the basic info of the user to the database
-            this.props.dbManager.registerUserInfo(this.props.user.uid, infoUpdate).then(() =>{
-                this.props.updateProfile({infoUpdate, communities:this.state.communities})
-                this.props.close()
-            });
+
+            if(this.state.picture){
+                let name = this.props.user.uid+':'+this.state.picture.name
+                const uploadTask = storage.ref(`/profile_pics/${name}`).put(this.state.picture)
+                //initiates the firebase side uploading 
+                uploadTask.on('state_changed', (snapShot) => {
+                    //takes a snap shot of the process as it is happening
+                    console.log(snapShot)
+                }, (err) => {
+                    //catches the errors
+                    console.log(err)
+                }, () => {
+                    storage.ref('profile_pics').child(name).getDownloadURL()
+                        .then(fireBaseUrl => {
+                            infoUpdate.pictureURL = fireBaseUrl;
+                            this.updateProfile(infoUpdate)
+                        })
+                    })
+            }else{
+                this.updateProfile(infoUpdate)
+            }
         }
     }
 
@@ -69,28 +106,40 @@ class EditProfile extends Component {
         return  (
         <div className="edit-container">
             <h2>Edit Profile</h2>
-            <div>
-                            <button className={this.state.formActive ? 'secondary-button tab-button selected': 'secondary-button tab-button'} onClick={() =>{this.setState({formActive: true})}}>Information </button>
-                            <button className={!this.state.formActive ? 'secondary-button tab-button selected': 'secondary-button tab-button'} onClick={() =>{this.setState({formActive: false})}}>Interests </button>
-                        </div>
-            <div className= 'edit-info'>
-                <Form data={this.state} 
-                    handleChange={this.handleChange} 
-                    isEdit={true}
-                    active = {this.state.formActive} />
-
-                <RegisterInterests 
-                    dbManager={this.props.dbManager} 
-                    isEdit={true}
-                    user={this.props.user} 
-                    sending = {this.state.sending} 
-                    updateCommunities={this.updateCommunities} 
-                    error={this.state.errors.interests}
-                    active = {!this.state.formActive} />
-            
+            {this.state.sending
+            ? <div className='loader-container'>
+                <img src = {loader} className='loader' alt='loading'/>
             </div>
-      
-            <button onClick={this.handleSubmit}>Save Changes</button>
+            : 
+            <div>
+                <div>
+                    <button className={this.state.activeTab === 'picture' ? 'secondary-button tab-button selected': 'secondary-button tab-button'} onClick={() =>{this.setState({activeTab: 'picture', formActive: true})}}>Picture</button>
+                    <button className={this.state.activeTab === 'information' ? 'secondary-button tab-button selected': 'secondary-button tab-button'} onClick={() =>{this.setState({activeTab: 'information', formActive: true})}}>Information</button>
+                    <button className={this.state.activeTab === 'interests' ? 'secondary-button tab-button selected': 'secondary-button tab-button'} onClick={() =>{this.setState({activeTab: 'interests', formActive: false})}}>Interests</button>
+                </div>
+                <div className= 'edit-info'>
+
+                    <PictureUploader data={this.state}
+                        updatePicture={this.updatePicture} 
+                        active = {this.state.activeTab === 'picture'}/>
+
+                    <Form data={this.state} 
+                        handleChange={this.handleChange} 
+                        isEdit={true}
+                        active = {this.state.activeTab === 'information'}/>
+
+                    <RegisterInterests 
+                        dbManager={this.props.dbManager} 
+                        isEdit={true}
+                        user={this.props.user} 
+                        sending = {this.state.sending} 
+                        updateCommunities={this.updateCommunities} 
+                        error={this.state.errors.interests}
+                        active = {this.state.activeTab === 'interests'}/>
+                </div>  
+
+            </div>}
+            <button onClick={this.handleSubmit} disabled = {this.state.sending}>Save Changes</button>
         </div>
         );
     }

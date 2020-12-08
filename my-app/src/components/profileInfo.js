@@ -6,7 +6,7 @@ function profileInfo(props) {
     return  (
         <div className= 'profile-info'>
             <div className='profile-header'>
-                <img className= 'profile-pic' src={props.info.profilePic ? props.info.profilePic: defaultPP}/>
+                <img className= 'profile-pic' src={props.info.pictureURL ? props.info.pictureURL: defaultPP}/>
                 <h2 className='profile-username'>{props.info.username}</h2>
             </div>
             <div className='info'>

@@ -3,6 +3,8 @@ import React, {Component} from 'react'
 import ArrowButton from "./arrow_button"
 import Post from "./post"
 import {REDDIT} from '../comm/common.js'
+import loader from '../images/icons/loader.png'
+
 
 class Icebreaker extends Component {
     constructor() {
@@ -95,7 +97,10 @@ class Icebreaker extends Component {
         var {icebreakers, loading, subreddit_idx, post_idx} = this.state
         var icebreaker
         if (loading) {
-            icebreaker = (<div className="post-container">Loading icebreakers...</div>)
+            // icebreaker = (<div className="post-container">Loading icebreakers...</div>)
+            icebreaker = <div className='loader-container'>
+                            <img src = {loader} className='loader' alt='loading'/>
+                        </div>
         } else {
             let post = <Post data={icebreakers[subreddit_idx].posts[post_idx]} />
             let name = icebreakers[subreddit_idx].name

@@ -4,7 +4,7 @@
 
   /* Colors: */
   --main-color: #13C4A3;
-  --main-light-color: #36F1CD;
+  --main-light-color: #22d3b3;
   --main-dark-color: #12B093;
   --link-color: #39A0ED;
   --decline-color: #8011BC;
@@ -21,11 +21,6 @@
   --dark-overlay: rgba(0,0,0,0.5)
 }
 
-/* @font-face {
-  font-family: myFirstFont;
-  src: url(sansation_light.woff);
-} */
-
 a{
   color: var(--link-color)
 }
@@ -33,7 +28,6 @@ a{
 body {
   background-color: var(--background-color);
   font-family: proxima-nova,sans-serif;
-  /* font-family: proxima-nova,sans-serif; */
   scrollbar-base-color: transparent;
   scrollbar-color: transparent;
 }
@@ -142,11 +136,30 @@ textarea{
   background-image: url("./images/icons/close_icon@2x.png");
   align-self: flex-end;
 }
+.loader{
+  height: 5em;
+  width: 5em;
+}
+.loader-container{
+  margin: 2em;
+  align-items: center;
+  min-width: 10em;
+  min-height: 10em;
+  display: flex;
+  justify-content: center;
+}
 .interests-nav{
   display: inline-flex;
   width: 100%;
   margin-top: 1em;
   justify-content: center;
+}
+.curation-score{
+  color: var(--main-color)
+}
+.curation-score img{
+  width: 1em;
+  height: 1em;
 }
 .tab-button{
   font-family: proxima-nova,sans-serif;
@@ -175,6 +188,7 @@ textarea{
 }
 .profile-pic{
   border-radius: 50%;
+  background-color: #CDC6E4;
 }
 .App-link {
   color: #61dafb;
@@ -199,7 +213,7 @@ textarea{
 }
 
 .popup-container{
-  position: absolute;
+  position: fixed;
   width: 100%;
   height: 100%;
   display:flex;
@@ -258,6 +272,9 @@ textarea{
   justify-content: space-between;
   column-gap: 2em;
   width: 55%;
+}
+.landing-container a{
+  margin: 0px 0.5em;
 }
 
 .access-card{
@@ -334,7 +351,7 @@ border-radius: 6px;
 border-width: 3px;
 min-height: 400px;
 padding: 1em;
-padding-top: 0px;
+padding-top:0px;
 height: 80%;
 }
 
@@ -485,7 +502,7 @@ margin-top: 4px;
 }
 
 .profile-header .profile-pic{
-  max-width: 2em;
+  width: 2em;
   height: 2em;
   margin-right: 1em;
 }
@@ -626,7 +643,19 @@ margin-top: 4px;
 .edit-info{
   text-align: left;
   margin: 1em;
-
+}
+.picture-selection{
+  display: grid;
+  height: 15em;
+  justify-content: center;
+}
+.picture-selection input{
+  border-style: none;
+  width: fit-content;
+}
+.picture{
+  max-height: 100%;
+  max-width: 100%;
 }
 
 .settings-container{
@@ -650,7 +679,7 @@ margin-top: 4px;
 .chat-menu-container{
   font-family: proxima-nova,sans-serif;
   background-color: var(--background-light-color);
-  padding-top: 2em;
+  padding-top:2em; 
 }
 
 .chat-type-header{
@@ -694,7 +723,6 @@ margin-top: 4px;
   align-items: center;
   background-color: var(--background-color); 
   color: var(--main-color)
-  /* TODO: show the arrow https://www.w3schools.com/css/tryit.asp?filename=trycss_buttons_animate1*/
 }
 
 
@@ -748,9 +776,6 @@ main{
   align-items: center;
 }
 .chat-input {
-  /* border-width: 2px;
-  border-style: solid;
-  border-color: var(--background-separators); */
   display: inline-flex;
   align-items: center;
   padding: 0.5px 0.5em;
@@ -819,8 +844,7 @@ input {
   align-self: center;
 }
 
-#tooltip
-{
+#tooltip{
   position: relative;
   left: 0px;
   top: 0px;
@@ -840,11 +864,10 @@ input {
   font-size: 12px;
 }
 
-.tooltip-label
-{
+.tooltip-label{
   position: absolute;
-  max-width: 200px;
-  padding: 3px 8px;
+  max-width: 250px;
+  padding: 0.7em 1em;
   color: #fff;
   text-align: center;
   background-color: #000;
@@ -881,17 +904,101 @@ body::-webkit-scrollbar {
 
 /* For animation references */
 
-/* @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+@media (prefers-reduced-motion: no-preference) {
+  .loader {
+    animation: loader-spin infinite 2s linear;
   }
 } 
 
-@keyframes App-logo-spin {
-  from {
+@keyframes loader-spin {
+  /* from {
     transform: rotate(0deg);
   }
   to {
     transform: rotate(360deg);
-  }
-}*/
+  } */
+  0%   {transform: rotate(0deg)}
+  12.5%  {transform: rotate(45deg)}
+  25%  {transform: rotate(90deg)}
+  37.5%  {transform: rotate(135deg)}
+  50%  {transform: rotate(180deg)}
+  62.5%  {transform: rotate(225deg)}
+  75%  {transform: rotate(270deg)}
+  87.5%  {transform: rotate(315deg)}
+  100% {transform: rotate(360deg)}
+}
+
+.file-display-container {
+  display: inline-flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.file-status-bar{
+  margin-top: 10px;
+  margin-bottom: 20px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.file-status-bar > div {
+  overflow: hidden;
+}
+
+.file-type {
+  position: absolute;
+  font-size: 5px;
+  font-weight: 700;
+  padding: 1px;
+  border-radius: 1px;
+  background: var(--link-color);
+  text-transform: uppercase;
+}
+
+.file-name {
+  display: inline-block;
+  vertical-align:top;
+  margin-left: 30px;
+  color: var(--link-color);
+}
+
+.file-error {
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 30px;
+  color: var(--text-color);
+}
+
+.file-error-message {
+  color:var(--attention-color);
+}
+
+.file-type-logo {
+  width: 20px;
+  height: 24px;
+  background: url(./images/icons/file.png) no-repeat center center; 
+  background-size: 100%;
+  position: absolute;
+}
+
+.file-size {
+  display:inline-block;
+  vertical-align:top;
+  margin-right:5px;
+  margin-left: 10px;
+  color: var(--subtitle-text-color);
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.file-remove  {
+  cursor: pointer;
+  width: 10px;
+  height: 10px;
+
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url("./images/icons/close_icon@2x.png");
+}
