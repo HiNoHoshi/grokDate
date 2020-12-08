@@ -33,7 +33,7 @@ class ProfileCard extends Component {
                 <div className= 'interests-info'>
                     <div className= 'interests-nav'>
                         <button className='secondary-button tab-button' disabled>Channels <span>0/0</span></button>
-                        <button className='secondary-button tab-button selected' active = "true">Communities <span>{num_visible_subs}/{total_subs} <img src={get_info_icon} alt="Curation score info" className="get-info-icon" onMouseEnter={this.changeVisibility} onMouseLeave={this.changeVisibility}/><Tooltip ref={this.tooltipElement}/></span></button>
+                        <button className='secondary-button tab-button selected' active = "true">Communities <span className='curation-score' onMouseEnter={this.changeVisibility} onMouseLeave={this.changeVisibility}>{num_visible_subs}/{total_subs} <img src={get_info_icon} alt="Curation score info" className="get-info-icon"/><Tooltip ref={this.tooltipElement}/></span></button>
                         <button className='secondary-button tab-button' disabled>Games <span>0/0</span></button>
                     </div>
                     <InterestsContainer subreddits={this.props.info.subreddits}/>
