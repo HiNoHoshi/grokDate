@@ -12,6 +12,8 @@ A dating app for geeks
 - https://docs.google.com/presentation/d/1ew5qkD4xDprjy1yW3gP9xisFNHyI7MeJrqYFBSqfuoA/edit?usp=sharing
 
 ## Install instructions (if you prefer to run the code yourself)
+- Install Node.js and npm
+  - https://nodejs.org/en/download/
 - Clone the repo
 - From within the `my-app` folder,
   - run `npm i` to install dependencies
