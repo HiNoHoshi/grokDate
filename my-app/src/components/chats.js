@@ -22,7 +22,6 @@ class Chats extends Component {
         this._isMounted = false;
         this.handleAccept = this.handleAccept.bind(this);
         this.handleDecline = this.handleDecline.bind(this);
-        // this.handleRecind = this.handleRecind.bind(this);
         this.recalculateAllChatStatuses = this.recalculateAllChatStatuses.bind(this);
     }
 
@@ -93,9 +92,9 @@ class Chats extends Component {
                     <div className='chat-menu-tabs'>
                         <p className='chat-type-header'>Requests</p>
                         {this.state.recieved_requests.map((info,idx)=> (
-                            <button className={this.state.selected_uid === info.uid ? 'chat-menu-tab active' : 'chat-menu-tab'} key={info.uid} value={info.uid} onClick={() => this.setState({ selected_uid: info.uid, selected_username: info.username, selected_type: 'REQUEST' })} >
+                            <button className={this.state.selected_uid === info.uid ? 'chat-menu-tab active' : 'chat-menu-tab'} key={info.uid} value={info.uid} onClick={() => this.setState({ selected_uid: info.uid, selected_username: info.username, selected_pic: info.pictureURL,selected_type: 'REQUEST' })} >
                                 {this.state.selected_uid === info.uid && <img src={arrow} alt = "arrow" style={{paddingRight:'0.5em', 'height': '1em', 'width': 'auto'}}/>}
-                                <img alt='profile' className= 'profile-pic' src={info.profilePic ? info.profilePic: defaultPP}/>
+                                <img alt='profile' className= 'profile-pic' src={info.pictureURL ? info.pictureURL: defaultPP}/>
                                 {info.username} 
                             </button>
                         ))}
@@ -104,10 +103,10 @@ class Chats extends Component {
                     <div className='chat-menu-tabs'>
                         <p className='chat-type-header'>Pending</p>
                         {this.state.pending_requests.map((info,idx)=> (
-                            <button className={this.state.selected_uid === info.uid ? 'chat-menu-tab active' : 'chat-menu-tab'} key={info.uid} value={info.uid} onClick={() => this.setState({ selected_uid: info.uid, selected_username: info.username, selected_type: 'PENDING' })}>
+                            <button className={this.state.selected_uid === info.uid ? 'chat-menu-tab active' : 'chat-menu-tab'} key={info.uid} value={info.uid} onClick={() => this.setState({ selected_uid: info.uid, selected_username: info.username, selected_pic: info.pictureURL, selected_type: 'PENDING' })}>
                                 {this.state.selected_uid === info.uid && 
                                     <img src={arrow} alt = "arrow" style={{paddingRight:'1em', 'height': '1em', 'width': 'auto'}}/>}                
-                                <img alt='profile' className= 'profile-pic' src={info.profilePic ? info.profilePic: defaultPP}/>
+                                <img alt='profile' className= 'profile-pic' src={info.pictureURL ? info.pictureURL: defaultPP}/>
                                 {info.username} 
                                 </button>
                         ))}
@@ -120,9 +119,9 @@ class Chats extends Component {
                                 className={this.state.selected_uid === info.uid ? 'chat-menu-tab active' : 'chat-menu-tab'} 
                                 key={info.uid} 
                                 value={info.uid} 
-                                onClick={() => this.setState({ selected_uid: info.uid, selected_username: info.username, selected_type: 'CHAT' })}>
+                                onClick={() => this.setState({ selected_uid: info.uid, selected_username: info.username, selected_pic: info.pictureURL, selected_type: 'CHAT' })}>
                                 {this.state.selected_uid === info.uid && <img src={arrow} alt = "arrow" style={{paddingRight:'0.5em', 'height': '1em', 'width': 'auto'}}/>}
-                                <img className= 'profile-pic' src={info.profilePic ? info.profilePic: defaultPP}/>
+                                <img className= 'profile-pic' alt = "profile" src={info.pictureURL ? info.pictureURL: defaultPP}/>
                                 {info.username}
                             </button>
                         ))}

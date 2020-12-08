@@ -845,8 +845,7 @@ input {
   align-self: center;
 }
 
-#tooltip
-{
+#tooltip{
   position: relative;
   left: 0px;
   top: 0px;
@@ -866,8 +865,7 @@ input {
   font-size: 12px;
 }
 
-.tooltip-label
-{
+.tooltip-label{
   position: absolute;
   max-width: 250px;
   padding: 0.7em 1em;
