@@ -13,6 +13,6 @@ A dating app for geeks
 - Go to http://localhost:3000 within your browser
 
 ## New features added since <a href="https://youtu.be/FZoiCHPYWBE">presentation on 12/3</a>
-- Profile photos, which can be added in the "Edit Profile" page. They show up in the profile browser and in the chat.
-- Privacy policy and terms of service appear on sign-in/sign-up page and settings page
-- Users now able to request account deletion. The account is partially deleted when the button is clicked, but unfortunately Firebase doesn't allow complete deletion via the API. So, clicking the button sends an email to us to notify us that the user has requested account deletion. We can then go in and manually delete that user by ID. This is described in the privacy policy.
+- Privacy policy and terms of service appear on sign-in/sign-up page and settings page.
+- Each user can upload 1 profile photo icon, which can be added in the "Edit Profile" page. The icons show up in the profile browser and in the chat.
+- Users are now able to request account deletion. The account is partially deleted when the button is clicked, but unfortunately Firebase doesn't allow complete deletion via the API. So, clicking the button sends an email to us to notify us that the user has requested account deletion. We can then go in and manually delete that user by ID. This is described in the privacy policy.
