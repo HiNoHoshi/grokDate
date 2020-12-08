@@ -14,10 +14,10 @@ A dating app for geeks
 ## Install instructions (if you prefer to run the code yourself)
 - Install Node.js and npm
   - https://nodejs.org/en/download/
-- Clone the repo
-- From within the `my-app` folder,
+- Clone the repo (or open the zipped code)
+- From within the `grok.date` folder,
   - run `npm i` to install dependencies
-  - then run `npm start` from within the cloned repo
+  - then run `npm start`
 - Go to http://localhost:3000 within your browser
 
 ## New features added since <a href="https://youtu.be/FZoiCHPYWBE">presentation on 12/3</a>
