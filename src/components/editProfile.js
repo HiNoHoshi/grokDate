@@ -24,7 +24,6 @@ class EditProfile extends Component {
             picture: null,
             pictureURL: null,
             activeTab: 'picture',
-            formActive: true,
             errors: {}  
         };
         this.handleChange = this.handleChange.bind(this);
@@ -66,7 +65,6 @@ class EditProfile extends Component {
     }
     handleSubmit(event) {
         event.preventDefault();
-
         if(this.validate()){
             // Let other components know the new info is been sent
             this.setState({sending:true}) 
@@ -103,19 +101,19 @@ class EditProfile extends Component {
     }
 
     render(){
+        const hidestyle = {display:'none'}
+        const showStyle = {display:'block'}
         return  (
         <div className="edit-container">
             <h2>Edit Profile</h2>
-            {this.state.sending
-            ? <div className='loader-container'>
+            <div className='loader-container'  style = {this.state.sending ? showStyle : hidestyle}>
                 <img src = {loader} className='loader' alt='loading'/>
             </div>
-            : 
-            <div>
+            <div style = {this.state.sending ? hidestyle : showStyle}>
                 <div>
-                    <button className={this.state.activeTab === 'picture' ? 'secondary-button tab-button selected': 'secondary-button tab-button'} onClick={() =>{this.setState({activeTab: 'picture', formActive: true})}}>Picture</button>
-                    <button className={this.state.activeTab === 'information' ? 'secondary-button tab-button selected': 'secondary-button tab-button'} onClick={() =>{this.setState({activeTab: 'information', formActive: true})}}>Information</button>
-                    <button className={this.state.activeTab === 'interests' ? 'secondary-button tab-button selected': 'secondary-button tab-button'} onClick={() =>{this.setState({activeTab: 'interests', formActive: false})}}>Interests</button>
+                    <button className={this.state.activeTab === 'picture' ? 'secondary-button tab-button selected': 'secondary-button tab-button'} onClick={() =>{this.setState({activeTab: 'picture'})}}>Picture</button>
+                    <button className={this.state.activeTab === 'information' ? 'secondary-button tab-button selected': 'secondary-button tab-button'} onClick={() =>{this.setState({activeTab: 'information'})}}>Information</button>
+                    <button className={this.state.activeTab === 'interests' ? 'secondary-button tab-button selected': 'secondary-button tab-button'} onClick={() =>{this.setState({activeTab: 'interests'})}}>Interests</button>
                 </div>
                 <div className= 'edit-info'>
 
@@ -138,8 +136,8 @@ class EditProfile extends Component {
                         active = {this.state.activeTab === 'interests'}/>
                 </div>  
 
-            </div>}
-            <button onClick={this.handleSubmit} disabled = {this.state.sending}>Save Changes</button>
+            </div>
+            <button onClick={this.handleSubmit} disabled = {this.state.loading}>Save Changes</button>
         </div>
         );
     }
