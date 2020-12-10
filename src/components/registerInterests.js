@@ -64,6 +64,7 @@ class RegisterInterests extends Component {
     // When the state is updated, it brings the information about the user
     // from the database
     componentDidUpdate(prevProps, prevState) {
+        console.log(this.props.sending)
         if(!prevProps.sending && this.props.sending){
             // send the subreddit's info to the database
             this.props.dbManager.updateUserCommunities(this.props.user.uid, this.state.subReddits, this.state.redditFav)
